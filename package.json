@@ -1,37 +1,46 @@
 {
-  "name": "expo-react-native-w-tailwind",
-  "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
-  },
-  "dependencies": {
-    "expo": "^49.0.6",
-    "expo-status-bar": "~1.6.0",
-    "nativewind": "^2.0.11",
-    "react": "18.2.0",
-    "react-native": "0.72.3",
-    "tailwindcss": "^3.3.2"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "@eslint/eslintrc": "^3.0.2",
-    "@eslint/js": "^9.1.1",
-    "@types/react": "~18.0.14",
-    "@types/react-native": "^0.72.2",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^7.7.1",
-    "eslint": "^8.57.0",
-    "eslint-config-standard-with-typescript": "^43.0.1",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-react": "^7.34.1",
-    "globals": "^15.0.0",
-    "typescript": "^5.4.5"
-  },
-  "private": true
+	"name": "expo-react-native-w-tailwind",
+	"version": "1.0.0",
+	"main": "node_modules/expo/AppEntry.js",
+	"scripts": {
+		"start": "expo start",
+		"android": "expo start --android",
+		"ios": "expo start --ios",
+		"web": "expo start --web",
+		"prepare": "husky install"
+	},
+	"dependencies": {
+		"expo": "^49.0.6",
+		"expo-status-bar": "~1.6.0",
+		"nativewind": "^2.0.11",
+		"react": "18.2.0",
+		"react-native": "0.72.3",
+		"tailwindcss": "^3.3.2"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.20.0",
+		"@eslint/eslintrc": "^3.0.2",
+		"@eslint/js": "^9.1.1",
+		"@types/react": "~18.0.14",
+		"@types/react-native": "^0.72.2",
+		"@typescript-eslint/eslint-plugin": "^6.21.0",
+		"@typescript-eslint/parser": "^7.7.1",
+		"eslint": "^8.57.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-config-standard-with-typescript": "^43.0.1",
+		"eslint-plugin-import": "^2.29.1",
+		"eslint-plugin-n": "^16.6.2",
+		"eslint-plugin-promise": "^6.1.1",
+		"eslint-plugin-react": "^7.34.1",
+		"globals": "^15.0.0",
+		"husky": "^9.0.11",
+		"lint-staged": "^15.2.2",
+		"prettier": "3.2.5",
+		"typescript": "^5.4.5"
+	},
+	"private": true,
+	"lint-staged": {
+		"*.js": "eslint --fix ",
+		"*.{js,css,md,html,json}": "prettier --cache --write"
+	}
 }
