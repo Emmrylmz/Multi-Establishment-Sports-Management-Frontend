@@ -6,8 +6,16 @@ import type { RootState } from '../../../store';
 import apiService from '../query/apiService';
 import type { AuthState, User } from './auth.interface';
 
+const nuser = {
+    _id: "string",
+    name: "string",
+    role: "string",
+    photo: "string",
+    email: "string"
+}
+
 const initialState: AuthState = {
-  user: null,
+  user: nuser,
   isAuthenticated: false,
   error: null,
   status: 'idle',

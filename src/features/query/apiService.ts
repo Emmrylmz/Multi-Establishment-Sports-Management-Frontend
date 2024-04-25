@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const apiService = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://192.168.1.218:8000/api/auth',
+    baseUrl: 'http://192.168.153.139:8000/api/auth',
     prepareHeaders: async (headers) => {
       // Automatically add the token to requests if it exists
       const token = await AsyncStorage.getItem('access_token');
