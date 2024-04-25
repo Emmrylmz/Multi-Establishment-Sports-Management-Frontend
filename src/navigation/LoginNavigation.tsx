@@ -3,12 +3,17 @@ import React from 'react'
 import { styled } from 'nativewind'
 import { useSelector } from 'react-redux'
 import { getAuthStatus, getAuthUser } from '../features/auth/auth.slice'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { NavigationContainer } from '@react-navigation/native'
+import LoginPage from '../app/pages/login/LoginPage'
 
 export default function LoginNavigation() {
-  const user = useSelector(getAuthStatus)
+  const Stack = createNativeStackNavigator()
   return (
-    <View className='flex-1 justify-center items-center'>
-      <Text className='bg-red-500'>{user}</Text>
-    </View>
+   <NavigationContainer>
+    <Stack.Navigator initialRouteName='Login'>
+      <Stack.Screen name="LoginPage" component={LoginPage}/>
+    </Stack.Navigator>
+   </NavigationContainer>
   )
 }

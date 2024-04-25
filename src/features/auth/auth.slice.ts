@@ -6,16 +6,9 @@ import type { RootState } from '../../../store';
 import apiService from '../query/apiService';
 import type { AuthState, User } from './auth.interface';
 
-const nuser = {
-    _id: "string",
-    name: "string",
-    role: "string",
-    photo: "string",
-    email: "string"
-}
 
 const initialState: AuthState = {
-  user: nuser,
+  user: null,
   isAuthenticated: false,
   error: null,
   status: 'idle',
@@ -46,7 +39,7 @@ const authSlice = createSlice({
       .addMatcher(
         apiService.endpoints.login.matchFulfilled,
         // altta state,action olcak
-        (state) => {
+        (state,action) => {
           state.status = 'succeeded';
           authSlice.caseReducers.setUser(state, { payload: action.payload.user });
         },
