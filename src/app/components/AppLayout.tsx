@@ -13,7 +13,7 @@ const AppLayout = ({ children }: AuthLayoutProps) => {
     const user = useSelector((state: RootState) => getAuthUser(state));
   return (
     <SafeAreaView className="w-full h-full p-5 bg-dacka-black">
-      <Navbar name={user?.name} />
+      {user &&  <Navbar name={user?.name} />}
       {children}
   </SafeAreaView>
   )

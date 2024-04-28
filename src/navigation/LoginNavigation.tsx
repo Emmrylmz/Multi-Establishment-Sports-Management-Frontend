@@ -11,7 +11,7 @@ export default function LoginNavigation() {
   const Stack = createNativeStackNavigator()
   return (
    <NavigationContainer>
-    <Stack.Navigator initialRouteName='Login'>
+    <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown:false}}>
       <Stack.Screen name="LoginPage" component={LoginPage}/>
     </Stack.Navigator>
    </NavigationContainer>

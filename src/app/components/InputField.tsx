@@ -18,25 +18,37 @@ const InputField = ({placeholder, placeholderTextColor, handleInputChange, name,
   const placeholderColor = placeholderTextColor === 'light' ? '#919191' : '#242424';
   const eyeIcon = showPassword ? 'eye-off' : 'eye';
 
-  return (
-    <View className='relative py-2'>
+  if(secureTextEntry) {
+    return(
+    <View className='relative w-full py-2'>
       <TextInput
         keyboardType={keyboardType || 'default'}
         autoCorrect={false}
         autoCapitalize={autoCapitalize || 'none'}
         placeholder={placeholder}
-        secureTextEntry={!showPassword}
+        secureTextEntry={showPassword ? false : true}
+        placeholderTextColor={placeholderColor}
+        onChangeText={(text) => handleInputChange(text, 'email')}
+        className={` text-dacka-gray ${additionalStyles}`}
+      />
+      <TouchableOpacity className='absolute right-0 top-1' onPress={() => setShowPassword((prevState) => !prevState)}>
+      <Feather name={eyeIcon} size={24} color="#919191" />
+      </TouchableOpacity>
+    </View>
+  )
+  }
+  return (
+    <TextInput
+      keyboardType={keyboardType || 'default'}
+        autoCorrect={false}
+        autoCapitalize={autoCapitalize || 'none'}
+        placeholder={placeholder}
         placeholderTextColor={placeholderColor}
         onChangeText={(text) => handleInputChange(text, name)}
-        className={`text-dacka-light-gray ${additionalStyles}`}
+        className={` text-dacka-gray w-full  ${additionalStyles}`}
+        secureTextEntry={secureTextEntry}
       />
-      {secureTextEntry && (
-        <TouchableOpacity className='absolute right-0 top-1' onPress={() => setShowPassword(prevState => !prevState)}>
-          <Feather name={eyeIcon} size={24} color="#919191" />
-        </TouchableOpacity>
-      )}
-    </View>
-  );
+  )
 }
 
 export default InputField;
