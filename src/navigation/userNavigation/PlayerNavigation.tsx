@@ -5,9 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../../app/components/tabs/tabBarIcon';
 import PlayerProgressPage from '../../app/pages/player/PlayerProgressPage';
 import PlayerPaymentPage from '../../app/pages/player/PlayerPaymentPage';
-import PlayerProfilePage from '../../app/pages/common/PlayerProfilePage';
-import { ImageBackground } from 'react-native';
-
+import ProfilePage from '../../app/pages/common/ProfilePage';
 const PlayerNavigation = () => {
 	const Tab = createBottomTabNavigator();
 	return (
@@ -39,7 +37,7 @@ const PlayerNavigation = () => {
 					/>
 					<Tab.Screen
 						name="PlayerProfilePage"
-						component={PlayerProfilePage}
+						component={ProfilePage}
 						options={{ title: 'Profile' }}
 					/>
 				</Tab.Navigator>

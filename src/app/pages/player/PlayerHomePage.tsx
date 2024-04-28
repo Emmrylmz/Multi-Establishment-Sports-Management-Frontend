@@ -3,7 +3,7 @@ import React from 'react'
 
 const PlayerHomePage = () => {
   return (
-    <View>
+    <View className=''>
       <Text>PlayerHomePage</Text>
     </View>
   )

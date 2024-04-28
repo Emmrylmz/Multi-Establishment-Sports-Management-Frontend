@@ -1,18 +1,26 @@
 import React from 'react';
-import CoachNavigation from './userTypeNavigation/CoachNavigation';
-import LoginNavigation from './LoginNavigation';
-import PlayerNavigation from './userTypeNavigation/PlayerNavigation';
 import { useSelector } from 'react-redux';
 import { getAuthUser } from '../features/auth/auth.slice';
+import CoachNavigation from './CoachNavigation';
+import PlayerNavigation from './userNavigation/PlayerNavigation';
+import LoginNavigation from './LoginNavigation';
+
 export default function AppNavigator() {
 	const user = useSelector(getAuthUser);
 
+	let NavigationComponent;
+
 	switch (user?.role) {
 		case 'Player':
-			return <PlayerNavigation />;
+			NavigationComponent = <PlayerNavigation />;
+			break;
 		case 'Coach':
-			return <CoachNavigation />;
+			NavigationComponent = <CoachNavigation />;
+			break;
 		default:
-			return <LoginNavigation />;
+			NavigationComponent = <LoginNavigation />;
+			break;
 	}
+
+	return <>{NavigationComponent}</>;
 }

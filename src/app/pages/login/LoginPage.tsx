@@ -1,13 +1,10 @@
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { AuthPayload } from '../../../features/auth/auth.interface';
 import useLogin from '../../../hooks/useLogin';
-import { useSelector } from 'react-redux';
-import { getAuthUser } from '../../../features/auth/auth.slice';
 
 const LoginPage = () => {
 	const { handleSubmit } = useLogin();
-    const user = useSelector(getAuthUser)
 
 	const [formData, setFormData] = useState<AuthPayload>({
 		email: '',
