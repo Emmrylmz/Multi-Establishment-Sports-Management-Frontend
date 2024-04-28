@@ -5,7 +5,7 @@ import AppLayout from '../../components/AppLayout'
 const CoachHomePage = () => {
   return (
     <AppLayout>
-      <Text>CoachHomePage</Text>
+      <Text className='text-white'>CoachHomePage</Text>
     </AppLayout>
   )
 }
