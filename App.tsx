@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import { Image, ImageBackground, SafeAreaView, Text } from 'react-native';
 import { styled } from 'nativewind';
 import AppNavigator from './src/navigation';
 import { Provider } from 'react-redux';
