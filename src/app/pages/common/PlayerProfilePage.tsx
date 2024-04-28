@@ -30,7 +30,7 @@ const PlayerProfilePage: React.FC = () => {
               <Text className="text-xl">{user?.email}</Text>
             </View>
             <View className="gap-y-5">
-              <Text className="text-xl opacity-50">Email</Text>
+              <Text className="text-xl opacity-50">Email aa</Text>
               <Text className="text-xl">{user?.email}</Text>
             </View>
             <View className="gap-y-5">
