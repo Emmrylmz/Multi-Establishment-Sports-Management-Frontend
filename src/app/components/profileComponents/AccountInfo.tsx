@@ -13,8 +13,8 @@ interface AccountInfoProps {
 }
 
 const AccountInfo: React.FC<AccountInfoProps> = ({ user }) => (
-	<ScrollView className="w-10/12 flex-1 " showsVerticalScrollIndicator={false}>
-		<Text className="text-2xl">Account Info</Text>
+	<ScrollView className="flex-1 w-10/12 " showsVerticalScrollIndicator={false}>
+		<Text className="text-2xl text-white">Account Info</Text>
 
 		{user && (
 			<>

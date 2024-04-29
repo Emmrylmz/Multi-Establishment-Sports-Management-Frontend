@@ -18,23 +18,23 @@ const IconBar: React.FC = () => {
 
 	return (
 		<View className="flex-row gap-2 ">
-			<View className="h-10 w-10 items-center justify-center">
+			<View className="items-center justify-center w-10 h-10">
 				<FontAwesome
 					name="pencil-square"
 					size={24}
 					opacity={0.5}
-					color="black"
+					color="white"
 				/>
 			</View>
-			<View className="h-10 w-10  items-center justify-center">
-				<MaterialIcons name="settings" size={24} opacity={0.5} color="black" />
+			<View className="items-center justify-center w-10 h-10">
+				<MaterialIcons name="settings" size={24} opacity={0.5} color="white" />
 			</View>
 
 			<TouchableOpacity
-				className="h-10 w-10  items-center justify-center"
+				className="items-center justify-center w-10 h-10"
 				onPress={handleLogout}
 			>
-				<FontAwesome name="sign-out" size={24} opacity={0.5} color="black" />
+				<FontAwesome name="sign-out" size={24} opacity={0.5} color="white" />
 			</TouchableOpacity>
 		</View>
 	);

@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import TabBarIcon from '../app/components/tabs/tabBarIcon';
 import CoachHomePage from '../app/pages/coach/CoachHomePage';
 import CoachSchedulePage from '../app/pages/coach/CoachSchedulePage';
-import CoachProfilePage from '../app/pages/coach/CoachProfilePage';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CoachTeamDetail from '../app/pages/coach/CoachTeamDetail';

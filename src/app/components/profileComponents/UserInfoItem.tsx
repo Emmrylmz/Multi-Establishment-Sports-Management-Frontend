@@ -9,8 +9,8 @@ interface UserInfoItemProps {
 
 const UserInfoItem: React.FC<UserInfoItemProps> = ({ label, value }) => (
   <View className="gap-y-5">
-    <Text className="text-xl opacity-50">{label}</Text>
-    <Text className="text-xl">{value}</Text>
+    <Text className="text-xl text-white opacity-50">{label}</Text>
+    <Text className="text-xl text-white">{value}</Text>
   </View>
 );
 
