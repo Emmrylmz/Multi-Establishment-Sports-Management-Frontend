@@ -8,15 +8,17 @@ import IconBar from './IconBar';
 const ProfileHeader = () => {
   const user = useSelector((state: RootState) => getAuthUser(state));
 
+  const myImage = require('../../../../assets/profile_pic.jpg')
   return (
-    <View className="fixed h-2/6  w-full">
+    <View className="fixed w-full h-2/6">
       <Image
         className="rounded-b-3xl "
-        source={{ uri: user?.photo }}
-        style={{ flex: 1 }}
+        source={myImage}
+        style={{ flex: 1,width: '100%', height: '100%'}}
         resizeMode="cover"
+        
       />
-      <View className="absolute -left-2 top-10 h-10  w-full items-end">
+      <View className="absolute items-end w-full h-10 -left-2 top-10">
         <IconBar />
       </View>
 

@@ -1,24 +1,10 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import AppLayout from '../../components/layout/AppLayout'
-import InputField from '../../components/ui/InputField'
-import { useState } from 'react'
 import TeamCard from '../../components/ui/TeamCard'
 
 
 
 const CoachSchedulePage = ({navigation}) => {
-  type FormData = {
-    deneme: string
-  }
-  
-  
-  
-  function handleInputChange(text: string, name: string) {
-    console.log(text, name)
-  }
-  const [formData, setFormData] = useState<FormData>({
-    deneme: ''
-  })
 
   type Team = {
     id: number,
@@ -49,7 +35,6 @@ const CoachSchedulePage = ({navigation}) => {
           />
         ))}
         </ScrollView>
-        <InputField placeholder='Deneme' placeholderTextColor="light" name='test' handleInputChange={handleInputChange} secureTextEntry={true} />
       </View>
     </AppLayout>
   )
