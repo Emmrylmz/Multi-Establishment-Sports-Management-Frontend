@@ -3,6 +3,7 @@ import { RootState } from '../../../../store';
 import { getAuthUser } from '../../../features/auth/auth.slice';
 import { useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Navbar from './Navbar';
 
 interface AuthLayoutProps {
     children: any;
@@ -10,10 +11,10 @@ interface AuthLayoutProps {
 
 const AppLayout = ({ children }: AuthLayoutProps) => {
     const user = useSelector((state: RootState) => getAuthUser(state));
-
   return (
-    <SafeAreaView className="h-full w-full p-5">
-    {children}
+    <SafeAreaView className="w-full h-full p-5 bg-dacka-black">
+      {user &&  <Navbar name={user?.name} />}
+      {children}
   </SafeAreaView>
   )
 }
