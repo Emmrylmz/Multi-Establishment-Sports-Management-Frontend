@@ -9,6 +9,7 @@ import CoachProfilePage from '../app/pages/coach/CoachProfilePage';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CoachTeamDetail from '../app/pages/coach/CoachTeamDetail';
+import ProfilePage from '../app/pages/common/ProfilePage';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -35,7 +36,7 @@ const CoachNavigation = () => {
       })} >
         <Tab.Screen name='CoachHomePageStack' component={CoachHomeStackScreen} options={{ title: 'Home' }} />
         <Tab.Screen name='CoachSchedulePage' component={CoachSchedulePage} options={{ title: 'Schedule Training' }} />
-        <Tab.Screen name='CoachProfilePage' component={CoachProfilePage} options={{ title: 'Profile' }} />
+        <Tab.Screen name='CoachProfilePage' component={ProfilePage} options={{ title: 'Profile' }} />
       </Tab.Navigator>
     </NavigationContainer>
   )

@@ -2,9 +2,7 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { AuthPayload } from '../../../features/auth/auth.interface';
 import useLogin from '../../../hooks/useLogin';
-import { useSelector } from 'react-redux';
-import { getAuthUser } from '../../../features/auth/auth.slice';
-import AppLayout from '../../components/AppLayout';
+import AppLayout from '../../components/layout/AppLayout';
 import InputField from '../../components/InputField';
 
 const LoginPage = () => {
@@ -20,6 +18,7 @@ const LoginPage = () => {
 			[name]: text,
 		}));
 	}
+	console.log(formData)
    
 
 	return (

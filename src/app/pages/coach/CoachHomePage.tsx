@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import AppLayout from '../../components/AppLayout'
+import AppLayout from '../../components/layout/AppLayout'
 
 const CoachHomePage = () => {
   return (

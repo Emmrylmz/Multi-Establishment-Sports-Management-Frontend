@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
-import AppLayout from '../../components/AppLayout'
+import AppLayout from '../../components/layout/AppLayout'
 import InputField from '../../components/InputField'
 import { useState } from 'react'
 import TeamCard from '../../components/TeamCard'

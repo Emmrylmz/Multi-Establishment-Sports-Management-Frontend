@@ -12,22 +12,7 @@ const initialState: AuthState = {
 	status: 'idle',
 };
 
-export const logout = createAsyncThunk(
-	'auth/logout',
-	async (_, { dispatch, rejectWithValue }) => {
-		try {
-			// Call the logout endpoint
-			await apiService.endpoints.logout.initiate();
-			// Optionally clear local storage or manage other cleanups
-			// await AsyncStorage.removeItem('access_token');
-			// Clear the auth state
-			return true; // Return true or any relevant data upon successful logout
-		} catch (error) {
-			console.error('Logout failed:', error);
-			return rejectWithValue(error.toString());
-		}
-	}
-);
+
 
 const authSlice = createSlice({
 	name: 'auth',
@@ -39,8 +24,8 @@ const authSlice = createSlice({
 			state.error = null;
 			state.status = 'idle';
 		},
-		setUser: (state, action: PayloadAction<User>) => {
-			state.user = action.payload;
+		setUser: (state, action: PayloadAction<{ user: User }>) => {
+			state.user = action.payload.user;
 			state.isAuthenticated = true; // Assuming presence of user data means authenticated
 			state.error = null;
 			state.status = 'succeeded';
@@ -48,32 +33,19 @@ const authSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-			.addCase(logout.pending, (state) => {
-				state.status = 'loading';
-			})
-			.addCase(logout.fulfilled, (state) => {
-				// authSlice.caseReducers.clearAuthState(state); is redundant since the state is already cleared
+			.addMatcher(apiService.endpoints.logout.matchFulfilled, (state) => {
 				state.user = null;
 				state.isAuthenticated = false;
-				state.error = null;
 				state.status = 'idle';
 			})
-			.addCase(logout.rejected, (state, action) => {
-				state.status = 'failed';
-				state.error = action.payload || 'Failed to logout';
-			})
-
 			.addMatcher(apiService.endpoints.login.matchPending, (state) => {
 				state.status = 'loading';
 			})
 			.addMatcher(
 				apiService.endpoints.login.matchFulfilled,
 				// altta state,action olcak
-				(state, action) => {
-					state.status = 'succeeded';
-					authSlice.caseReducers.setUser(state, {
-						payload: action.payload.user,
-					});
+				(state, action: PayloadAction<{ user: User }>) => {
+					authSlice.caseReducers.setUser(state, action); // Pass the entire action
 				}
 			)
 			.addMatcher(apiService.endpoints.login.matchRejected, (state, action) => {

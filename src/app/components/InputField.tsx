@@ -28,7 +28,7 @@ const InputField = ({placeholder, placeholderTextColor, handleInputChange, name,
         placeholder={placeholder}
         secureTextEntry={showPassword ? false : true}
         placeholderTextColor={placeholderColor}
-        onChangeText={(text) => handleInputChange(text, 'email')}
+        onChangeText={(text) => handleInputChange(text, name)}
         className={` text-dacka-gray ${additionalStyles}`}
       />
       <TouchableOpacity className='absolute right-0 top-1' onPress={() => setShowPassword((prevState) => !prevState)}>

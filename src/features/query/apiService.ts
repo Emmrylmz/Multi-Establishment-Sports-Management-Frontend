@@ -27,9 +27,7 @@ const apiService = createApi({
 				try {
 					const { data } = await queryFulfilled;
 					if (data && data.access_token) {
-						// Assuming the API responds with user info and token
-						// await AsyncStorage.setItem('access_token', data.access_token);
-						// Store user data in both Redux and AsyncStorage
+						await AsyncStorage.setItem('access_token', data.access_token);
 					}
 				} catch (error) {
 					// console.error('Error saving user data or token:', error);
@@ -41,10 +39,10 @@ const apiService = createApi({
 				url: '/logout',
 				method: 'GET',
 			}),
-			onQueryStarted: async (_, { queryFulfilled }) => {
+			onQueryStarted: async ({ queryFulfilled }) => {
 				try {
 					await queryFulfilled; // Wait for the logout to complete
-					// await AsyncStorage.removeItem('access_token'); // Clear the token from storage
+					await AsyncStorage.removeItem('access_token'); // Clear the token from storage
 				} catch (error) {
 					console.error('Error during logout:', error);
 				}
@@ -60,5 +58,6 @@ const apiService = createApi({
 	}),
 });
 
-export const { useLoginMutation, useLogoutMutation, useCheckTokenQuery } = apiService;
+export const { useLoginMutation, useLogoutMutation, useCheckTokenQuery } =
+	apiService;
 export default apiService;
