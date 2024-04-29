@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { AuthPayload } from '../../../features/auth/auth.interface';
 import useLogin from '../../../hooks/useLogin';
 import AppLayout from '../../components/layout/AppLayout';
-import InputField from '../../components/InputField';
+import InputField from '../../components/ui/InputField';
 
 const LoginPage = () => {
 	const { handleSubmit } = useLogin();
