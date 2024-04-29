@@ -23,14 +23,15 @@ const apiService = createApi({
 				method: 'POST',
 				body: credentials,
 			}),
-			onQueryStarted: async ({ queryFulfilled }) => {
+			onQueryStarted: async (arg, { queryFulfilled }) => {
+				const { data } = await queryFulfilled;
 				try {
-					const { data } = await queryFulfilled;
 					if (data && data.access_token) {
+						console.log('Access Token:', data.access_token); // Confirm it's being logged correctly
 						await AsyncStorage.setItem('access_token', data.access_token);
 					}
 				} catch (error) {
-					// console.error('Error saving user data or token:', error);
+					console.error('Error saving user data or token:', error);
 				}
 			},
 		}),
@@ -39,7 +40,7 @@ const apiService = createApi({
 				url: '/logout',
 				method: 'GET',
 			}),
-			onQueryStarted: async ({ queryFulfilled }) => {
+			onQueryStarted: async (_, { queryFulfilled }) => {
 				try {
 					await queryFulfilled; // Wait for the logout to complete
 					await AsyncStorage.removeItem('access_token'); // Clear the token from storage

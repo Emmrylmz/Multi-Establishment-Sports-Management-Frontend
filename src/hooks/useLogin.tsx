@@ -11,10 +11,7 @@ const useLogin = () => {
 	// Function to handle submission of login data
 	const handleSubmit = async (payload: AuthPayload) => {
 		try {
-			// Execute the mutation and unwrap the result
 			const response = await loginMutation(payload).unwrap();
-			// Return the response directly to allow component handling of success/failure
-			console.log(response);
 			return response;
 		} catch (error) {
 			// Log the error; in a real app, consider handling this more robustly

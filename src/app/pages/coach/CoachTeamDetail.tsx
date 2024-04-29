@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, Image } from 'react-native';
 import React from 'react';
 import AppLayout from '../../components/layout/AppLayout';
-import PlayerCard from '../../components/PlayerCard';
+import PlayerCard from '../../components/ui/PlayerCard';
 import { ImageSourcePropType } from 'react-native';
 
 const CoachTeamDetail = ({ route, navigation }) => {
