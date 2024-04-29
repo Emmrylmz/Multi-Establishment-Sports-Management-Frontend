@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import TabBarIcon from '../app/components/tabs/tabBarIcon';
 import CoachHomePage from '../app/pages/coach/CoachHomePage';
 import CoachSchedulePage from '../app/pages/coach/CoachSchedulePage';
+import AddUserPage from '../app/pages/common/AddUserPage';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CoachTeamDetail from '../app/pages/coach/CoachTeamDetail';
@@ -43,6 +44,7 @@ const CoachNavigation = () => {
       })} >
         <Tab.Screen name='CoachHomePageStack' component={CoachHomeStackScreen} options={{ title: 'Home'}} />
         <Tab.Screen name='CoachSchedulePage' component={CoachSchedulePage} options={{ title: 'Schedule Training' }} />
+        <Tab.Screen name='AddUserPage' component={AddUserPage} options={{ title: 'Add User' }} />
         <Tab.Screen name='CoachProfilePage' component={ProfilePage} options={{ title: 'Profile' }} />
       </Tab.Navigator>
     </NavigationContainer>

@@ -39,3 +39,16 @@ export const accountInfoTexts = {
 export const coachTeamDetailTexts = {
   continue: "Continue"
 };
+
+export const addUserPageTexts = {
+  addUser: "Add User",
+  namePlaceholder: "Name and Surname",
+  emailPlaceholder: "Email",
+  passwordPlaceholder: "Password",
+  phonePlaceholder: "Phone Number",
+  addressPlaceholder: "Address",
+  cityPlaceholder: "City",
+  birthDatePlaceholder: "Birth Date",
+  schoolPlaceholder: "School",
+  submitButton: "Submit"
+};
