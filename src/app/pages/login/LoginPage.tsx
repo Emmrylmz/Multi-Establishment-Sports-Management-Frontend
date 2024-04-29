@@ -2,8 +2,7 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { AuthPayload } from '../../../features/auth/auth.interface';
 import useLogin from '../../../hooks/useLogin';
-import AppLayout from '../../components/layout/AppLayout';
-import InputField from '../../components/ui/InputField';
+import {AppLayout, InputField} from '../../components';
 
 const LoginPage = () => {
 	const { handleSubmit } = useLogin();

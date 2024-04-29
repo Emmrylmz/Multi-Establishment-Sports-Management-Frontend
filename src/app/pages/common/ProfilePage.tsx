@@ -3,8 +3,7 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../../../../store';
 import { getAuthUser } from '../../../features/auth/auth.slice';
 import { View } from 'react-native';
-import ProfileHeader from '../../components/profileComponents/ProfileHeader';
-import AccountInfo from '../../components/profileComponents/AccountInfo';
+import {ProfileHeader, AccountInfo} from '../../components';
 
 const ProfilePage: React.FC = () => {
 	const user = useSelector((state: RootState) => getAuthUser(state));
