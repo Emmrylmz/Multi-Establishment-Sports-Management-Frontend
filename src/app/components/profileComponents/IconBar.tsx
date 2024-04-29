@@ -2,7 +2,6 @@ import { View, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useLogoutMutation } from '../../../features/query/apiService';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const IconBar: React.FC = () => {
 	const [logout] = useLogoutMutation();
