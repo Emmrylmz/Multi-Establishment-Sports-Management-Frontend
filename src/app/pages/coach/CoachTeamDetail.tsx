@@ -3,7 +3,7 @@ import React from 'react';
 import AppLayout from '../../components/layout/AppLayout';
 import PlayerCard from '../../components/ui/PlayerCard';
 import { ImageSourcePropType } from 'react-native';
-
+import { coachTeamDetailTexts } from '../../../utils/constants/texts';
 const CoachTeamDetail = ({ route, navigation }) => {
 	type Player = {
 		name: string;
@@ -92,7 +92,7 @@ function removePlayerFromAttendanceList(playerName: string) {
 			</ScrollView>
 			<View className='flex-row items-center justify-end w-full'>
 				<TouchableOpacity className='p-4 rounded-3xl bg-dacka-gray' onPress={() => navigation.navigate('CoachAddTrainingPage',{team_id: team_id,attendanceList: attendanceList})}>
-					<Text className='text-white'>Devam et</Text>
+					<Text className='text-white'>{coachTeamDetailTexts.continue}</Text>
 				</TouchableOpacity>
 			</View>
 		</AppLayout>

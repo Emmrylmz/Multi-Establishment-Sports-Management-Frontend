@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import InputField from '../../components/ui/InputField'
+import { addTrainingPageTexts } from '../../../utils/constants/texts'
 
 const CoachAddTrainingPage = ({route}) => {
   const {team_id,attendanceList} = route.params
@@ -35,14 +36,14 @@ const CoachAddTrainingPage = ({route}) => {
   return (
     <AppLayout>
       <View className='justify-center flex-1 w-full h-full'>
-        <InputField placeholder='Training type' placeholderTextColor='light' keyboardType="default" handleInputChange={handleInputChange} name='training_type' additionalStyles='border-b border-dacka-gray my-3 text-base' />
-        <InputField placeholder='Training date' placeholderTextColor='light' keyboardType="default" handleInputChange={handleInputChange} name='training_date' additionalStyles='border-b border-dacka-gray my-3 text-base' />
-        <InputField placeholder='Training time' placeholderTextColor='light' keyboardType="default" handleInputChange={handleInputChange} name='training_time' additionalStyles='border-b border-dacka-gray my-3 text-base' />
-        <InputField placeholder='Training location' placeholderTextColor='light' keyboardType="default" handleInputChange={handleInputChange} name='training_location' additionalStyles='border-b border-dacka-gray my-3 text-base' />
+        <InputField placeholder={addTrainingPageTexts.trainingTypePlaceholder} placeholderTextColor='light' keyboardType="default" handleInputChange={handleInputChange} name='training_type' additionalStyles='border-b border-dacka-gray my-3 text-base' />
+        <InputField placeholder={addTrainingPageTexts.datePlaceholder} placeholderTextColor='light' keyboardType="default" handleInputChange={handleInputChange} name='training_date' additionalStyles='border-b border-dacka-gray my-3 text-base' />
+        <InputField placeholder={addTrainingPageTexts.timePlaceholder} placeholderTextColor='light' keyboardType="default" handleInputChange={handleInputChange} name='training_time' additionalStyles='border-b border-dacka-gray my-3 text-base' />
+        <InputField placeholder={addTrainingPageTexts.locationPlaceholder} placeholderTextColor='light' keyboardType="default" handleInputChange={handleInputChange} name='training_location' additionalStyles='border-b border-dacka-gray my-3 text-base' />
       </View>
       <View className='flex-row justify-end w-full'>
         <TouchableOpacity className='p-4 rounded-3xl bg-dacka-gray' onPress={() => console.log('Training form:', trainingForm)}>
-          <Text className='text-white'>Add Training</Text>
+          <Text className='text-white'>{addTrainingPageTexts.addTraining}</Text>
         </TouchableOpacity>
       </View>
     </AppLayout>
