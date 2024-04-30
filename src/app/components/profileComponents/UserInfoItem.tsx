@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-interface UserInfoItemProps {
+type UserInfoItemProps = {
   label: string;
   value: string | undefined;
 }

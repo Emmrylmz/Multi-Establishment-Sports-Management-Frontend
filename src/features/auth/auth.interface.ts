@@ -1,4 +1,4 @@
-export interface User {
+export type User = {
     _id: string;
     name: string;
     role: string;
@@ -6,14 +6,14 @@ export interface User {
     email: string;
   }
   
-  export interface AuthState {
+  export type AuthState = {
     user: User | null;
     isAuthenticated: boolean;
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null | undefined;
   }
   
-  export interface AuthPayload {
+  export type AuthPayload = {
     email: string;
     password: string;
   }

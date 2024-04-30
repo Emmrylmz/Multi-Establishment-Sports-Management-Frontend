@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Navbar from './Navbar';
 
-interface AuthLayoutProps {
+type AuthLayoutProps = {
     children: any;
   }
 
