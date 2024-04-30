@@ -8,7 +8,7 @@ const CoachAddTrainingPage = ({route}) => {
   const {team_id,attendanceList} = route.params
   console.log(team_id,attendanceList)
   
-  type Deneme = {
+  interface Deneme  {
     deneme: string,
   }
   const [deneme, setDeneme] = React.useState<Deneme>({
