@@ -3,5 +3,10 @@
 	"compilerOptions": {
 		"jsx": "react-native",
 		"strict": true
-	}
+	},
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		".eslintrc.js" // Including this ensures ESLint will recognize the file as part of the project
+	]
 }

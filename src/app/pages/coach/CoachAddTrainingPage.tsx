@@ -8,6 +8,13 @@ const CoachAddTrainingPage = ({route}) => {
   const {team_id,attendanceList} = route.params
   console.log(team_id,attendanceList)
   
+  type Deneme = {
+    deneme: string,
+  }
+  const [deneme, setDeneme] = React.useState<Deneme>({
+    deneme: '',
+  })
+
   type TrainingForm = {
     training_type: string,
     training_date: string,
