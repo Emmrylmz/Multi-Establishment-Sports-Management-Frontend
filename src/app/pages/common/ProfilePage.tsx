@@ -13,7 +13,7 @@ const ProfilePage: React.FC = () => {
 	return (
 		<AppLayout>
 			<ProfileHeader />
-			<View className='flex-1 w-10/12'>
+			<View className='flex-1 w-10/12 mx-auto rounded-3xl'>
 				<AccountInfo user={user} />
 			</View>
 		</AppLayout>
