@@ -11,6 +11,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CoachTeamDetail from '../app/pages/coach/CoachTeamDetail';
 import ProfilePage from '../app/pages/common/ProfilePage';
 import CoachAddTrainingPage from '../app/pages/coach/CoachAddTrainingPage';
+import CoachTeamsPage from '../app/pages/coach/CoachTeamsPage';
+import EventDetailPage from '../app/pages/common/EventDetailPage';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -20,6 +22,8 @@ function CoachHomeStackScreen() {
       <HomeStack.Screen name="CoachHomePage" component={CoachHomePage} />
       <HomeStack.Screen name="CoachTeamDetail" component={CoachTeamDetail} /> 
       <HomeStack.Screen name="CoachAddTrainingPage" component={CoachAddTrainingPage} />
+      <HomeStack.Screen name="CoachTeamsPage" component={CoachTeamsPage} />
+      <HomeStack.Screen name="EventDetailPage" component={EventDetailPage} />
     </HomeStack.Navigator>
   );
 }

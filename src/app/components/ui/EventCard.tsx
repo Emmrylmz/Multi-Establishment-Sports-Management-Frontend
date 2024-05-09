@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 
 type EventCardProps = {
@@ -9,10 +9,11 @@ type EventCardProps = {
   coach: string,
   // location: 'Ege Üni. Büyük S.S' | 'Ege Üni. Büyük S.S Üst Kat' | '50. Yıl Spor Salonu' | 'Spor Bil. Fak. Top. Sal.' | 'Spor Bil. Fak. Fitness Sal.' | 'Bornova Anadolu Lisesi' | 'Atletizm Pisti' ,
   location: string,
-  team: string
+  team: string,
+  onPress?: () => void
 }
 
-const EventCard = ({type,date,time,coach,location,team}: EventCardProps) => {
+const EventCard = ({type,date,time,coach,location,team,onPress}: EventCardProps) => {
   let typeColor = ''
   switch (type) {
     case 'Team training':
@@ -36,7 +37,7 @@ const EventCard = ({type,date,time,coach,location,team}: EventCardProps) => {
 
 
   return (
-    <View className='flex-row items-center justify-between bg-white rounded-3xl w-[350px] mx-3 px-4 py-5 max-h-24'>
+    <TouchableOpacity className='flex-row items-center justify-between bg-white rounded-3xl w-[350px] mx-3 px-4 py-5 max-h-24' onPress={onPress}>
       <View className='w-1/3'>
         <Text className={`text-sm font-semibold ${typeColor}`}>{type}</Text>
         <Text className='text-lg font-extrabold text-dacka-gray'>{date}</Text>
@@ -47,7 +48,7 @@ const EventCard = ({type,date,time,coach,location,team}: EventCardProps) => {
         <Text className='text-sm'>{team}</Text>
         <Text className='text-sm'>{coach}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

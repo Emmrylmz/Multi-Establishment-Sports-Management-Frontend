@@ -13,7 +13,7 @@ import {Calendar} from 'react-native-calendars';
 import CalendarPicker from "react-native-calendar-picker";
 import LineChart from '../../components/charts/LineChart';
 
-const CoachHomePage = () => {
+const CoachHomePage = ({navigation}) => {
   /*
     !WHEN THE BACKEND IS READY, UNCOMMENT THE CODE BELOW TO FETCH EVENTS
   */
@@ -144,7 +144,7 @@ const CoachHomePage = () => {
     },
     {
       id: 2,
-      component: <HomeWidget title='Teams' icon={<FontAwesome5 name="users" color="black" size={64} />}  />
+      component: <HomeWidget title='Teams' icon={<FontAwesome5 name="users" color="black" size={64} />} clickable={true} onPress={() => navigation.navigate('CoachTeamsPage')}  />
     },
     {
       id: 3,
@@ -165,16 +165,14 @@ const CoachHomePage = () => {
       {/* <SearchBar visible={showSearch} onClose={() => setShowSearch(false)} /> */}
     
       <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl  tintColor="#fff" refreshing={refreshing} onRefresh={onRefresh} />}>
-      <View>
         <FlatList
-        className='mt-3'
+        className='p-0 mt-3'
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           data={eventData}
-          renderItem={({item}) => <EventCard type={item.type} time={item.time} coach={item.coach} location={item.location} date={item.date} team={item.team} />}
+          renderItem={({item}) => <EventCard type={item.type} time={item.time} coach={item.coach} location={item.location} date={item.date} team={item.team} onPress={() => navigation.navigate('EventDetailPage',{event_id: item.id,team_name: item.team,event_type:item.type})} />}
           keyExtractor={item => item.id}
         />
-      </View>
 
       <FlatList
           horizontal={true}
