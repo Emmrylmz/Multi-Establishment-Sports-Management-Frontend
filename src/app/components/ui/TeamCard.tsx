@@ -14,7 +14,7 @@ const TeamCard = ({ teamName, teamId, additionalStyles, navigation,coachName }: 
   return (
     <TouchableOpacity 
       key={teamId} 
-      className={`py-5 my-3 rounded-lg bg-dacka-gray w-full px-4 flex-row items-center justify-between ${additionalStyles}`}
+      className={`py-5 my-3 rounded-lg bg-dacka-dark-gray w-full px-4 flex-row items-center justify-between ${additionalStyles}`}
       onPress={navigation}  // Directly use navigation prop here
     >
       <View>

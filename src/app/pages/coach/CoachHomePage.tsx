@@ -53,7 +53,11 @@ const CoachHomePage = ({navigation}) => {
       date: '12.09.2021',
       time: '10:00',
       coach: 'John Doe',
-      location: 'Ege Üni. Büyük S.S',
+      locationName: 'Ege Üni. Büyük S.S',
+      coordinates:{
+        latitude: 38.45601,
+        longitude: 27.22860,
+      },
       team: 'U18 A',
       id: '1',
     },
@@ -62,7 +66,11 @@ const CoachHomePage = ({navigation}) => {
       date: '12.09.2021',
       time: '10:00',
       coach: 'John Doe',
-      location: 'Ege Üni. Büyük S.S',
+      locationName: 'Spor Bil. Fak. Top. Sal',
+      coordinates:{
+        latitude: 38.4592692,
+        longitude: 27.2225393,
+      },
       team: 'U18 A',
       id: '2',
     },
@@ -71,7 +79,11 @@ const CoachHomePage = ({navigation}) => {
       date: '12.09.2021',
       time: '10:00',
       coach: 'John Doe',
-      location: 'Ege Üni. Büyük S.S',
+      locationName: '50. Yıl Spor Salonu',
+      coordinates:{
+        latitude: 38.4556555,
+        longitude: 27.2111297,
+      },
       team: 'U18 A',
       id: '3',
     },
@@ -80,7 +92,11 @@ const CoachHomePage = ({navigation}) => {
       date: '12.09.2021',
       time: '10:00',
       coach: 'John Doe',
-      location: 'Ege Üni. Büyük S.S',
+      locationName: 'Spor Bil. Fak. Fitness Sal.',
+      coordinates:{
+        latitude: 38.45601,
+        longitude: 27.22860,
+      },
       team: 'U18 A',
       id: '4',
     },
@@ -89,7 +105,11 @@ const CoachHomePage = ({navigation}) => {
       date: '12.09.2021',
       time: '10:00',
       coach: 'John Doe',
-      location: 'Ege Üni. Büyük S.S',
+      locationName: 'Bornova Anadolu Lisesi',
+      coordinates:{
+        latitude: 38.4484298,
+        longitude: 27.2139406,
+      },
       team: 'U18 A',
       id: '5',
     }
@@ -170,7 +190,7 @@ const CoachHomePage = ({navigation}) => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           data={eventData}
-          renderItem={({item}) => <EventCard type={item.type} time={item.time} coach={item.coach} location={item.location} date={item.date} team={item.team} onPress={() => navigation.navigate('EventDetailPage',{event_id: item.id,team_name: item.team,event_type:item.type})} />}
+          renderItem={({item}) => <EventCard type={item.type} time={item.time} coach={item.coach} location={item.locationName} date={item.date} team={item.team} onPress={() => navigation.navigate('EventDetailPage',{event_id: item.id,team_name: item.team,event_type:item.type, coordinates: item.coordinates,locationName:item.locationName})} />}
           keyExtractor={item => item.id}
         />
 
