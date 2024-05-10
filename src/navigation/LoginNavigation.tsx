@@ -13,7 +13,6 @@ export default function LoginNavigation() {
   return (
    <NavigationContainer>
     <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown:false}}>
-      <Stack.Screen name='OnBoardingScreen' component={OnboardingScreen}/>
       <Stack.Screen name="LoginPage" component={LoginPage}/>
     </Stack.Navigator>
    </NavigationContainer>

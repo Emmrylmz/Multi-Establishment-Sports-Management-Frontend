@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const apiService = createApi({
 	reducerPath: 'api',
 	baseQuery: fetchBaseQuery({
-		baseUrl: 'http://192.168.1.44:8000/api/auth',
+		baseUrl: 'http://192.168.1.37:8000/api/auth',
 		prepareHeaders: async (headers) => {
 			// Automatically add the token to requests if it exists
 			const token = await AsyncStorage.getItem('access_token');
@@ -55,10 +55,17 @@ const apiService = createApi({
 				method: 'POST', // Assuming your backend uses GET for token checking
 			}),
 		}),
+		pushToken: builder.mutation({
+            query: (expoToken) => ({
+                url: '/push_token',
+                method: 'POST',
+                body: { token: expoToken }, // Assuming you're sending the token as an object with a token property
+            }),
+        }),
 		// Define other endpoints here
 	}),
 });
 
-export const { useLoginMutation, useLogoutMutation, useCheckTokenQuery } =
+export const { useLoginMutation, useLogoutMutation, useCheckTokenQuery, usePushTokenMutation } =
 	apiService;
 export default apiService;

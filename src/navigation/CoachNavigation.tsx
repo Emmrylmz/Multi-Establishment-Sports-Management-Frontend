@@ -9,12 +9,15 @@ import CoachSchedulePage from '../app/pages/coach/CoachSchedulePage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CoachTeamDetail from '../app/pages/coach/CoachTeamDetail';
 import ProfilePage from '../app/pages/common/ProfilePage';
+import OnboardingScreen from '../app/pages/OnBoarding/OnBoardingScreen';
 
 const HomeStack = createNativeStackNavigator();
 
 function CoachHomeStackScreen() {
   return (
     <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+      <HomeStack.Screen name='OnBoardingScreen' component={OnboardingScreen}/>
+
       <HomeStack.Screen name="CoachHomePage" component={CoachHomePage} />
       <HomeStack.Screen name="CoachTeamDetail" component={CoachTeamDetail} /> 
     </HomeStack.Navigator>
@@ -33,6 +36,7 @@ const CoachNavigation = () => {
         tabBarInactiveTintColor: '#919191',
         headerShown: false,
       })} >
+        
         <Tab.Screen name='CoachHomePageStack' component={CoachHomeStackScreen} options={{ title: 'Home' }} />
         <Tab.Screen name='CoachSchedulePage' component={CoachSchedulePage} options={{ title: 'Schedule Training' }} />
         <Tab.Screen name='CoachProfilePage' component={ProfilePage} options={{ title: 'Profile' }} />
