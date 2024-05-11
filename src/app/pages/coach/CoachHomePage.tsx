@@ -9,7 +9,6 @@ import HomeWidget from '../../components/ui/HomeWidget';
 import SearchBar from '../../components/ui/SearchBar';
 import { MaterialCommunityIcons,FontAwesome5,MaterialIcons } from '@expo/vector-icons';
 import BarChart from '../../components/charts/BarChart';
-import {Calendar} from 'react-native-calendars';
 import CalendarPicker from "react-native-calendar-picker";
 import LineChart from '../../components/charts/LineChart';
 
@@ -156,7 +155,8 @@ const CoachHomePage = ({navigation}) => {
         <CalendarPicker 
           width={200} 
           textStyle={{color:'#000',fontSize:12}}
-          todayBackgroundColor='#919191'
+          todayBackgroundColor='#000'
+          todayTextStyle={{color:'#fff'}}
           onDateChange={(date) => console.log(date)}
           customDatesStyles={customDatesStyles}
         />
@@ -202,7 +202,7 @@ const CoachHomePage = ({navigation}) => {
           renderItem={({item}) => item.component}
         />
         <View className='flex-row items-center justify-between w-full'>
-          <HomeWidget title='payment' additionalViewStyle='py-4 px-12' additionalTextStyle='text-base font-medium' icon={<MaterialIcons name="payment" size={24} color="black" />} />
+          <HomeWidget title='payment' onPress={() => navigation.navigate('PaymentPage')} clickable={true} additionalViewStyle='py-4 px-12' additionalTextStyle='text-base font-medium' icon={<MaterialIcons name="payment" size={24} color="black" />} />
           <HomeWidget title='coach note' additionalViewStyle='px-12 py-4' additionalTextStyle='text-base font-medium'  icon={<MaterialCommunityIcons name="whistle" size={24} color="black" />}  />
         </View>
 

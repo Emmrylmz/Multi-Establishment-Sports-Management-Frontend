@@ -13,6 +13,7 @@ import ProfilePage from '../app/pages/common/ProfilePage';
 import CoachAddTrainingPage from '../app/pages/coach/CoachAddTrainingPage';
 import CoachTeamsPage from '../app/pages/coach/CoachTeamsPage';
 import EventDetailPage from '../app/pages/common/EventDetailPage';
+import PaymentPage from '../app/pages/common/PaymentPage';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ function CoachHomeStackScreen() {
       <HomeStack.Screen name="CoachAddTrainingPage" component={CoachAddTrainingPage} />
       <HomeStack.Screen name="CoachTeamsPage" component={CoachTeamsPage} />
       <HomeStack.Screen name="EventDetailPage" component={EventDetailPage} />
+      <HomeStack.Screen name='PaymentPage' component={PaymentPage} />
     </HomeStack.Navigator>
   );
 }

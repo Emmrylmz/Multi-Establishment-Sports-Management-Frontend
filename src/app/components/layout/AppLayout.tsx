@@ -10,7 +10,7 @@ type AuthLayoutProps = {
   }
 
 const AppLayout = ({ children }: AuthLayoutProps) => {
-    const user = useSelector((state: RootState) => getAuthUser(state));
+  const user = useSelector((state: RootState) => getAuthUser(state));
   return (
     <SafeAreaView className="w-full h-full p-5 bg-dacka-black ">
       {user &&  <Navbar name={user?.name} />}

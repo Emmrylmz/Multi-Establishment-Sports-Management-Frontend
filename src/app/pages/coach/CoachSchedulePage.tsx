@@ -25,7 +25,7 @@ const CoachSchedulePage = ({navigation}) => {
   return (
     <AppLayout>
       <View className='w-full h-full'>
-        <ScrollView className='w-full p-3'>
+        <ScrollView className='w-full'>
         {teams.map((team, index) => (
           <TeamCard
             teamName={team.name}

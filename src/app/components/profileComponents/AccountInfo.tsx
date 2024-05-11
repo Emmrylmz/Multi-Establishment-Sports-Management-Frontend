@@ -20,7 +20,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ user }) => {
 	return(
 		<>
 			{user && (
-				<PagerView className='flex-1 px-3 py-4 mt-4 bg-dacka-dark-gray' style={{borderRadius: 38}} initialPage={0} scrollEnabled={true} useNext={true} overdrag={true}>
+				<PagerView className='flex-1 p-4 mt-4' style={{borderRadius: 38}} initialPage={0} scrollEnabled={true} useNext={true} overdrag={true}>
 					<ScrollView key="1" className='px-4 py-2 overflow-hidden rounded-3xl' showsVerticalScrollIndicator={false}>
 						<Text className='text-base font-medium text-center text-white'>Account information</Text>
 						<UserInfoItem label={accountInfoTexts.name} value={user.name} />
