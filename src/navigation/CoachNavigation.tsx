@@ -14,18 +14,20 @@ import CoachAddTrainingPage from '../app/pages/coach/CoachAddTrainingPage';
 import CoachTeamsPage from '../app/pages/coach/CoachTeamsPage';
 import EventDetailPage from '../app/pages/common/EventDetailPage';
 import PaymentPage from '../app/pages/common/PaymentPage';
+import NotificationPage from '../app/pages/common/NotificationPage';
 
 const HomeStack = createNativeStackNavigator();
 
 function CoachHomeStackScreen() {
   return (
-    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+    <HomeStack.Navigator screenOptions={{headerShown: false}}>
       <HomeStack.Screen name="CoachHomePage" component={CoachHomePage} />
       <HomeStack.Screen name="CoachTeamDetail" component={CoachTeamDetail} /> 
       <HomeStack.Screen name="CoachAddTrainingPage" component={CoachAddTrainingPage} />
       <HomeStack.Screen name="CoachTeamsPage" component={CoachTeamsPage} />
       <HomeStack.Screen name="EventDetailPage" component={EventDetailPage} />
       <HomeStack.Screen name='PaymentPage' component={PaymentPage} />
+      <HomeStack.Screen name='CoachNotificationPage' component={NotificationPage} />
     </HomeStack.Navigator>
   );
 }
