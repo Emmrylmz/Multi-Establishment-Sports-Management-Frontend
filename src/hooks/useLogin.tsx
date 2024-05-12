@@ -11,6 +11,7 @@ const useLogin = () => {
 	// Function to handle submission of login data
 	const handleSubmit = async (payload: AuthPayload) => {
 		try {
+			// AsyncStorage.clear()
 			const response = await loginMutation(payload).unwrap();
 			return response;
 		} catch (error) {

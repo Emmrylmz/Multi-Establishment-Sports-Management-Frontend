@@ -6,7 +6,7 @@ import { addTrainingPageTexts } from '../../../utils/constants/texts'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useCreateEventMutation } from '../../../features/query/eventCreateService'
+import { useCreateEventMutation } from '../../../features/query/apiService'
 import { RootState } from '../../../../store';
 import { getAuthUser } from '../../../features/auth/auth.slice';
 import { useSelector } from 'react-redux';
@@ -17,14 +17,16 @@ const CoachAddTrainingPage = ({ route }) => {
   const dateNow = new Date();
 
   const [trainingForm, setTrainingForm] = React.useState({
-    "event_type": 1,
-    "creator_id": user?._id,
-    "event_date": dateNow,
-    "team_id": team_id,
-    "event_location": 'string',
-  })
+    "event_type": "Game",
+    "creator_id": "661b00b9c379ef519deaad39",
+    "place": "Stadium XYZ",
+    "event_date": "2023-05-10T15:00:00",
+    "created_at": "2024-05-11T13:34:45.149000",
+    "team_id": "663be0c3b6f73eaa9b08b048",
+    "description": "Annual cahampionship game"
+})
 
-  const [createEventMutation] = useCreateEventMutation(); // Destructure the createEvent mutation from the API service
+  const [createEvent] = useCreateEventMutation(); // Destructure the createEvent mutation from the API service
 
   const handleDateChange = (date:Date | undefined, name:string) => {
     setTrainingForm((prevState) => ({
@@ -34,16 +36,16 @@ const CoachAddTrainingPage = ({ route }) => {
   }
 
   const postForm = async () => {
-    // try {
-    //   const response = await createEventMutation(trainingForm); // Call the createEvent mutation with the trainingForm data
-    //   if ('data' in response) {
-    //     console.log('Event created:', response.data); // Log the response data if successful
-    //   } else if ('error' in response) {
-    //     console.error('Error creating event:', response.error); // Log the error if there's an error
-    //   }
-    // } catch (error) {
-    //   console.error('Error creating event:', error); // Log any unexpected errors
-    // }
+    try {
+      const response = await createEvent(trainingForm); // Call the createEvent mutation with the trainingForm data
+      if ('data' in response) {
+        console.log('Event created:', response.data); // Log the response data if successful
+      } else if ('error' in response) {
+        console.error('Error creating event:', response.error); // Log the error if there's an error
+      }
+    } catch (error) {
+      console.error('Error creating event:', error); // Log any unexpected errors
+    }
     console.log(trainingForm) 
   }
   const eventTypes = [
