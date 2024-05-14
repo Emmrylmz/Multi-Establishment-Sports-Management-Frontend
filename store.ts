@@ -5,6 +5,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 
 import apiService from './src/features/query/apiService';
 import authSlice from './src/features/auth/auth.slice';
+import eventCreateService from './src/features/query/eventCreateService';
 
 const persistConfig = {
   key: 'root',
@@ -15,6 +16,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth: authSlice,
   [apiService.reducerPath]: apiService.reducer,
+  [eventCreateService.reducerPath]: eventCreateService.reducer
   // other reducers can be added here
 });
 
@@ -27,7 +29,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'], // Ignore these actions for the serializable check
       },
-    }).concat(apiService.middleware),
+    }).concat(apiService.middleware,eventCreateService.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -6,7 +6,7 @@ import { addTrainingPageTexts } from '../../../utils/constants/texts'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useCreateEventMutation } from '../../../features/query/apiService'
+import { useCreateEventMutation } from '../../../features/query/eventCreateService'
 import { RootState } from '../../../../store';
 import { getAuthUser } from '../../../features/auth/auth.slice';
 import { useSelector } from 'react-redux';
@@ -22,7 +22,7 @@ const CoachAddTrainingPage = ({ route }) => {
     "place": "Stadium XYZ",
     "event_date": "2023-05-10T15:00:00",
     "created_at": "2024-05-11T13:34:45.149000",
-    "team_id": "663be0c3b6f73eaa9b08b048",
+    "team_id": "66420eb2e00fde33e4329b05",
     "description": "Annual cahampionship game"
 })
 

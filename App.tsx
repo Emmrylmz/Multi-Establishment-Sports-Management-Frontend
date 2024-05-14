@@ -11,7 +11,7 @@ export default function App() {
 		<Provider store={store}>
 
 			<AppNavigator />
-			{/* <StatusBar style="light" /> //this comes from expo */}
+			{/* <StatusBar style="light" />  */}
 			{/* Both status bars are the same,couldn't decide on using one or the other */}
 		</Provider>
 	);

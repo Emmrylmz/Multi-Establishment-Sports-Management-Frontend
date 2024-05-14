@@ -3,9 +3,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Define a service using a base URL and expected endpoints
 const eventCreateService = createApi({
-  reducerPath: 'api',
+  reducerPath: 'createEvents',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://192.168.1.126:8000/api',
+    baseUrl: 'http://192.168.72.139:8000/api',
     prepareHeaders: async (headers) => {
       // Automatically add the token to requests if it exists
       const token = await AsyncStorage.getItem('access_token');
@@ -17,38 +17,7 @@ const eventCreateService = createApi({
   }),
 
   endpoints: (builder) => ({
-    login: builder.mutation({
-      query: (credentials) => ({
-        url: '/auth/login',
-        method: 'POST',
-        body: credentials,
-      }),
-      onQueryStarted: async (arg, { queryFulfilled }) => {
-        const { data } = await queryFulfilled;
-        try {
-          if (data && data.access_token) {
-            console.log('Access Token:', data.access_token);
-            await AsyncStorage.setItem('access_token', data.access_token);
-          }
-        } catch (error) {
-          console.error('Error saving user data or token:', error);
-        }
-      },
-    }),
-    logout: builder.mutation({
-      query: () => ({
-        url: '/auth/logout',
-        method: 'GET',
-      }),
-      onQueryStarted: async (_, { queryFulfilled }) => {
-        try {
-          await queryFulfilled;
-          await AsyncStorage.removeItem('access_token');
-        } catch (error) {
-          console.error('Error during logout:', error);
-        }
-      },
-    }),
+   
     checkToken: builder.query({
       query: () => ({
         url: '/auth/checkToken',
@@ -74,8 +43,6 @@ const eventCreateService = createApi({
 });
 
 export const { 
-  useLoginMutation, 
-  useLogoutMutation, 
   useCheckTokenQuery, 
   useCreateEventMutation, 
   useListEventsQuery 
