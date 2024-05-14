@@ -12,10 +12,10 @@ export default function AppNavigator() {
 
 	switch (user?.role) {
 		case 'Player':
-			NavigationComponent = <PlayerNavigation />;
-			break;
-		case 'Coach':
 			NavigationComponent = <CoachNavigation />;
+			break;
+			case 'Coach':
+			NavigationComponent = <PlayerNavigation />;
 			break;
 		default:
 			NavigationComponent = <LoginNavigation />;

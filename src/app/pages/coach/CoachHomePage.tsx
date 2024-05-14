@@ -35,16 +35,16 @@ const CoachHomePage = ({navigation}) => {
   //     </AppLayout>
   //   );
   // }
-  // const [showSearch, setShowSearch] = useState(false);
-  // const handleScroll = (event) => {
-  //   const y = event.nativeEvent.contentOffset.y;
-  //   if (y < -100) { // Threshold for triggering the search bar
-  //     setShowSearch(true);
-  //   }
-  // };
-  // const handleScrollEnd = () => {
-  //   setShowSearch(false);
-  // };
+  const [showSearch, setShowSearch] = useState(false);
+  const handleScroll = (event) => {
+    const y = event.nativeEvent.contentOffset.y;
+    if (y < -100) { // Threshold for triggering the search bar
+      setShowSearch(true);
+    }
+  };
+  const handleScrollEnd = () => {
+    setShowSearch(false);
+  };
 
   const eventData = [
     {
@@ -140,12 +140,11 @@ const CoachHomePage = ({navigation}) => {
       date: "2024-06-20T09:00:00.000Z"
     },
   ]
-  const customDatesStyles = dates.map(date => ({
-    date: new Date(date.date),
-    style: { backgroundColor: '#3FA454' },
-    textStyle: { color: '#000' },
-  }));
-
+  // const customDatesStyles = dates.map(date => ({
+  //   date: date && date.date ? new Date(date.date) : new Date(), // Provides a fallback to the current date if date.date is undefined
+  //   style: { backgroundColor: '#3FA454' },
+  //   textStyle: { color: '#000' },
+  // }));
 
   
   const data = [
@@ -158,7 +157,7 @@ const CoachHomePage = ({navigation}) => {
           todayBackgroundColor='#000'
           todayTextStyle={{color:'#fff'}}
           onDateChange={(date) => console.log(date)}
-          customDatesStyles={customDatesStyles}
+          // customDatesStyles={customDatesStyles}
         />
       </View>
     },
@@ -208,7 +207,7 @@ const CoachHomePage = ({navigation}) => {
 
       <View className='bg-white rounded-[38px] h-[300px] my-3'>
         <Text className='text-xl text-center text-dacka-gray'>Player Progress</Text>
-        <PagerView initialPage={0} scrollEnabled={true} useNext={true} overdrag={true} >
+        <PagerView initialPage={0} scrollEnabled={true} overdrag={true}  >
           <BarChart key={1}/>
           <LineChart key={2}/>
         </PagerView>

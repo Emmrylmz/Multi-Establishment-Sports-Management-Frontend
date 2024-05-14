@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
 
 const data = [

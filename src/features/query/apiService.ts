@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const apiService = createApi({
 	reducerPath: 'api',
 	baseQuery: fetchBaseQuery({
-		baseUrl: 'http://192.168.7.139:8000/api',
+		baseUrl: 'http://192.168.72.139:8000/api/auth',
 		prepareHeaders: async (headers) => {
 			// Automatically add the token to requests if it exists
 			const token = await AsyncStorage.getItem('access_token');
@@ -57,23 +57,30 @@ const apiService = createApi({
 			
 		}),
 		
-		createEvent: builder.mutation({
-			query: (eventData) => ({
-			  url: '/events/create',
-			  method: 'POST',
-			  body: eventData,
-			}),
-		  }),
-		  listEvents: builder.query({
-			query: (team_id) => ({
-			  url: '/events/list',
-			  method: 'POST',
-			  body:{team_id: team_id},
-			}),
-		  }),
+		// createEvent: builder.mutation({
+		// 	query: (eventData) => ({
+		// 	  url: '/events/create',
+		// 	  method: 'POST',
+		// 	  body: eventData,
+		// 	}),
+		//   }),
+		//   listEvents: builder.query({
+		// 	query: (team_id) => ({
+		// 	  url: '/events/list',
+		// 	  method: 'POST',
+		// 	  body:{team_id: team_id},
+		// 	}),
+		//   }),
+		  pushToken: builder.mutation({
+            query: (expoToken) => ({
+                url: '/push_token',
+                method: 'POST',
+                body: { token: expoToken }, // Assuming you're sending the token as an object with a token property
+            }),
+        }),
 	}),
 });
 
-export const { useLoginMutation, useLogoutMutation, useCheckTokenQuery, useCreateEventMutation } =
+export const { useLoginMutation, useLogoutMutation, useCheckTokenQuery, usePushTokenMutation } =
 	apiService;
 export default apiService;

@@ -8,13 +8,14 @@ import CoachSchedulePage from '../app/pages/coach/CoachSchedulePage';
 import AddUserPage from '../app/pages/common/AddUserPage';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import CoachTeamDetail from '../app/pages/coach/CoachTeamDetail';
+// import CoachTeamDetail from '../app/pages/coach/CoachTeamDetail';
 import ProfilePage from '../app/pages/common/ProfilePage';
 import CoachAddTrainingPage from '../app/pages/coach/CoachAddTrainingPage';
 import CoachTeamsPage from '../app/pages/coach/CoachTeamsPage';
 import EventDetailPage from '../app/pages/common/EventDetailPage';
 import PaymentPage from '../app/pages/common/PaymentPage';
 import NotificationPage from '../app/pages/common/NotificationPage';
+import OnBoarding from "../app/pages/common/OnBoarding"
 
 const HomeStack = createNativeStackNavigator();
 
@@ -22,7 +23,7 @@ function CoachHomeStackScreen() {
   return (
     <HomeStack.Navigator screenOptions={{headerShown: false}}>
       <HomeStack.Screen name="CoachHomePage" component={CoachHomePage} />
-      <HomeStack.Screen name="CoachTeamDetail" component={CoachTeamDetail} /> 
+      {/* <HomeStack.Screen name="CoachTeamDetail" component={CoachTeamDetail} />  */}
       <HomeStack.Screen name="CoachAddTrainingPage" component={CoachAddTrainingPage} />
       <HomeStack.Screen name="CoachTeamsPage" component={CoachTeamsPage} />
       <HomeStack.Screen name="EventDetailPage" component={EventDetailPage} />
@@ -54,6 +55,7 @@ const CoachNavigation = () => {
         <Tab.Screen name='CoachSchedulePage' component={CoachSchedulePage} options={{ title: 'Schedule Training' }} />
         <Tab.Screen name='AddUserPage' component={AddUserPage} options={{ title: 'Add User' }} />
         <Tab.Screen name='CoachProfilePage' component={ProfilePage} options={{ title: 'Profile' }} />
+        <Tab.Screen name='OnBoarding' component={OnBoarding} options={{ title: 'notification' }} />
       </Tab.Navigator>
     </NavigationContainer>
   )
