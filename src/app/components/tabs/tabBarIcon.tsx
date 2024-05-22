@@ -2,7 +2,7 @@ import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 
 
-interface TabBarIconProps {
+type TabBarIconProps = {
   routeName: string;
   color: string;
   size?: number;

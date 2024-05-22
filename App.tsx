@@ -1,6 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StatusBar, Text } from 'react-native';
-import { styled } from 'nativewind';
+import { StatusBar } from 'react-native';
 import AppNavigator from './src/navigation';
 import { Provider } from 'react-redux';
 import { store } from './store';

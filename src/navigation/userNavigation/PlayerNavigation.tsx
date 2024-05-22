@@ -6,10 +6,11 @@ import TabBarIcon from '../../app/components/tabs/tabBarIcon';
 import PlayerProgressPage from '../../app/pages/player/PlayerProgressPage';
 import PlayerPaymentPage from '../../app/pages/player/PlayerPaymentPage';
 import ProfilePage from '../../app/pages/common/ProfilePage';
+// import OnboardingScreen from '../../app/pages/OnBoarding/OnBoardingScreen';
+import PushToken from '../../app/pages/PushToken/PushToken';
 const PlayerNavigation = () => {
 	const Tab = createBottomTabNavigator();
 	return (
-			<NavigationContainer>
 				<Tab.Navigator
 					initialRouteName="Login"
 					screenOptions={({ route }) => ({
@@ -40,8 +41,12 @@ const PlayerNavigation = () => {
 						component={ProfilePage}
 						options={{ title: 'Profile' }}
 					/>
+					<Tab.Screen
+						name="PushToken"
+						component={PushToken}
+						options={{ title: 'token' }}
+					/>
 				</Tab.Navigator>
-			</NavigationContainer>
 	);
 };
 

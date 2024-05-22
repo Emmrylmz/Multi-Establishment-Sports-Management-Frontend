@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import React from 'react';
 import { Feather } from '@expo/vector-icons';
+
 type ProfileTextFieldsProps = {
 	label: string;
 	value: string | undefined;

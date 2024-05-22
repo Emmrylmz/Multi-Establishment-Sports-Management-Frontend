@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '../../../store';
-import apiService from '../query/apiService';
+import apiService from '../query/authQueryService';
 import type { AuthState, User } from './auth.interface';
 
 const initialState: AuthState = {
@@ -33,7 +33,7 @@ const authSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-			.addMatcher(apiService.endpoints.logout.matchFulfilled, (state) => {
+			.addMatcher(apiService.endpoints.logout.matchPending, (state) => {
 				state.user = null;
 				state.isAuthenticated = false;
 				state.status = 'idle';
