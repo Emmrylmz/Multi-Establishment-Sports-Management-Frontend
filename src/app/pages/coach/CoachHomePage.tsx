@@ -1,66 +1,57 @@
-import { View, Text, ScrollView, FlatList, RefreshControl } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { useListEventsQuery } from '../../../features/query/eventQueryService';
+import { View, Text, FlatList, RefreshControl } from 'react-native';
+import React, { useCallback, useState } from 'react';
 import AppLayout from '../../components/layout/AppLayout';
-import EventCard from '../../components/ui/EventCard';
-import { coachHomePageTexts } from '../../../utils/constants/texts';
-import PagerView from 'react-native-pager-view';
+import EventList from '../../components/ui/Event/EventList';
 import HomeWidget from '../../components/ui/HomeWidget';
-import SearchBar from '../../components/ui/SearchBar';
+import CalendarPicker from 'react-native-calendar-picker';
+import PagerView from 'react-native-pager-view';
+import BarChart from '../../components/charts/BarChart';
+import LineChart from '../../components/charts/LineChart';
 import {
 	MaterialCommunityIcons,
 	FontAwesome5,
 	MaterialIcons,
 } from '@expo/vector-icons';
-import BarChart from '../../components/charts/BarChart';
-import CalendarPicker from 'react-native-calendar-picker';
-import LineChart from '../../components/charts/LineChart';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
-import { getAuthUser } from '../../../features/auth/auth.slice';
-import EventList from '../../components/ui/EventList';
+import { usePushNotifications } from '../../../hooks/usePushNotifications';
+import { useDispatch } from 'react-redux';
+import eventQueryService from '../../../features/query/eventQueryService';
 
 const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
+	const [refreshing, setRefreshing] = useState(false);
+	const { notification } = usePushNotifications();
+	const dispatch = useDispatch();
 
-	
+	const onRefresh = useCallback(async () => {
+		setRefreshing(true);
+		try {
+			await dispatch(eventQueryService.util.invalidateTags(['Events']));
+		} catch (error) {
+			console.error('Error during refresh:', error);
+		} finally {
+			setRefreshing(false);
+		}
+	}, []);
 
 	const dates = [
-		{
-			id: 1,
-			date: '2024-05-15T09:00:00.000Z',
-		},
-		{
-			id: 2,
-			date: '2024-05-16T09:00:00.000Z',
-		},
-		{
-			id: 3,
-			date: '2024-05-17T09:00:00.000Z',
-		},
-		{
-			id: 4,
-			date: '2024-05-18T09:00:00.000Z',
-		},
-		{
-			id: 5,
-			date: '2024-05-19T09:00:00.000Z',
-		},
-		{
-			id: 6,
-			date: '2024-06-20T09:00:00.000Z',
-		},
+		{ id: 1, date: '2024-05-15T09:00:00.000Z' },
+		{ id: 2, date: '2024-05-16T09:00:00.000Z' },
+		{ id: 3, date: '2024-05-17T09:00:00.000Z' },
+		{ id: 4, date: '2024-05-18T09:00:00.000Z' },
+		{ id: 5, date: '2024-05-19T09:00:00.000Z' },
+		{ id: 6, date: '2024-06-20T09:00:00.000Z' },
 	];
+
 	const customDatesStyles = dates.map((date) => ({
 		date: new Date(date.date),
 		style: { backgroundColor: '#3FA454' },
 		textStyle: { color: '#000' },
 	}));
 
-	const data = [
+	const horizontalData = [
 		{
 			id: 1,
 			component: (
-				<View className="p-3 bg-white rounded-[38px]">
+				<View className="p-3 bg-white rounded-[38px] m-2">
 					<CalendarPicker
 						width={200}
 						textStyle={{ color: '#000', fontSize: 12 }}
@@ -89,37 +80,26 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 		},
 	];
 
-	const [refreshing, setRefreshing] = useState(false);
-
-	const onRefresh = React.useCallback(() => {
-		setRefreshing(true);
-		setTimeout(() => {
-			setRefreshing(false);
-		}, 2000);
-	}, []);
-	return (
-		<AppLayout>
-			{/* <SearchBar visible={showSearch} onClose={() => setShowSearch(false)} /> */}
-
-			<ScrollView
-				showsVerticalScrollIndicator={false}
-				refreshControl={
-					<RefreshControl
-						tintColor="#fff"
-						refreshing={refreshing}
-						onRefresh={onRefresh}
-					/>
-				}
-			>
-				<EventList navigation={navigation}/> 
-
+	const mainData = [
+		{
+			id: 'eventList',
+			component: <EventList navigation={navigation} />,
+		},
+		{
+			id: 'horizontalList',
+			component: (
 				<FlatList
-					horizontal={true}
-					showsHorizontalScrollIndicator={false}
-					data={data}
-					className="my-3"
+					horizontal
+					data={horizontalData}
+					keyExtractor={(item) => item.id.toString()}
 					renderItem={({ item }) => item.component}
+					showsHorizontalScrollIndicator={false}
 				/>
+			),
+		},
+		{
+			id: 'widgets',
+			component: (
 				<View className="flex-row items-center justify-between w-full">
 					<HomeWidget
 						title="payment"
@@ -138,7 +118,11 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 						}
 					/>
 				</View>
-
+			),
+		},
+		{
+			id: 'playerProgress',
+			component: (
 				<View className="bg-white rounded-[38px] h-[300px] my-3">
 					<Text className="text-xl text-center text-dacka-gray">
 						Player Progress
@@ -153,10 +137,22 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 						<LineChart key={2} />
 					</PagerView>
 				</View>
-			</ScrollView>
+			),
+		},
+	];
+
+	return (
+		<AppLayout>
+			<FlatList
+				data={mainData}
+				keyExtractor={(item) => item.id}
+				renderItem={({ item }) => item.component}
+				refreshControl={
+					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+				}
+			/>
 		</AppLayout>
 	);
 };
 
 export default CoachHomePage;
-

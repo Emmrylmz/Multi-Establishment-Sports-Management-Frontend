@@ -1,10 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { baseQueryWithReauth } from './baseQuery';
+import { baseQueryWithReauth, baseQuery } from './baseQuery';
 // Define a service using a base URL and expected endpoints
 const eventQueryService = createApi({
   reducerPath: 'eventQueryService',
-  baseQuery: baseQueryWithReauth,
+  baseQuery: baseQuery,
 
   
   tagTypes: ['Events'],
@@ -16,15 +16,15 @@ const eventQueryService = createApi({
         method: 'POST',
         body: eventData,
       }),
-      // async onQueryStarted(eventData, { dispatch, queryFulfilled }) {
-      //   try {
-      //     await queryFulfilled;
-      //     // Invalidate the listEvents query to refetch the data
-      //     dispatch(eventQueryService.util.invalidateTags([{ type: 'Events', id: 'LIST' }]));
-      //   } catch {
+      async onQueryStarted(eventData, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          // Invalidate the listEvents query to refetch the data
+          dispatch(eventQueryService.util.invalidateTags([{ type: 'Events', id: 'LIST' }]));
+        } catch {
           
-      //   }
-      // },
+        }
+      },
       invalidatesTags:["Events"]
     }),
     listEvents: builder.query({

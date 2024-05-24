@@ -5,7 +5,7 @@ import { baseQueryWithReauth,baseQuery } from './baseQuery';
 // Define a service using a base URL and expected endpoints
 const authQueryService = createApi({
 	reducerPath: 'authQueryService',
-	baseQuery: baseQueryWithReauth,
+	baseQuery: baseQuery,
 	endpoints: (builder) => ({
 		login: builder.mutation({
 			query: (credentials) => ({

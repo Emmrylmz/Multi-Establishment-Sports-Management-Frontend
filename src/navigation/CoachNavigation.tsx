@@ -14,7 +14,7 @@ import CoachTeamsPage from '../app/pages/coach/CoachTeamsPage';
 import EventDetailPage from '../app/pages/common/EventDetailPage';
 import PaymentPage from '../app/pages/common/PaymentPage';
 import NotificationPage from '../app/pages/common/NotificationPage';
-import EventList from '../app/components/ui/EventList';
+import EventList from '../app/components/ui/Event/EventList';
 
 const HomeStack = createNativeStackNavigator();
 

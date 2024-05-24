@@ -1,18 +1,14 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../../store';
-import apiService from '../query/authQueryService';
 import type { AuthState, User } from './auth.interface';
+import authQueryService from '../query/authQueryService';
 
 const initialState: AuthState = {
-	user: null,
-	isAuthenticated: false,
-	error: null,
-	status: 'idle',
+  user: null,
+  isAuthenticated: false,
+  error: null,
+  status: 'idle',
 };
-
-
 
 const authSlice = createSlice({
 	name: 'auth',
@@ -33,22 +29,22 @@ const authSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-			.addMatcher(apiService.endpoints.logout.matchPending, (state) => {
+			.addMatcher(authQueryService.endpoints.logout.matchFulfilled, (state) => {
 				state.user = null;
 				state.isAuthenticated = false;
 				state.status = 'idle';
 			})
-			.addMatcher(apiService.endpoints.login.matchPending, (state) => {
+			.addMatcher(authQueryService.endpoints.login.matchPending, (state) => {
 				state.status = 'loading';
 			})
 			.addMatcher(
-				apiService.endpoints.login.matchFulfilled,
+				authQueryService.endpoints.login.matchFulfilled,
 				// altta state,action olcak
 				(state, action: PayloadAction<{ user: User }>) => {
 					authSlice.caseReducers.setUser(state, action); // Pass the entire action
 				}
 			)
-			.addMatcher(apiService.endpoints.login.matchRejected, (state, action) => {
+			.addMatcher(authQueryService.endpoints.login.matchRejected, (state, action) => {
 				state.status = 'failed';
 				state.error = action.error.message;
 			});

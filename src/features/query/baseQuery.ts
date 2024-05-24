@@ -1,43 +1,39 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { clearAuthState, setUser } from '../auth/auth.slice'; // Adjust the import path as needed
+import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta } from '@reduxjs/toolkit/query/react';
+
 const baseQuery = fetchBaseQuery({
-	baseUrl:`http://${process.env.API_SOURCE}/api`, // Adjust the base URL if needed
-	prepareHeaders: async (headers) => {
-		const token = await AsyncStorage.getItem('access_token');
-		if (token) {
-			headers.set('Authorization', `Bearer ${token}`);
-		}
-		return headers;
-	},
+  baseUrl: `http://${process.env.API_SOURCE}/api`, // Adjust the base URL if needed
+  prepareHeaders: async (headers) => {
+    const token = await AsyncStorage.getItem('access_token');
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
+    return headers;
+  },
 });
-console.log(process.env.API_SOURCE)
 
-const baseQueryWithReauth = async (args, api, extraOptions) => {
-	let result = await baseQuery(args, api, extraOptions);
-	if (result.error && result.error.status === 401) {
-		// Try to get a new token
-		const refreshResult = await baseQuery(
-			{
-				url: '/auth/refresh_token', // Adjust the endpoint URL if needed
-				method: 'GET',
-			},
-			api,
-			extraOptions
-		);
+const baseQueryWithReauth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError,
+  {},
+  FetchBaseQueryMeta
+> = async (args, api, extraOptions) => {
+  let result = await baseQuery(args, api, extraOptions);
+  if (result.error) {
+    if (result.error.status === 401) {
+      // Handle token refresh logic here...
+    } else if (result.error.status === 500) {
+      // Log and handle server errors
+      console.error('Internal Server Error:', result.error);
+    } else if (result.error.status === 'PARSING_ERROR') {
+      // Handle JSON parsing errors
+      console.error('JSON Parse Error:', result.error);
+    }
+  }
 
-		if (refreshResult.data) {
-			await AsyncStorage.setItem('access_token', refreshResult.data.access_token);
-			// Retry the original request
-			result = await baseQuery(args, api, extraOptions);
-		} else {
-			api.dispatch(clearAuthState());
-			await AsyncStorage.removeItem('access_token');
-			await AsyncStorage.removeItem('refresh_token');
-		}
-	}
-
-	return result;
+  return result;
 };
 
 export { baseQuery, baseQueryWithReauth };

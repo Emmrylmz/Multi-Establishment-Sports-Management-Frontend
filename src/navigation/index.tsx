@@ -9,12 +9,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootState } from '../../store';
 import { useAuthStatus } from '../hooks/useAuthStatus';
+import EventDetailPage from '../app/pages/common/EventDetailPage';
+import { navigationRef } from './rootNavigation';
+import { usePushNotifications } from '../hooks/usePushNotifications';
 
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
+	const { expoPushToken, notification } = usePushNotifications()
 	const { isLoading, user } = useAuthStatus();
-
+	console.log(notification?.request.content.data)
 	if (isLoading || user === undefined) { // Ensure we handle the case where user is not yet defined
 		return (
 		  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -24,7 +28,7 @@ export default function AppNavigator() {
 	  }
   
 	return (
-	  <NavigationContainer>
+	  <NavigationContainer ref={navigationRef}>
 		<Stack.Navigator screenOptions={{ headerShown: false }}>
 		  {user ? (
 			user.role === 'Coach' ? (
