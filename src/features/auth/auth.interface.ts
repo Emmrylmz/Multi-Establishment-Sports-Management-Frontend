@@ -1,19 +1,19 @@
-export interface User {
-    _id: string;
+export type User = {
+    id: string;
     name: string;
     role: string;
-    photo: string;
     email: string;
+    teams:[string];
   }
   
-  export interface AuthState {
+  export type AuthState = {
     user: User | null;
     isAuthenticated: boolean;
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null | undefined;
   }
   
-  export interface AuthPayload {
+  export type AuthPayload = {
     email: string;
     password: string;
   }

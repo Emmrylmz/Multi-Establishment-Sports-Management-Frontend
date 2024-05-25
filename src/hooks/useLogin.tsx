@@ -1,5 +1,5 @@
 // hooks/useLogin.ts
-import { useLoginMutation } from '../features/query/apiService';
+import { useLoginMutation } from '../features/query/authQueryService';
 import type { AuthPayload } from '../features/auth/auth.interface';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -11,6 +11,7 @@ const useLogin = () => {
 	// Function to handle submission of login data
 	const handleSubmit = async (payload: AuthPayload) => {
 		try {
+			// AsyncStorage.clear()
 			const response = await loginMutation(payload).unwrap();
 			return response;
 		} catch (error) {

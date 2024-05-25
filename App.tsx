@@ -1,9 +1,9 @@
 import React from 'react';
-import { SafeAreaView, StatusBar, Text } from 'react-native';
-import { styled } from 'nativewind';
+import { StatusBar } from 'react-native';
 import AppNavigator from './src/navigation';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import DataFetcher from "./src/app/components/utility/DataFetcher"
 
 // import { StatusBar } from 'expo-status-bar';
 
@@ -14,6 +14,7 @@ export default function App() {
 
 			<AppNavigator />
 			{/* <StatusBar style="light" /> //this comes from expo */}
+			<DataFetcher/>
 			<StatusBar barStyle="light-content" />{/* this comes from react-native */}
 			{/* Both status bars are the same,couldn't decide on using one or the other */}
 		</Provider>

@@ -2,7 +2,9 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { AuthPayload } from '../../../features/auth/auth.interface';
 import useLogin from '../../../hooks/useLogin';
-import {AppLayout, InputField} from '../../components';
+import AppLayout from '../../components/layout/AppLayout';
+import InputField from '../../components/ui/InputField';
+import { loginPageTexts } from '../../../utils/constants/texts';
 
 const LoginPage = () => {
 	const { handleSubmit } = useLogin();
@@ -26,13 +28,13 @@ const LoginPage = () => {
 				<View></View>
 
 				<View className='w-full'>
-					<InputField placeholder='email' placeholderTextColor='light' keyboardType='email-address' autoCapitalize='none' handleInputChange={handleInputChange} name='email' />
+					<InputField placeholder={loginPageTexts.emailPlaceholder} placeholderTextColor='light' keyboardType='email-address' autoCapitalize='none' handleInputChange={handleInputChange} name='email' />
 
-					<InputField placeholder='password' placeholderTextColor='light' autoCapitalize='none' handleInputChange={handleInputChange} name='password' secureTextEntry={true} />
+					<InputField placeholder={loginPageTexts.passwordPlaceholder} placeholderTextColor='light' autoCapitalize='none' handleInputChange={handleInputChange} name='password' secureTextEntry={true} />
 
 					<View className='mt-5'>
-						<Text className='my-1 text-center text-white'>Forgot password?</Text>
-						<Text className='my-1 text-center text-white'>Reset</Text>
+						<Text className='my-1 text-center text-white'>{loginPageTexts.forgotPassword}</Text>
+						<Text className='my-1 text-center text-white'>{loginPageTexts.reset}</Text>
 					</View>
 				</View>
 
@@ -41,7 +43,7 @@ const LoginPage = () => {
 						onPress={async () => handleSubmit(formData)}
 						className="w-full py-3 my-3 opacity-100 bg-dacka-green rounded-3xl"
 					>
-						<Text className='text-center'>Gir</Text>
+						<Text className='text-center'>{loginPageTexts.login}</Text>
 					</TouchableOpacity>
 				</View>
 			</View>

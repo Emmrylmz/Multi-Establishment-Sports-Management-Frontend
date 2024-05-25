@@ -1,60 +1,54 @@
-import { View, ScrollView } from 'react-native';
-import { AppLayout, InputField, TeamCard } from '../../components';
-import { useState } from 'react';
+import React from 'react';
+import { View, ScrollView, Text } from 'react-native';
+import AppLayout from '../../components/layout/AppLayout';
+import TeamCard from '../../components/ui/TeamCard';
+import { useGetTeamUsersQuery } from '../../../features/query/teamQueryService';
+import { getAuthUser } from '../../../features/auth/auth.slice';
+import { RootState } from '../../../../store';
+import { useSelector } from 'react-redux';
+import {  NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ParamListBase } from '@react-navigation/native';
 
-const CoachSchedulePage = ({ navigation }) => {
-	type FormData = {
-		deneme: string;
-	};
+// Define types for the props and state
+type Team = {
+  _id: string;
+  team_name: string;
+};
 
-	function handleInputChange(text: string, name: string) {
-		console.log(text, name);
-	}
-	const [formData, setFormData] = useState<FormData>({
-		deneme: '',
-	});
 
-	type Team = {
-		id: number;
-		name: string;
-	};
-	type TeamsList = Team[];
-	const teams: TeamsList = [
-		{ id: 1, name: 'U18 A' },
-		{ id: 2, name: 'U18 B' },
-		{ id: 3, name: 'U16 A' },
-		{ id: 4, name: 'U16 B' },
-		{ id: 5, name: 'U14 A' },
-		{ id: 6, name: 'U14 B' },
-		{ id: 7, name: 'U12 A' },
-		{ id: 8, name: 'U12 B' },
-	];
+interface CoachSchedulePageProps {
+  navigation: NativeStackNavigationProp<ParamListBase>;
+}
 
-	return (
-		<AppLayout>
-			<View className="w-full h-full">
-				<ScrollView className="w-full p-3">
-					{teams.map((team, index) => (
-						<TeamCard
-							teamName={team.name}
-							teamId={team.id}
-							key={index}
-							navigation={() =>
-								navigation.navigate('CoachTeamDetail', { team_id: team.id })
-							}
-						/>
-					))}
-				</ScrollView>
-				<InputField
-					placeholder="Deneme"
-					placeholderTextColor="light"
-					name="test"
-					handleInputChange={handleInputChange}
-					secureTextEntry={true}
-				/>
-			</View>
-		</AppLayout>
-	);
+const CoachSchedulePage: React.FC<CoachSchedulePageProps> = ({ navigation }) => {
+  const user = useSelector((state: RootState) => getAuthUser(state));
+  const { data, isLoading, isError } = useGetTeamUsersQuery(user?.teams);
+
+  if (isLoading) {
+    return <View><Text>Loading...</Text></View>;
+  }
+
+  if (isError || !data) {
+    return <View><Text>Error loading teams.</Text></View>;
+  }
+
+  return (
+    <AppLayout>
+      <View className='w-full h-full'>
+        <ScrollView className='w-full'>
+          {data.map((team: Team) => (
+            <TeamCard
+              key={team._id}
+              teamName={team.team_name}
+              teamId={team._id}
+              coachName='Ahmet Köksal'
+              navigation={() => navigation.navigate('CoachAddTrainingPage', { team_id: team._id })}
+            />
+          ))}
+        </ScrollView>
+      </View>
+    </AppLayout>
+  );
 };
 
 export default CoachSchedulePage;

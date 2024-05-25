@@ -3,8 +3,10 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { persistReducer, persistStore } from 'redux-persist';
 
-import apiService from './src/features/query/apiService';
+import authQueryService from './src/features/query/authQueryService';
+import eventQueryService from './src/features/query/eventQueryService';
 import authSlice from './src/features/auth/auth.slice';
+import teamQueryService from './src/features/query/teamQueryService';
 
 const persistConfig = {
   key: 'root',
@@ -14,7 +16,9 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authSlice,
-  [apiService.reducerPath]: apiService.reducer,
+  [authQueryService.reducerPath]: authQueryService.reducer,
+  [eventQueryService.reducerPath]: eventQueryService.reducer,
+  [teamQueryService.reducerPath]: teamQueryService.reducer
   // other reducers can be added here
 });
 
@@ -27,7 +31,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'], // Ignore these actions for the serializable check
       },
-    }).concat(apiService.middleware),
+    }).concat(authQueryService.middleware, eventQueryService.middleware, teamQueryService.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
