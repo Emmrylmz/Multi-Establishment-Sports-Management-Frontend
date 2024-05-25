@@ -1,7 +1,6 @@
-import { View, Text } from 'react-native';
 import React from 'react';
 import CalendarPicker from 'react-native-calendar-picker';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getAuthUser } from '../../../../features/auth/auth.slice';
 import {
 	selectListEventsResult,
@@ -15,12 +14,17 @@ const Calendar = () => {
 		selectListEventsResult(user?.teams)(state)
 	);
 
-	const customDatesStyles = listEventsResult.data[0].events.map((date) => ({
+	// Ensure that listEventsResult and its properties exist
+	const events = listEventsResult?.data?.[0]?.events || [];
+
+	const customDatesStyles = events.map((date) => ({
 		date: new Date(date.event_date),
 		style: { backgroundColor: '#3FA454' },
 		textStyle: { color: '#000' },
 	}));
-	console.log(listEventsResult.data[0].events);
+
+	console.log(events);
+
 	return (
 		<CalendarPicker
 			width={200}
