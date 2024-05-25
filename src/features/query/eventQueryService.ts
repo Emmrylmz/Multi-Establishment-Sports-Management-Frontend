@@ -69,4 +69,7 @@ export const {
   useDeleteEventMutation
 } = eventQueryService;
 
+export const selectListEventsResult = eventQueryService.endpoints.listEvents.select;
+
+
 export default eventQueryService;

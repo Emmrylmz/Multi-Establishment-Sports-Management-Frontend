@@ -3,7 +3,6 @@ import React, { useCallback, useState } from 'react';
 import AppLayout from '../../components/layout/AppLayout';
 import EventList from '../../components/ui/Event/EventList';
 import HomeWidget from '../../components/ui/HomeWidget';
-import CalendarPicker from 'react-native-calendar-picker';
 import PagerView from 'react-native-pager-view';
 import BarChart from '../../components/charts/BarChart';
 import LineChart from '../../components/charts/LineChart';
@@ -12,14 +11,14 @@ import {
 	FontAwesome5,
 	MaterialIcons,
 } from '@expo/vector-icons';
-import { usePushNotifications } from '../../../hooks/usePushNotifications';
 import { useDispatch } from 'react-redux';
 import eventQueryService from '../../../features/query/eventQueryService';
+import Calendar from '../../components/ui/Event/Calendar';
 
 const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 	const [refreshing, setRefreshing] = useState(false);
-	const { notification } = usePushNotifications();
-	const dispatch = useDispatch();
+	const dispatch = useDispatch()
+
 
 	const onRefresh = useCallback(async () => {
 		setRefreshing(true);
@@ -32,34 +31,17 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 		}
 	}, []);
 
-	const dates = [
-		{ id: 1, date: '2024-05-15T09:00:00.000Z' },
-		{ id: 2, date: '2024-05-16T09:00:00.000Z' },
-		{ id: 3, date: '2024-05-17T09:00:00.000Z' },
-		{ id: 4, date: '2024-05-18T09:00:00.000Z' },
-		{ id: 5, date: '2024-05-19T09:00:00.000Z' },
-		{ id: 6, date: '2024-06-20T09:00:00.000Z' },
-	];
 
-	const customDatesStyles = dates.map((date) => ({
-		date: new Date(date.date),
-		style: { backgroundColor: '#3FA454' },
-		textStyle: { color: '#000' },
-	}));
+
+
+	
 
 	const horizontalData = [
 		{
 			id: 1,
 			component: (
 				<View className="p-3 bg-white rounded-[38px] m-2">
-					<CalendarPicker
-						width={200}
-						textStyle={{ color: '#000', fontSize: 12 }}
-						todayBackgroundColor="#000"
-						todayTextStyle={{ color: '#fff' }}
-						onDateChange={(date) => console.log(date)}
-						customDatesStyles={customDatesStyles}
-					/>
+					<Calendar />
 				</View>
 			),
 		},
