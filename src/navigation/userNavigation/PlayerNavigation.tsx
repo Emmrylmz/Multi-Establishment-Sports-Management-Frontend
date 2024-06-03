@@ -19,7 +19,7 @@ const SStack = createNativeStackNavigator();
 
 function PlayerHomeStackScreen() {
   return (
-    <SStack.Navigator screenOptions={{ headerShown: false }}>
+    <SStack.Navigator initialRouteName='PlayerHomePage' screenOptions={{ headerShown: false }}>
       <SStack.Screen name="PlayerHomePage" component={PlayerHomePage} />
       <SStack.Screen name="EventDetailPage" component={EventDetailPage} />
       <SStack.Screen name="EventList" component={EventList} /> 

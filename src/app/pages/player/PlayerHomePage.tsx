@@ -35,51 +35,62 @@ const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 		{
 			id: 1,
 			title: 'Event 1',
-      team_name: 'Team 1',
+			team_name: 'Team 1',
 			date: "2024-06-10T09:00:00.000Z",
 			time: '12:00',
-      event_type: 'Practice',
+			event_type: 'Practice',
 			location: 'Location 1',
-      coordinates: {
-        latitude: 38.4593697,
-        longitude: 27.2233336
-      },
-      locationName: 'Location 1'
+			coordinates: {
+				latitude: 38.4593697,
+				longitude: 27.2233336
+			},
+			locationName: 'Location 1'
 		},
 		{
 			id: 2,
 			title: 'Event 2',
-      team_name: 'Team 2',
+			team_name: 'Team 2',
 			date: "2024-06-10T09:00:00.000Z",
 			time: '12:00',
-      event_type: 'Game',
+			event_type: 'Game',
 			location: 'Location 2',
-      coordinates: {
-        latitude: 38.4593697,
-        longitude: 27.2233336
-      },
-      locationName: 'Location 2'
+			coordinates: {
+				latitude: 38.4593697,
+				longitude: 27.2233336
+			},
+			locationName: 'Location 2'
 		},
 		{
 			id: 3,
 			title: 'Event 3',
-      team_name: 'Team 3',
+			team_name: 'Team 3',
 			date: "2024-06-10T09:00:00.000Z",
 			time: '12:00',
-      event_type: 'Weight Lifting',
+			event_type: 'Weight Lifting',
 			location: 'Location 3',
-      coordinates: {
-        latitude: 38.4593697,
-        longitude: 27.2233336
-      },
-      locationName: 'Location 3'
+			coordinates: {
+				latitude: 38.4593697,
+				longitude: 27.2233336
+			},
+			locationName: 'Location 3'
 		}
 	]
 
 	const upcomingEventsList = upcomingEvents.map(event => ({
 		id: event.id,
 		component: (
-			<TouchableOpacity key={event.id} className='p-4 m-2 bg-white rounded-2xl' onPress={navigation.navigate('EventDetailPage',{event_id: event.id,team_name: event.team_name,event_type:event.event_type,place: event.location,coordinates: event.coordinates,locationName:event.locationName})}>
+			<TouchableOpacity
+				key={event.id}
+				className='p-4 m-2 bg-white rounded-2xl'
+				onPress={() => navigation.navigate('EventDetailPage', {
+					event_id: event.id,
+					team_name: event.team_name,
+					event_type: event.event_type,
+					place: event.location,
+					coordinates: event.coordinates,
+					locationName: event.locationName
+				})}
+			>
 				<Text className='text-lg font-bold'>{event.title}</Text>
 				<Text>{new Date(event.date).toLocaleDateString()}</Text>
 				<Text>{event.time}</Text>
