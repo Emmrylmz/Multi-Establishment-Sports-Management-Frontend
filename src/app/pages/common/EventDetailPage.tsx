@@ -4,7 +4,7 @@ import AppLayout from '../../components/layout/AppLayout';
 import MapView, { Marker } from 'react-native-maps';
 
 const EventDetailPage:React.FC<{route:any}> = ({ route }) => {
-  const { event_id, team_name, event_type,place,coordinates,locationName } = route.params;
+  const { event_id, team_name, event_name,place,coordinates,location } = route.params;
   const [showMap, setShowMap] = React.useState(false);
 
   const handleMarkerPress = () => {
@@ -37,7 +37,7 @@ const EventDetailPage:React.FC<{route:any}> = ({ route }) => {
     let url;
     const latitude = coordinates.latitude;
     const longitude = coordinates.longitude;
-    const label = encodeURIComponent(locationName + " - " + event_type);
+    const label = encodeURIComponent(location + " - " + event_name);
 
     if (type === "google") {
       // URL for Google Maps
@@ -67,7 +67,7 @@ const EventDetailPage:React.FC<{route:any}> = ({ route }) => {
   return (
     <AppLayout>
       <View>
-        <Text className='text-xl text-center text-dacka-green'>{event_type}</Text>
+        <Text className='text-xl text-center text-dacka-green'>{event_name}</Text>
         <Text className='text-xl text-center text-white'>{team_name}</Text>
         <Text className='text-xl text-center text-white'>{place}</Text>
         <TouchableOpacity onPress={() => setShowMap((prevState) => !prevState)}>
@@ -86,8 +86,8 @@ const EventDetailPage:React.FC<{route:any}> = ({ route }) => {
           <Marker
             key={event_id}
             coordinate={coordinates}
-            title={locationName}
-            description={event_type + " at " + team_name}
+            title={location}
+            description={event_name + " at " + team_name}
             onPress={handleMarkerPress} 
           />
         </MapView>)}

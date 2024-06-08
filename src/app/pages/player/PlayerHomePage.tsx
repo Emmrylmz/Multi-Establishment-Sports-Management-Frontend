@@ -1,7 +1,7 @@
-import { View, Text, FlatList, RefreshControl, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, RefreshControl, TouchableOpacity, Dimensions } from 'react-native';
 import PagerView from 'react-native-pager-view';
-import React, { useState, useCallback } from 'react'
-import { AppLayout } from '../../components'
+import React, { useState, useCallback } from 'react';
+import { AppLayout } from '../../components';
 import {
 	MaterialCommunityIcons,
 	FontAwesome5,
@@ -34,12 +34,12 @@ const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 	const upcomingEvents = [
 		{
 			id: 1,
-			title: 'Event 1',
-			team_name: 'Team 1',
+			title: 'Team Meeting',
+			team_name: 'U18 A',
 			date: "2024-06-10T09:00:00.000Z",
 			time: '12:00',
-			event_type: 'Practice',
-			location: 'Location 1',
+			event_type: '1',
+			location: 'Ege Üniversitesi Spor Bil. Fak. Top. Sal.',
 			coordinates: {
 				latitude: 38.4593697,
 				longitude: 27.2233336
@@ -48,47 +48,37 @@ const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 		},
 		{
 			id: 2,
-			title: 'Event 2',
-			team_name: 'Team 2',
-			date: "2024-06-10T09:00:00.000Z",
-			time: '12:00',
-			event_type: 'Game',
-			location: 'Location 2',
-			coordinates: {
-				latitude: 38.4593697,
-				longitude: 27.2233336
-			},
-			locationName: 'Location 2'
-		},
-		{
-			id: 3,
-			title: 'Event 3',
-			team_name: 'Team 3',
+			title: 'Weight Lifting',
+			team_name: 'U18 A',
 			date: "2024-06-10T09:00:00.000Z",
 			time: '12:00',
 			event_type: 'Weight Lifting',
-			location: 'Location 3',
+			location: 'Ege Üniversitesi Spor Bil. Fak. Fit. Sal.',
 			coordinates: {
 				latitude: 38.4593697,
 				longitude: 27.2233336
 			},
 			locationName: 'Location 3'
 		}
-	]
+	];
+
+	const { width: screenWidth } = Dimensions.get('window');
+	const itemWidth = screenWidth * 0.8; // 80% of the screen width
 
 	const upcomingEventsList = upcomingEvents.map(event => ({
 		id: event.id,
 		component: (
 			<TouchableOpacity
 				key={event.id}
+				style={{ width: itemWidth }}
 				className='p-4 m-2 bg-white rounded-2xl'
 				onPress={() => navigation.navigate('EventDetailPage', {
 					event_id: event.id,
 					team_name: event.team_name,
-					event_type: event.event_type,
+					event_name: event.title,
 					place: event.location,
 					coordinates: event.coordinates,
-					locationName: event.locationName
+					location: event.location
 				})}
 			>
 				<Text className='text-lg font-bold'>{event.title}</Text>
@@ -131,6 +121,7 @@ const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 			)
 		},
 	];
+
 	const data = [
 		{
 			id: 'eventList',
@@ -202,6 +193,7 @@ const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 			),
 		},
 	];
+
 	return (
 		<AppLayout>
 			<FlatList
@@ -213,7 +205,7 @@ const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 				}
 			/>
 		</AppLayout>
-	)
-}
+	);
+};
 
-export default PlayerHomePage
+export default PlayerHomePage;
