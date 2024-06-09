@@ -81,10 +81,15 @@ const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 					location: event.location
 				})}
 			>
-				<Text className='text-lg font-bold'>{event.title}</Text>
-				<Text>{new Date(event.date).toLocaleDateString()}</Text>
-				<Text>{event.time}</Text>
-				<Text>{event.location}</Text>
+				<View className='flex-row items-center justify-between mb-1'>
+					<Text className='text-lg font-bold'>{event.title}</Text>
+					<Text>{new Date(event.date).toLocaleDateString()}</Text>
+				</View>
+				<View className='flex-row items-center justify-between mt-1'>
+					<Text>{event.location}</Text>
+					<Text>{event.time}</Text>
+				</View>
+				
 			</TouchableOpacity>
 		)
 	}));
@@ -93,7 +98,7 @@ const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 		{
 			id: 1,
 			component: (
-				<View className="p-3 bg-white rounded-[38px] m-2">
+				<View className="p-4 bg-white rounded-[38px] m-2">
 					<Calendar />
 				</View>
 			),
@@ -105,7 +110,7 @@ const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 					title="Teams"
 					icon={<FontAwesome5 name="users" color="black" size={64} />}
 					clickable={true}
-					onPress={() => navigation.navigate('CoachTeamsPage')}
+					onPress={() => navigation.navigate('TeamsPage',{userId: 1})}
 				/>
 			),
 		},
@@ -153,7 +158,7 @@ const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 		{
 			id: 'widgets',
 			component: (
-				<View className="flex-row items-center justify-between w-full">
+				<View className="flex-row items-center justify-between w-full pt-3">
 					<HomeWidget
 						title="payment"
 						onPress={() => navigation.navigate('PaymentPage')}
@@ -200,6 +205,7 @@ const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 				data={data}
 				keyExtractor={(item, index) => index.toString()}
 				renderItem={({ item }) => item.component}
+				showsVerticalScrollIndicator={false}
 				refreshControl={
 					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
 				}

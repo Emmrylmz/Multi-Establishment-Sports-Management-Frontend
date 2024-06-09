@@ -13,6 +13,9 @@ import PaymentPage from '../../app/pages/common/PaymentPage';
 import { navigationRef } from '../rootNavigation';
 import PlayerHomePage from '../../app/pages/player/PlayerHomePage';
 import AttendancePage from '../../app/pages/common/AttendancePage';
+import TeamsPage from '../../app/pages/common/TeamsPage';
+import TeamDetailPage from '../../app/pages/common/TeamDetailPage';
+import TeamCreationPage from '../../app/pages/common/TeamCreationPage';
 
 
 const SStack = createNativeStackNavigator();
@@ -25,6 +28,10 @@ function PlayerHomeStackScreen() {
       <SStack.Screen name="EventList" component={EventList} /> 
       <SStack.Screen name='PaymentPage' component={PaymentPage} />
       <SStack.Screen name='AttendancePage' component={AttendancePage} />
+      <SStack.Screen name='TeamsPage' component={TeamsPage} />
+      <SStack.Screen name='TeamDetailPage' component={TeamDetailPage} />
+      <SStack.Screen name='TeamCreationPage' component={TeamCreationPage} /> 
+      {/* move this line to CoachHOmeStackScreen when its done */}
     </SStack.Navigator>
   );
 }
