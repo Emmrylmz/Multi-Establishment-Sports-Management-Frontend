@@ -31,11 +31,6 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 		}
 	}, []);
 
-
-
-
-	
-
 	const horizontalData = [
 		{
 			id: 1,

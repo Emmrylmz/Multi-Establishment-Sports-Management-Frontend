@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity,ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity,ScrollView, Button } from 'react-native'
 import React, { useEffect } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import InputField from '../../components/ui/InputField'
@@ -25,9 +25,9 @@ const CoachAddTrainingPage = ({ route }) => {
     "event_type": "Game",
     "creator_id": "661b00b9c379ef519deaad39",
     "place": "Stadium XYZ",
-    "event_date": "2023-05-10T15:00:00",
+    "event_date": '',
     "created_at": "2024-05-11T13:34:45.149000",
-    "team_id": "664b346f904d48bc59f606b8",
+    "team_id": team_id,
     "description": "Annual cahampionship game"
 })
 
@@ -89,11 +89,14 @@ const CoachAddTrainingPage = ({ route }) => {
 
 
         <TouchableOpacity className='my-3 border-b border-dacka-gray' onPress={() => setShowDate((prevState) => !prevState)}>
-          <Text className='text-dacka-gray'>Add Date</Text> 
+          <Text className='text-dacka-gray'>{trainingForm.event_date instanceof Date ? trainingForm.event_date.toString() : 'add date'}</Text> 
         </TouchableOpacity>
         {showDate && (
-          <View className='w-full my-3 border-b border-dacka-gray'>
-            <DateTimePicker value={trainingForm.event_date} textColor='#fff' display='spinner' mode='datetime' onChange={(event,date) => handleDateChange(date,'event_date')} />
+          <View className='w-full my-3 border-b border-dacka-gray' >
+            <TouchableOpacity onPress={() => setShowDate(false)}>
+              <Text className='text-xl text-right text-dacka-gray'>Close</Text>
+            </TouchableOpacity>
+            <DateTimePicker value={dateNow} textColor='#fff' display='spinner' mode='datetime' onChange={(event,date) => handleDateChange(date,'event_date')} />
           </View>
         )}
 

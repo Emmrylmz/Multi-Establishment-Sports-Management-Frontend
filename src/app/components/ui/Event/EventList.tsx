@@ -77,6 +77,8 @@ const EventList: React.FC<EventListProps> = ({ navigation }) => {
 
   const events = data ? transformData(data) : [];
 
+  console.log('data: ',data)
+
 
   const renderItem: ListRenderItem<Event> = ({ item }) => (
     <TouchableOpacity

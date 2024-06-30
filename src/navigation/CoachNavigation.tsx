@@ -37,24 +37,28 @@ function CoachHomeStackScreen() {
 const CoachNavigation = () => {
   const Tab = createBottomTabNavigator()
   return (
-      <Tab.Navigator initialRouteName='Coach'screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size, }) =>
-          TabBarIcon({ routeName: route.name, color, size }),
-        tabBarActiveTintColor: '#fff',
-        tabBarInactiveTintColor: '#919191',
-        headerShown: false,
-        tabBarStyle: {
-          backgroundColor: '#101010',
-          borderTopWidth: 0,
-          elevation: 0,
-          shadowOpacity: 0,
-        },
-      })} >
-        <Tab.Screen name='CoachHomePageStack' component={CoachHomeStackScreen} options={{ title: 'Home'}} />
-        <Tab.Screen name='CoachSchedulePage' component={CoachSchedulePage} options={{ title: 'Schedule Training' }} />
-        <Tab.Screen name='AddUserPage' component={AddUserPage} options={{ title: 'Add User' }} />
-        <Tab.Screen name='CoachProfilePage' component={ProfilePage} options={{ title: 'Profile' }} />
-      </Tab.Navigator>
+    <Tab.Navigator 
+    initialRouteName='CoachHomePageStack'
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ color, size }) => (
+        <TabBarIcon routeName={route.name} color={color} size={size} />
+      ),
+      tabBarActiveTintColor: '#fff',
+      tabBarInactiveTintColor: '#919191',
+      headerShown: false,
+      tabBarStyle: {
+        backgroundColor: '#101010',
+        borderTopWidth: 0,
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+    })}
+  >
+    <Tab.Screen name='CoachHomePageStack' component={CoachHomeStackScreen} options={{ title: 'Home'}} />
+    <Tab.Screen name='CoachSchedulePage' component={CoachSchedulePage} options={{ title: 'Schedule' }} />
+    <Tab.Screen name='AddUserPage' component={AddUserPage} options={{ title: 'Add User' }} />
+    <Tab.Screen name='CoachProfilePage' component={ProfilePage} options={{ title: 'Profile' }} />
+  </Tab.Navigator>
   )
 }
 

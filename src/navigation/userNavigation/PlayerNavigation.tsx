@@ -11,17 +11,27 @@ import EventDetailPage from '../../app/pages/common/EventDetailPage';
 import EventList from '../../app/components/ui/Event/EventList';
 import PaymentPage from '../../app/pages/common/PaymentPage';
 import { navigationRef } from '../rootNavigation';
+import PlayerHomePage from '../../app/pages/player/PlayerHomePage';
+import AttendancePage from '../../app/pages/common/AttendancePage';
+import TeamsPage from '../../app/pages/common/TeamsPage';
+import TeamDetailPage from '../../app/pages/common/TeamDetailPage';
+import TeamCreationPage from '../../app/pages/common/TeamCreationPage';
 
 
 const SStack = createNativeStackNavigator();
 
 function PlayerHomeStackScreen() {
   return (
-    <SStack.Navigator screenOptions={{ headerShown: false }}>
-      <SStack.Screen name="CoachHomePage" component={CoachHomePage} />
+    <SStack.Navigator initialRouteName='PlayerHomePage' screenOptions={{ headerShown: false }}>
+      <SStack.Screen name="PlayerHomePage" component={PlayerHomePage} />
       <SStack.Screen name="EventDetailPage" component={EventDetailPage} />
       <SStack.Screen name="EventList" component={EventList} /> 
       <SStack.Screen name='PaymentPage' component={PaymentPage} />
+      <SStack.Screen name='AttendancePage' component={AttendancePage} />
+      <SStack.Screen name='TeamsPage' component={TeamsPage} />
+      <SStack.Screen name='TeamDetailPage' component={TeamDetailPage} />
+      <SStack.Screen name='TeamCreationPage' component={TeamCreationPage} /> 
+      {/* move this line to CoachHOmeStackScreen when its done */}
     </SStack.Navigator>
   );
 }
@@ -34,7 +44,7 @@ const PlayerNavigation = () => {
       initialRouteName="PlayerProgressPage"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) =>
-          TabBarIcon({ routeName: route.name, color, size }),
+          TabBarIcon({ routeName: route.name, color, size, }),
         tabBarActiveTintColor: '#A8FF97',
         tabBarInactiveTintColor: '#828282',
         headerShown: false,

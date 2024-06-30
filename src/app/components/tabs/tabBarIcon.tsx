@@ -13,27 +13,27 @@ const TabBarIcon = ({ routeName, color, size = 22 }: TabBarIconProps) => {
   let IconComponent: typeof FontAwesome5 | typeof MaterialIcons;
 
   switch (routeName) {
-    case 'PlayerHomePage':
+    case 'CoachHomePageStack':
       iconName = 'home';
       IconComponent = FontAwesome5;
       break;
-    case 'PlayerProgressPage':
-      iconName = 'progress';
+    case 'CoachSchedulePage':
+      iconName = 'calendar';
       IconComponent = FontAwesome5;
       break;
-    case 'PlayerProfilePage':
+    case 'AddUserPage':
+      iconName = 'user-plus';
+      IconComponent = FontAwesome5;
+      break;
+    case 'CoachProfilePage':
       iconName = 'user';
       IconComponent = FontAwesome5;
       break;
-    case 'PlayerPaymentPage':
-      iconName = 'payment';
-      IconComponent = MaterialIcons;
-      break;
     default:
-      return null; // If no icon is applicable, return null
+      return null;
   }
 
-  return <IconComponent size={size} name={iconName} color={color} />;
+  return <IconComponent name={iconName} size={size} color={color} />;
 };
 
 export default TabBarIcon;

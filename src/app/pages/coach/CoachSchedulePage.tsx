@@ -24,13 +24,34 @@ const CoachSchedulePage: React.FC<CoachSchedulePageProps> = ({ navigation }) => 
   const user = useSelector((state: RootState) => getAuthUser(state));
   const { data, isLoading, isError } = useGetTeamUsersQuery(user?.teams);
 
-  if (isLoading) {
-    return <View><Text>Loading...</Text></View>;
-  }
+  // if (isLoading) {
+  //   return <View><Text>Loading...</Text></View>;
+  // }
 
-  if (isError || !data) {
-    return <View><Text>Error loading teams.</Text></View>;
-  }
+  // if (isError || !data) {
+  //   return <View><Text>Error loading teams.</Text></View>;
+  // }
+
+  const myTeams = [
+    {
+      _id: '1',
+      team_name: 'U18 A',
+    },
+    {
+      _id: '2',
+      team_name: 'U18 B',
+    },
+    {
+      _id: '3',
+      team_name: 'U16 A',
+    },
+    {
+      _id: '4',
+      team_name: 'U16 B',
+    },
+  ]
+
+  console.log(data)
 
   return (
     <AppLayout>
@@ -45,6 +66,7 @@ const CoachSchedulePage: React.FC<CoachSchedulePageProps> = ({ navigation }) => 
               navigation={() => navigation.navigate('CoachAddTrainingPage', { team_id: team._id })}
             />
           ))}
+          <Text className='text-white'>Deneme</Text>
         </ScrollView>
       </View>
     </AppLayout>

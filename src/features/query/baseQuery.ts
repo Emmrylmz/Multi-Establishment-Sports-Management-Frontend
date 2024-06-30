@@ -3,7 +3,7 @@ import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: `http://192.168.209.139:8000/api`, // Adjust the base URL if needed
+  baseUrl: `http://48.216.140.36/api`, // Adjust the base URL if needed
   prepareHeaders: async (headers) => {
     const token = await AsyncStorage.getItem('access_token');
     if (token) {
