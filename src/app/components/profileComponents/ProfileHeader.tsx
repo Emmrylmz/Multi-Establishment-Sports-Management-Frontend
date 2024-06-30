@@ -7,7 +7,7 @@ import { getAuthUser } from '../../../features/auth/auth.slice';
 import IconBar from './IconBar';
 import { useLogoutMutation } from '../../../features/query/authQueryService';
 
-const ProfileHeader = () => {
+const ProfileHeader = ({isProfilePage}) => {
   const user = useSelector((state: RootState) => getAuthUser(state));
 
   const myImage = require('../../../../assets/user.png')
@@ -21,6 +21,33 @@ const ProfileHeader = () => {
 			console.error('Logout failed:', error);
 		}
 	};
+
+  if(!isProfilePage){
+    return (
+      <>
+            <View className='h-1/3'>
+      <View className="w-full h-5/6">
+        <View className='w-full h-4/6 rounded-b-[38px] bg-dacka-green'/>
+          <View className='w-1/2 h-full mx-auto -mt-24 overflow-hidden rounded-full bg-dacka-dark-gray'>
+            <Image
+              source={myImage}
+              style={{width: '100%', height: '150%'}}
+              resizeMode="cover"/>
+          </View>
+        <View className="absolute right-4 top-3">
+          
+        </View>
+        <View className='absolute top-4 left-5'>
+          
+        </View>
+      </View>
+    </View>
+    <View>
+      <Text className="text-xl font-semibold text-center text-white">{user?.name}</Text>
+    </View>
+      </>
+    )
+  }
 
   return (
   <>

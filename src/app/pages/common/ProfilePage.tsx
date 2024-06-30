@@ -15,7 +15,7 @@ const ProfilePage: React.FC = () => {
 
 	return (
 		<AppLayout>
-			<ProfileHeader />
+			<ProfileHeader isProfilePage={true} />
 			<View className='flex-1 w-10/12 mx-auto rounded-3xl bg-dacka-dark-gray'>
 				<AccountInfo user={user} />
 			</View>

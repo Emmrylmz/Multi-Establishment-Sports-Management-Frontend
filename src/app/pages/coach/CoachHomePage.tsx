@@ -14,12 +14,13 @@ import {
 import { useDispatch } from 'react-redux';
 import eventQueryService from '../../../features/query/eventQueryService';
 import Calendar from '../../components/ui/Event/Calendar';
+import { useAuthStatus } from '../../../hooks/useAuthStatus';
 
 const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 	const [refreshing, setRefreshing] = useState(false);
-	const dispatch = useDispatch()
-
-
+	const dispatch = useDispatch();
+	const { user } = useAuthStatus();
+	console.log(user);
 	const onRefresh = useCallback(async () => {
 		setRefreshing(true);
 		try {
@@ -47,7 +48,7 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 					title="Teams"
 					icon={<FontAwesome5 name="users" color="black" size={64} />}
 					clickable={true}
-					onPress={() => navigation.navigate('CoachTeamsPage')}
+					onPress={() => navigation.navigate('CoachTeamsPage', { team_id: 1 })} // Pass a sample team ID
 				/>
 			),
 		},
