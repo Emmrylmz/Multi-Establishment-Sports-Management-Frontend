@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { baseQueryWithReauth } from './baseQuery';
+import { baseQueryWithReauth} from './baseQueryWithReauth';
 // Define a service using a base URL and expected endpoints
 const teamQueryService = createApi({
 	reducerPath: 'teamQueryService',

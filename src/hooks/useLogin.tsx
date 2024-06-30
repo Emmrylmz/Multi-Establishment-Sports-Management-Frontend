@@ -1,7 +1,6 @@
 // hooks/useLogin.ts
 import { useLoginMutation } from '../features/query/authQueryService';
 import type { AuthPayload } from '../features/auth/auth.interface';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useLogin = () => {
 	// Destructure properties from the useLoginMutation hook

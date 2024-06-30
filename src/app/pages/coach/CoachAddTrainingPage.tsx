@@ -1,16 +1,13 @@
 import { View, Text, TouchableOpacity,ScrollView, Button } from 'react-native'
-import React, { useEffect } from 'react'
+import React from 'react'
 import AppLayout from '../../components/layout/AppLayout'
-import InputField from '../../components/ui/InputField'
 import { addTrainingPageTexts } from '../../../utils/constants/texts'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useCreateEventMutation, useGetEventQuery, useListEventsQuery } from '../../../features/query/eventQueryService'
+import { useCreateEventMutation, useListEventsQuery } from '../../../features/query/eventQueryService'
 import { RootState } from '../../../../store';
 import { getAuthUser } from '../../../features/auth/auth.slice';
 import { useSelector } from 'react-redux';
-import { useGetTeamUsersQuery } from '../../../features/query/teamQueryService'
 
 const CoachAddTrainingPage = ({ route }) => {
   

@@ -57,7 +57,7 @@ const CoachSchedulePage: React.FC<CoachSchedulePageProps> = ({ navigation }) => 
     <AppLayout>
       <View className='w-full h-full'>
         <ScrollView className='w-full'>
-          {data.map((team: Team) => (
+          {data && data.map((team: Team) => (
             <TeamCard
               key={team._id}
               teamName={team.team_name}

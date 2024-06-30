@@ -1,11 +1,11 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta } from '@reduxjs/toolkit/query/react';
+import { getToken } from '../../utils/tokenManager';
+
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: `http://48.216.140.36/api`, // Adjust the base URL if needed
+  baseUrl: `http://192.168.1.36:80/api`, // Adjust the base URL if needed
   prepareHeaders: async (headers) => {
-    const token = await AsyncStorage.getItem('access_token');
+    const token = await getToken('access_token');
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);
     }
@@ -13,27 +13,5 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithReauth: BaseQueryFn<
-  string | FetchArgs,
-  unknown,
-  FetchBaseQueryError,
-  {},
-  FetchBaseQueryMeta
-> = async (args, api, extraOptions) => {
-  let result = await baseQuery(args, api, extraOptions);
-  if (result.error) {
-    if (result.error.status === 401) {
-      // Handle token refresh logic here...
-    } else if (result.error.status === 500) {
-      // Log and handle server errors
-      console.error('Internal Server Error:', result.error);
-    } else if (result.error.status === 'PARSING_ERROR') {
-      // Handle JSON parsing errors
-      console.error('JSON Parse Error:', result.error);
-    }
-  }
 
-  return result;
-};
-
-export { baseQuery, baseQueryWithReauth };
+export { baseQuery };

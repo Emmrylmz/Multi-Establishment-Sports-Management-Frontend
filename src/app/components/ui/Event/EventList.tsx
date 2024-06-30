@@ -6,7 +6,7 @@ import { RootState } from "../../../../../store";
 import { getAuthUser } from '../../../../features/auth/auth.slice';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase } from '@react-navigation/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 interface Event {
   event_id:string
   event_type: string;
@@ -64,7 +64,6 @@ interface EventListProps {
 const EventList: React.FC<EventListProps> = ({ navigation }) => {
   const user = useSelector((state: RootState) => getAuthUser(state));
   const { data, error, isLoading } = useListEventsQuery(user?.teams);
-
 
   
   if (isLoading) {

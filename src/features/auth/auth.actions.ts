@@ -1,21 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import authQueryService from '../query/authQueryService';
+import { clearAuthState } from './auth.slice';
+import axios from 'axios';
 
-export const login = createAsyncThunk(
-  'auth/login',
-  async (credentials: { username: string; password: string }, { dispatch, rejectWithValue }) => {
-    try {
-      const { data } = await authQueryService.endpoints.login.initiate(credentials).unwrap();
-      await AsyncStorage.setItem('access_token', data.access_token);
-      return data.user;
-    } catch (error) {
-      return rejectWithValue(error);
-    }
+export const handleLogout = async (api) => {
+  try {
+    await axios.get('http://192.168.1.36:80/api/auth/logout'); // Call the logout endpoint
+  } catch (error) {
+    console.error('Error during logout:', error);
   }
-);
-
-export const logout = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
-  await authQueryService.endpoints.logout.initiate();
   await AsyncStorage.removeItem('access_token');
-});
+  await AsyncStorage.removeItem('refresh_token');
+  api.dispatch(clearAuthState());
+};

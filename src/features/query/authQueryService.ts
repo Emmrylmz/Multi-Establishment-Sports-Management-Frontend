@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { baseQueryWithReauth,baseQuery } from './baseQuery';
+import { baseQuery } from './baseQuery';
 
 // Define a service using a base URL and expected endpoints
 const authQueryService = createApi({
@@ -19,6 +19,7 @@ const authQueryService = createApi({
 					if (data && data.access_token) {
 						console.log('Access Token:', data.access_token); // Confirm it's being logged correctly
 						await AsyncStorage.setItem('access_token', data.access_token);
+						await AsyncStorage.setItem('refresh_token', data.refresh_token); // Store refresh token
 					}
 				} catch (error) {
 					console.error('Error saving user data or token:', error);
@@ -34,6 +35,7 @@ const authQueryService = createApi({
 				try {
 					await queryFulfilled; // Wait for the logout to complete
 					await AsyncStorage.removeItem('access_token'); // Clear the token from storage
+					await AsyncStorage.removeItem('refresh_token'); // Clear the refresh token from storage
 				} catch (error) {
 					console.error('Error during logout:', error);
 				}
