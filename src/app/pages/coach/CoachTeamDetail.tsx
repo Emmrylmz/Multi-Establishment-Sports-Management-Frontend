@@ -1,3 +1,5 @@
+// wont gonna use this page
+
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import {AppLayout, PlayerCard} from '../../components';
@@ -71,7 +73,7 @@ function removePlayerFromAttendanceList(playerName: string) {
 	setAttendanceList((prevList) => prevList.filter((player) => player.name !== playerName));
 }
 
-	const { team_id } = route.params;
+
 	return (
 		<AppLayout>
 			{/* <Text className="text-white">CoachTeamDetail</Text>

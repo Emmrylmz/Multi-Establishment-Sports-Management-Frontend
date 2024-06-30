@@ -7,27 +7,20 @@ type PlayerCardProps = {
   name: string,
   dateOfBirth: string,
   image: ImageSourcePropType,
-  isAdded: boolean,
-  addUserToAttendanceList: (playerName: string) => void
-  removeUserFromAttendanceList: (playerName: string) => void
+  navigation?: () => void
 }
 
-const PlayerCard = ({name,dateOfBirth,image,addUserToAttendanceList,isAdded,removeUserFromAttendanceList}: PlayerCardProps) => {
-  function handleUserEvent() {
-    if(!isAdded) {
-      return addUserToAttendanceList(name)
-    }
-    return removeUserFromAttendanceList(name)
-  }
+const PlayerCard = ({name,dateOfBirth,image,navigation}: PlayerCardProps) => {
+
   return (
-    <TouchableOpacity onPress={handleUserEvent} className={`flex-row items-center justify-between w-full p-4 my-3 ${isAdded ? 'bg-dacka-green ': 'bg-dacka-dark-gray'}`}>
+    <TouchableOpacity onPress={navigation} className='flex-row items-center justify-between w-full p-4 my-3 bg-dacka-dark-gray'>
     <View>
       <View className='mb-3'>
-        <Text className={isAdded ? 'text-dacka-black' : 'text-dacka-gray'}>{playerCardTexts.athlete}</Text>
+        <Text className='text-dacka-gray'>{playerCardTexts.athlete}</Text>
         <Text className='text-white'>{name}</Text>
       </View>
       <View className='mt-3'>
-        <Text className={isAdded ? 'text-dacka-black' : 'text-dacka-gray'}>{playerCardTexts.dateOfBirth}</Text>
+        <Text className='text-dacka-gray'>{playerCardTexts.dateOfBirth}</Text>
         <Text className='text-white'>{dateOfBirth}</Text>
       </View>
     </View>

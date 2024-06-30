@@ -15,6 +15,8 @@ import EventDetailPage from '../app/pages/common/EventDetailPage';
 import PaymentPage from '../app/pages/common/PaymentPage';
 import NotificationPage from '../app/pages/common/NotificationPage';
 import EventList from '../app/components/ui/Event/EventList';
+import TeamDetailPage from '../app/pages/common/TeamDetailPage';
+import PlayerDetailPage from '../app/pages/common/PlayerDetailPage';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -24,11 +26,13 @@ function CoachHomeStackScreen() {
       <HomeStack.Screen name="CoachHomePage" component={CoachHomePage} />
       <HomeStack.Screen name="CoachTeamDetail" component={CoachTeamDetail} /> 
       <HomeStack.Screen name="CoachAddTrainingPage" component={CoachAddTrainingPage} />
+      <HomeStack.Screen name="TeamDetailPage" component={TeamDetailPage} /> 
       <HomeStack.Screen name="CoachTeamsPage" component={CoachTeamsPage} />
       <HomeStack.Screen name="EventDetailPage" component={EventDetailPage} />
       <HomeStack.Screen name="EventList" component={EventList} /> 
       <HomeStack.Screen name='PaymentPage' component={PaymentPage} />
       <HomeStack.Screen name='CoachNotificationPage' component={NotificationPage} />
+      <HomeStack.Screen name='PlayerDetailPage' component={PlayerDetailPage} />
     </HomeStack.Navigator>
   );
 }
