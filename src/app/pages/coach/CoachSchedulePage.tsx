@@ -66,7 +66,6 @@ const CoachSchedulePage: React.FC<CoachSchedulePageProps> = ({ navigation }) => 
               navigation={() => navigation.navigate('CoachAddTrainingPage', { team_id: team._id })}
             />
           ))}
-          <Text className='text-white'>Deneme</Text>
         </ScrollView>
       </View>
     </AppLayout>

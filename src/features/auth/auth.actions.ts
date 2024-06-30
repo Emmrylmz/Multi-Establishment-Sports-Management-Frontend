@@ -5,7 +5,7 @@ import axios from 'axios';
 
 export const handleLogout = async (api) => {
   try {
-    await axios.get('http://192.168.1.36:80/api/auth/logout'); // Call the logout endpoint
+    await axios.get('http://48.216.140.36/api/auth/logout'); // Call the logout endpoint
   } catch (error) {
     console.error('Error during logout:', error);
   }
