@@ -44,7 +44,7 @@ const PlayerNavigation = () => {
       initialRouteName="PlayerProgressPage"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) =>
-          TabBarIcon({ routeName: route.name, color, size }),
+          TabBarIcon({ routeName: route.name, color, size, }),
         tabBarActiveTintColor: '#A8FF97',
         tabBarInactiveTintColor: '#828282',
         headerShown: false,

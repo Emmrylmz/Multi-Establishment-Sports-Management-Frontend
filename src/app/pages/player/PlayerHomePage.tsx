@@ -65,34 +65,7 @@ const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 	const { width: screenWidth } = Dimensions.get('window');
 	const itemWidth = screenWidth * 0.8; // 80% of the screen width
 
-	const upcomingEventsList = upcomingEvents.map(event => ({
-		id: event.id,
-		component: (
-			<TouchableOpacity
-				key={event.id}
-				style={{ width: itemWidth }}
-				className='p-4 m-2 bg-white rounded-2xl'
-				onPress={() => navigation.navigate('EventDetailPage', {
-					event_id: event.id,
-					team_name: event.team_name,
-					event_name: event.title,
-					place: event.location,
-					coordinates: event.coordinates,
-					location: event.location
-				})}
-			>
-				<View className='flex-row items-center justify-between mb-1'>
-					<Text className='text-lg font-bold'>{event.title}</Text>
-					<Text>{new Date(event.date).toLocaleDateString()}</Text>
-				</View>
-				<View className='flex-row items-center justify-between mt-1'>
-					<Text>{event.location}</Text>
-					<Text>{event.time}</Text>
-				</View>
-				
-			</TouchableOpacity>
-		)
-	}));
+	const upcomingEventsList = <EventList navigation={navigation}/>
 
 	const horizontalData = [
 		{
