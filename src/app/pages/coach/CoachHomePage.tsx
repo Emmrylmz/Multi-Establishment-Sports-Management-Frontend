@@ -48,7 +48,7 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 					title="Teams"
 					icon={<FontAwesome5 name="users" color="black" size={64} />}
 					clickable={true}
-					onPress={() => navigation.navigate('CoachTeamsPage', { team_id: 1 })} // Pass a sample team id
+					onPress={() => navigation.navigate('CoachTeamsPage', { team_id: 1 })} // Pass a sample team ID
 				/>
 			),
 		},
