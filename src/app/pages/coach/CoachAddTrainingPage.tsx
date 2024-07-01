@@ -17,7 +17,7 @@ function formatDate(dateString) {
   const options = {
     weekday: 'short',  // "Thu"
     day: '2-digit',    // "04"
-    month: '2-digit',  // "06" (numeric representation of July)
+    month: '2-digit',  // "06" 
     year: 'numeric',   // "2024"
     hour: '2-digit',   // "21"
     minute: '2-digit'  // "50"
