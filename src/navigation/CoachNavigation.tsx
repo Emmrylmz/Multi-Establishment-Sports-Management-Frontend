@@ -17,6 +17,10 @@ import NotificationPage from '../app/pages/common/NotificationPage';
 import EventList from '../app/components/ui/Event/EventList';
 import TeamDetailPage from '../app/pages/common/TeamDetailPage';
 import PlayerDetailPage from '../app/pages/common/PlayerDetailPage';
+import AttendancePage from '../app/pages/common/AttendancePage';
+import CoachAttendanceTeamsListPage from '../app/pages/coach/CoachAttendanceTeamsListPage';
+import CoachAttendanceFormPage from '../app/pages/coach/CoachAttendanceFormPage';
+import CoachAttendanceEventSelectionPage from '../app/pages/coach/CoachAttendanceEventSelectionPage';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -33,6 +37,10 @@ function CoachHomeStackScreen() {
       <HomeStack.Screen name='PaymentPage' component={PaymentPage} />
       <HomeStack.Screen name='CoachNotificationPage' component={NotificationPage} />
       <HomeStack.Screen name='PlayerDetailPage' component={PlayerDetailPage} />
+      <HomeStack.Screen name='CoachAttendancePage' component={AttendancePage} />
+      <HomeStack.Screen name='CoachAttendanceTeamsListPage' component={CoachAttendanceTeamsListPage} />
+      <HomeStack.Screen name='CoachAttendanceFormPage' component={CoachAttendanceFormPage}/>
+      <HomeStack.Screen name='CoachAttendanceEventSelectionPage' component={CoachAttendanceEventSelectionPage}/>
     </HomeStack.Navigator>
   );
 }

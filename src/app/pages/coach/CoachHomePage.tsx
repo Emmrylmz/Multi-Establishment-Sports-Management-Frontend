@@ -54,14 +54,14 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 		},
 		{
 			id: 3,
-			component: <HomeWidget title="Deneme" />,
+			component: <HomeWidget title="Attendance" clickable={true} icon={<FontAwesome5 name="user-check" size={64} color="black" />} onPress={() => navigation.navigate('CoachAttendanceTeamsListPage',{userId:1})} />,
 		},
 	];
 
 	const mainData = [
 		{
 			id: 'eventList',
-			component: <EventList navigation={navigation} />,
+			component: <EventList navigation={navigation} orientation='horizontal' />,
 		},
 		{
 			id: 'horizontalList',

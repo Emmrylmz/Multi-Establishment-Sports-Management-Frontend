@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, Text, FlatList, ListRenderItem, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, FlatList, ListRenderItem, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useListEventsQuery } from '../../../../features/query/eventQueryService';
 import { RootState } from "../../../../../store";
 import { getAuthUser } from '../../../../features/auth/auth.slice';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-interface Event {
-  event_id:string
+
+type Event = {
+  event_id: string;
   event_type: string;
   place: string;
   event_date: Date;
@@ -16,15 +16,15 @@ interface Event {
   team_name: string;
 }
 
-interface TeamEvent {
+type TeamEvent = {
   team_name: string;
   events: Event[];
 }
 
-interface ApiResponse {
+type ApiResponse = {
   team_name: string;
   events: {
-    event_id:string
+    event_id: string;
     event_type: string;
     place: string;
     event_date: string;
@@ -36,7 +36,7 @@ const transformData = (data: ApiResponse[]): Event[] => {
   const transformed: TeamEvent[] = data.map((team) => ({
     team_name: team.team_name,
     events: team.events.map((event) => ({
-      event_id:event.event_id,
+      event_id: event.event_id,
       event_type: event.event_type,
       place: event.place,
       event_date: new Date(event.event_date),
@@ -59,13 +59,15 @@ const transformData = (data: ApiResponse[]): Event[] => {
 
 interface EventListProps {
   navigation: NativeStackNavigationProp<ParamListBase>;
+  orientation: 'vertical' | 'horizontal';
+  team_id: string;
 }
 
-const EventList: React.FC<EventListProps> = ({ navigation }) => {
+const EventList: React.FC<EventListProps> = ({ navigation, orientation,team_id }) => {
+  console.log('team id at event list component: ',team_id)
   const user = useSelector((state: RootState) => getAuthUser(state));
   const { data, error, isLoading } = useListEventsQuery(user?.teams);
 
-  
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
@@ -76,20 +78,13 @@ const EventList: React.FC<EventListProps> = ({ navigation }) => {
 
   const events = data ? transformData(data) : [];
 
-  console.log('data: ',data)
-
+  const handleEventPress = (event_id: string,event_type?:string) => {
+    navigation.navigate('CoachAttendanceFormPage', { event_id: event_id,team_id: team_id,event_type: event_type });
+  };
 
   const renderItem: ListRenderItem<Event> = ({ item }) => (
     <TouchableOpacity
-      onPress={() =>
-        navigation.navigate('EventDetailPage', {
-          event_id: item.event_id,  // Assuming item.id exists
-          team_name: item.team_name,
-          event_type: item.event_type,
-          // coordinates: item.coordinates, // Assuming item.coordinates exists
-          place: item.place,
-        })
-      }
+      onPress={() => handleEventPress(item.event_id)}
     >
       <View style={{ borderBottomWidth: 1, backgroundColor: 'white', borderRadius: 10, padding: 10, margin: 5 }}>
         <Text style={{ fontWeight: 'bold' }}>{item.event_date.toDateString()}</Text>
@@ -100,12 +95,33 @@ const EventList: React.FC<EventListProps> = ({ navigation }) => {
     </TouchableOpacity>
   );
 
+  if (orientation === 'vertical') {
+    return (
+      <ScrollView>
+        {events.map((event) => (
+          <TouchableOpacity
+            key={event.event_id}
+            onPress={() => handleEventPress(event.event_id,event.event_type)}
+          >
+            <View style={{ borderBottomWidth: 1, backgroundColor: 'white', borderRadius: 10, padding: 10, margin: 5 }}>
+              <Text style={{ fontWeight: 'bold' }}>{event.event_date.toDateString()}</Text>
+              <Text>{event.team_name}</Text>
+              <Text>{event.event_type} at {event.place}</Text>
+              <Text>{event.description}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    );
+  }
+
+  // Default to rendering in a FlatList (horizontal layout)
   return (
     <FlatList
       data={events}
       keyExtractor={(item) => item.event_id}
       renderItem={renderItem}
-      horizontal={true}
+      horizontal
     />
   );
 };
