@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 import eventQueryService from '../../../features/query/eventQueryService';
 import Calendar from '../../components/ui/Event/Calendar';
 import { useAuthStatus } from '../../../hooks/useAuthStatus';
+import BackgroundImage from '../../components/ui/BackgroundImage/BackgroundImage';
 
 const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 	const [refreshing, setRefreshing] = useState(false);
@@ -35,7 +36,7 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 		{
 			id: 1,
 			component: (
-				<View className="p-3 bg-white rounded-[38px] m-2">
+				<View className="p-3 bg-white rounded-[38px] my-3">
 					<Calendar />
 				</View>
 			),
@@ -53,14 +54,28 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 		},
 		{
 			id: 3,
-			component: <HomeWidget title="Attendance" clickable={true} icon={<FontAwesome5 name="user-check" size={64} color="black" />} onPress={() => navigation.navigate('CoachAttendanceTeamsListPage',{userId:1})} />,
+			component: (
+				<HomeWidget
+					title="Attendance"
+					clickable={true}
+					icon={<FontAwesome5 name="user-check" size={64} color="black" />}
+					onPress={() =>
+						navigation.navigate('CoachAttendanceTeamsListPage', { userId: 1 })
+					}
+				/>
+			),
 		},
 	];
 
 	const mainData = [
 		{
 			id: 'eventList',
-			component: <EventList navigation={navigation} orientation='horizontal' />,
+			component: (
+				<View className="my-2">
+					<Text className="text-xl text-white">Upcoming Events</Text>
+					<EventList navigation={navigation} orientation="horizontal" />
+				</View>
+			),
 		},
 		{
 			id: 'horizontalList',
@@ -119,16 +134,18 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 	];
 
 	return (
-		<AppLayout>
-			<FlatList
-				data={mainData}
-				keyExtractor={(item) => item.id}
-				renderItem={({ item }) => item.component}
-				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-				}
-			/>
-		</AppLayout>
+		<BackgroundImage>
+			<AppLayout>
+				<FlatList
+					data={mainData}
+					keyExtractor={(item) => item.id}
+					renderItem={({ item }) => item.component}
+					refreshControl={
+						<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+					}
+				/>
+			</AppLayout>
+		</BackgroundImage>
 	);
 };
 

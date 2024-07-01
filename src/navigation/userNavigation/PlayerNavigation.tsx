@@ -9,7 +9,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import EventDetailPage from '../../app/pages/common/EventDetailPage';
 import PaymentPage from '../../app/pages/common/PaymentPage';
 import PlayerHomePage from '../../app/pages/player/PlayerHomePage';
-import AttendancePage from '../../app/pages/common/AttendancePage';
+import AttendancePage from '../../app/pages/coach/AttendancePage';
 import TeamsPage from '../../app/pages/common/TeamsPage';
 import TeamDetailPage from '../../app/pages/common/TeamDetailPage';
 

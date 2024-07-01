@@ -1,14 +1,16 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { AuthPayload } from '../../../features/auth/auth.interface';
 import useLogin from '../../../hooks/useLogin';
 import AppLayout from '../../components/layout/AppLayout';
 import InputField from '../../components/ui/InputField';
 import { loginPageTexts } from '../../../utils/constants/texts';
+import { FontAwesome, Feather } from '@expo/vector-icons';
 
 const LoginPage = () => {
-	const { handleSubmit } = useLogin();
+  const { handleSubmit } = useLogin();
 
+<<<<<<< HEAD
 	const [formData, setFormData] = useState<AuthPayload>({
 		email: '',
 		password: '',
@@ -20,34 +22,69 @@ const LoginPage = () => {
 		}));
 	}
    
+=======
+  const [formData, setFormData] = useState<AuthPayload>({
+    email: '',
+    password: '',
+  });
+>>>>>>> 985a48358a1818683a015ea781b4e01cb4b8b5d4
 
-	return (
-		<AppLayout>
-			<View className='items-center justify-between flex-1 w-full h-full'>
-				<View></View>
+  function handleInputChange(name: string, text: string) {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: text,
+    }));
+  }
 
-				<View className='w-full'>
-					<InputField placeholder={loginPageTexts.emailPlaceholder} placeholderTextColor='light' keyboardType='email-address' autoCapitalize='none' handleInputChange={handleInputChange} name='email' />
+  console.log(formData);
 
-					<InputField placeholder={loginPageTexts.passwordPlaceholder} placeholderTextColor='light' autoCapitalize='none' handleInputChange={handleInputChange} name='password' secureTextEntry={true} />
+  return (
+    <AppLayout>
+      <View className="items-center justify-between flex-1 w-full h-full">
+        <View></View>
 
-					<View className='mt-5'>
-						<Text className='my-1 text-center text-white'>{loginPageTexts.forgotPassword}</Text>
-						<Text className='my-1 text-center text-white'>{loginPageTexts.reset}</Text>
-					</View>
-				</View>
+        <View className="w-full">
+          <InputField
+            placeholder={loginPageTexts.emailPlaceholder}
+            placeholderTextColor="light"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            handleInputChange={handleInputChange}
+            name="email"
+            icon={<FontAwesome name="envelope" size={24} color="#919191" />}
+          />
 
-				<View className='w-full'>
-					<TouchableOpacity
-						onPress={async () => handleSubmit(formData)}
-						className="w-full py-3 my-3 opacity-100 bg-dacka-green rounded-3xl"
-					>
-						<Text className='text-center'>{loginPageTexts.login}</Text>
-					</TouchableOpacity>
-				</View>
-			</View>
-		</AppLayout>
-	);
+          <InputField
+            placeholder={loginPageTexts.passwordPlaceholder}
+            placeholderTextColor="light"
+            autoCapitalize="none"
+            handleInputChange={handleInputChange}
+            name="password"
+            secureTextEntry={true}
+            icon={<Feather name="lock" size={24} color="#919191" />}
+          />
+
+          <View className="mt-5">
+            <Text className="my-1 text-center text-white">
+              {loginPageTexts.forgotPassword}
+            </Text>
+            <Text className="my-1 text-center text-white">
+              {loginPageTexts.reset}
+            </Text>
+          </View>
+        </View>
+
+        <View className="w-full">
+          <TouchableOpacity
+            onPress={async () => handleSubmit(formData)}
+            className="w-full py-3 my-3 opacity-100 bg-dacka-green rounded-3xl"
+          >
+            <Text className="text-center">{loginPageTexts.login}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </AppLayout>
+  );
 };
 
 export default LoginPage;

@@ -57,3 +57,4 @@ export const addUserPageTexts = {
   schoolPlaceholder: "School",
   submitButton: "Submit"
 };
+
