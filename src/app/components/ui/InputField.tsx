@@ -1,54 +1,70 @@
-import { TextInput, TouchableOpacity, View } from 'react-native'
-import { useState } from 'react'
-import { Feather } from '@expo/vector-icons'
+import { TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Feather } from '@expo/vector-icons';
 
 type InputFieldProps = {
-  placeholder: string,
-  name: string,
-  placeholderTextColor: "dark" | "light",
-  handleInputChange: (text: string, name: string) => void,
-  keyboardType?: "default" | "email-address" | "numeric" | "phone-pad" | "number-pad" | "decimal-pad" | "visible-password" | "ascii-capable" | "numbers-and-punctuation" | "url" | "name-phone-pad" | "twitter" | "web-search"
-  autoCapitalize?: "none" | "sentences" | "words" | "characters"
-  additionalStyles?: string,
-  secureTextEntry?: boolean | undefined,
-}
+  placeholder: string;
+  name: string;
+  placeholderTextColor: 'dark' | 'light';
+  handleInputChange: (name: string, text: string) => void;
+  keyboardType?:
+    | 'default'
+    | 'email-address'
+    | 'numeric'
+    | 'phone-pad'
+    | 'number-pad'
+    | 'decimal-pad'
+    | 'visible-password'
+    | 'ascii-capable'
+    | 'numbers-and-punctuation'
+    | 'url'
+    | 'name-phone-pad'
+    | 'twitter'
+    | 'web-search';
+  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
+  additionalStyles?: string;
+  secureTextEntry?: boolean;
+  icon?: React.ReactNode;
+};
 
-const InputField = ({placeholder, placeholderTextColor, handleInputChange, name, keyboardType, autoCapitalize, additionalStyles, secureTextEntry}: InputFieldProps) => {
+const InputField: React.FC<InputFieldProps> = ({
+  placeholder,
+  placeholderTextColor,
+  handleInputChange,
+  name,
+  keyboardType = 'default',
+  autoCapitalize = 'none',
+  additionalStyles = '',
+  secureTextEntry = false,
+  icon,
+}) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const placeholderColor = placeholderTextColor === 'light' ? '#919191' : '#242424';
   const eyeIcon = showPassword ? 'eye-off' : 'eye';
 
-  if(secureTextEntry) {
-    return(
-    <View className='relative w-full py-2'>
-      <TextInput
-        keyboardType={keyboardType || 'default'}
-        autoCorrect={false}
-        autoCapitalize={autoCapitalize || 'none'}
-        placeholder={placeholder}
-        secureTextEntry={showPassword ? false : true}
-        placeholderTextColor={placeholderColor}
-        onChangeText={(text) => handleInputChange(text, name)}
-        className={` text-dacka-gray ${additionalStyles}`}
-      />
-      <TouchableOpacity className='absolute right-0 top-1' onPress={() => setShowPassword((prevState) => !prevState)}>
-      <Feather name={eyeIcon} size={24} color="#919191" />
-      </TouchableOpacity>
-    </View>
-  )
-  }
   return (
-    <TextInput
-      keyboardType={keyboardType || 'default'}
+    <View className={`relative w-full bg-white opacity-80 rounded-xl focus:opacity-100 h-12 flex-row items-center ${additionalStyles}`}>
+      {icon && <View className="ml-3">{icon}</View>}
+      <TextInput
+        keyboardType={keyboardType}
         autoCorrect={false}
-        autoCapitalize={autoCapitalize || 'none'}
+        autoCapitalize={autoCapitalize}
         placeholder={placeholder}
+        secureTextEntry={secureTextEntry && !showPassword}
         placeholderTextColor={placeholderColor}
-        onChangeText={(text) => handleInputChange(text, name)}
-        className={` text-dacka-gray w-full  ${additionalStyles}`}
-        secureTextEntry={secureTextEntry}
+        onChangeText={(text) => handleInputChange(name, text)}
+        className=' flex-1 ml-3'
       />
-  )
-}
+      {secureTextEntry && (
+        <TouchableOpacity
+          className='absolute right-3 top-1'
+          onPress={() => setShowPassword((prevState) => !prevState)}
+        >
+          <Feather name={eyeIcon} size={24} color="#919191" />
+        </TouchableOpacity>
+      )}
+    </View>
+  );
+};
 
 export default InputField;

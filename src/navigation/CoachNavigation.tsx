@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import TabBarIcon from '../app/components/tabs/tabBarIcon';
 import CoachHomePage from '../app/pages/coach/CoachHomePage';
 import CoachSchedulePage from '../app/pages/coach/CoachSchedulePage';
-import AddUserPage from '../app/pages/common/AddUserPage';
+import AddUserPage from '../app/pages/coach/AddUserPage';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CoachTeamDetail from '../app/pages/coach/CoachTeamDetail';
@@ -17,7 +17,7 @@ import NotificationPage from '../app/pages/common/NotificationPage';
 import EventList from '../app/components/ui/Event/EventList';
 import TeamDetailPage from '../app/pages/common/TeamDetailPage';
 import PlayerDetailPage from '../app/pages/common/PlayerDetailPage';
-import AttendancePage from '../app/pages/common/AttendancePage';
+import AttendancePage from '../app/pages/coach/AttendancePage';
 import CoachAttendanceTeamsListPage from '../app/pages/coach/CoachAttendanceTeamsListPage';
 import CoachAttendanceFormPage from '../app/pages/coach/CoachAttendanceFormPage';
 import CoachAttendanceEventSelectionPage from '../app/pages/coach/CoachAttendanceEventSelectionPage';
