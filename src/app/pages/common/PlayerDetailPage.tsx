@@ -15,8 +15,6 @@ const PlayerDetailPage = ({ route }) => {
     return <Text>Error fetching player details: {error.message}</Text>;
   }
 
-  console.log(userInfo);
-
   return (
     <AppLayout>
       <ProfileHeader isProfilePage={false} />

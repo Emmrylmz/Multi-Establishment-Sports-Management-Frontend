@@ -19,7 +19,6 @@ const LoginPage = () => {
 			[name]: text,
 		}));
 	}
-	console.log(formData)
    
 
 	return (

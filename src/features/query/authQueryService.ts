@@ -17,7 +17,6 @@ const authQueryService = createApi({
 				const { data } = await queryFulfilled;
 				try {
 					if (data && data.access_token) {
-						console.log('Access Token:', data.access_token); // Confirm it's being logged correctly
 						await AsyncStorage.setItem('access_token', data.access_token);
 						await AsyncStorage.setItem('refresh_token', data.refresh_token); // Store refresh token
 					}

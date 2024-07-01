@@ -5,33 +5,38 @@ import PlayerProgressPage from '../../app/pages/player/PlayerProgressPage';
 import PlayerPaymentPage from '../../app/pages/player/PlayerPaymentPage';
 import ProfilePage from '../../app/pages/common/ProfilePage';
 // import PushToken from '../../app/pages/PushToken/PushToken';
-import CoachHomePage from '../../app/pages/coach/CoachHomePage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import EventDetailPage from '../../app/pages/common/EventDetailPage';
-import EventList from '../../app/components/ui/Event/EventList';
 import PaymentPage from '../../app/pages/common/PaymentPage';
-import { navigationRef } from '../rootNavigation';
 import PlayerHomePage from '../../app/pages/player/PlayerHomePage';
 import AttendancePage from '../../app/pages/common/AttendancePage';
 import TeamsPage from '../../app/pages/common/TeamsPage';
 import TeamDetailPage from '../../app/pages/common/TeamDetailPage';
-import TeamCreationPage from '../../app/pages/common/TeamCreationPage';
 
 
 const SStack = createNativeStackNavigator();
 
 function PlayerHomeStackScreen() {
   return (
-    <SStack.Navigator initialRouteName='PlayerHomePage' screenOptions={{ headerShown: false }}>
-      <SStack.Screen name="PlayerHomePage" component={PlayerHomePage} />
-      <SStack.Screen name="EventDetailPage" component={EventDetailPage} />
-      <SStack.Screen name="EventList" component={EventList} /> 
-      <SStack.Screen name='PaymentPage' component={PaymentPage} />
-      <SStack.Screen name='AttendancePage' component={AttendancePage} />
-      <SStack.Screen name='TeamsPage' component={TeamsPage} />
-      <SStack.Screen name='TeamDetailPage' component={TeamDetailPage} />
-      <SStack.Screen name='TeamCreationPage' component={TeamCreationPage} /> 
-      {/* move this line to CoachHOmeStackScreen when its done */}
+    <SStack.Navigator 
+      initialRouteName='PlayerHomePage'
+      screenOptions={{
+        headerBackTitleVisible: true,
+        headerBackTitle: 'Back',
+        headerTintColor: '#fff',
+        headerStyle: {
+          backgroundColor: '#101010',
+        },
+        headerTitleStyle: {
+          color: '#fff',
+        },
+      }}>
+      <SStack.Screen name="PlayerHomePage" options={{title: 'Home Page'}} component={PlayerHomePage} />
+      <SStack.Screen name="EventDetailPage" options={{title: 'Event Detail'}} component={EventDetailPage} />
+      <SStack.Screen name='PaymentPage' options={{title: 'Payment History'}} component={PaymentPage} />
+      <SStack.Screen name='AttendancePage' options={{title: 'Attendance Page'}} component={AttendancePage} />
+      <SStack.Screen name='TeamsPage' options={{title: 'All Teams'}} component={TeamsPage} />
+      <SStack.Screen name='TeamDetailPage' options={{title: 'Team Detail'}} component={TeamDetailPage} />
     </SStack.Navigator>
   );
 }

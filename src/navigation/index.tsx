@@ -18,7 +18,6 @@ const Stack = createNativeStackNavigator();
 export default function AppNavigator() {
 	const { expoPushToken, notification } = usePushNotifications()
 	const { isLoading, user } = useAuthStatus();
-	console.log(notification?.request.content.data)
 	if (isLoading || user === undefined) { // Ensure we handle the case where user is not yet defined
 		return (
 		  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

@@ -82,7 +82,6 @@ export const usePushNotifications = (): PushNotificationState => {
       });
 
       if (lastNotificationResponse) {
-        console.log(lastNotificationResponse)
         const toNavigate = lastNotificationResponse.notification.request.content.categoryIdentifier;
         const data = lastNotificationResponse.notification.request.content.data;
         navigate(toNavigate, data);

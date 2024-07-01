@@ -51,7 +51,6 @@ const CoachSchedulePage: React.FC<CoachSchedulePageProps> = ({ navigation }) => 
     },
   ]
 
-  console.log(data)
 
   return (
     <AppLayout>

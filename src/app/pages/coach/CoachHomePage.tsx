@@ -20,7 +20,6 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 	const [refreshing, setRefreshing] = useState(false);
 	const dispatch = useDispatch();
 	const { user } = useAuthStatus();
-	console.log(user);
 	const onRefresh = useCallback(async () => {
 		setRefreshing(true);
 		try {

@@ -63,8 +63,7 @@ interface EventListProps {
   team_id: string;
 }
 
-const EventList: React.FC<EventListProps> = ({ navigation, orientation,team_id }) => {
-  console.log('team id at event list component: ',team_id)
+const EventList: React.FC<EventListProps> = ({ navigation, orientation, team_id }) => {
   const user = useSelector((state: RootState) => getAuthUser(state));
   const { data, error, isLoading } = useListEventsQuery(user?.teams);
 
@@ -78,15 +77,21 @@ const EventList: React.FC<EventListProps> = ({ navigation, orientation,team_id }
 
   const events = data ? transformData(data) : [];
 
-  const handleEventPress = (event_id: string,event_type?:string) => {
-    navigation.navigate('CoachAttendanceFormPage', { event_id: event_id,team_id: team_id,event_type: event_type });
+  const handleEventPress = (event_id: string, event_type?: string,oriantation?:string,place?:string,team_name?:string,description?:string) => {
+    if(oriantation === 'vertical'){
+      navigation.navigate('CoachAttendanceFormPage', { event_id: event_id, team_id: team_id, event_type: event_type, description: description});
+      return;
+    }else{
+      navigation.navigate('EventDetailPage', { event_id: event_id, coordinates: { latitude: 0, longitude: 0 },location:place,team_name:team_name,event_name:description})
+    }
   };
 
   const renderItem: ListRenderItem<Event> = ({ item }) => (
     <TouchableOpacity
-      onPress={() => handleEventPress(item.event_id)}
+      onPress={() => handleEventPress(item.event_id, item.event_type,'horizontal',item.place,item.team_name,item.description)}
     >
-      <View style={{ borderBottomWidth: 1, backgroundColor: 'white', borderRadius: 10, padding: 10, margin: 5 }}>
+      <View className='p-3 m-1 bg-white border-b rounded-lg'
+        style={{width: orientation === 'horizontal' ? 300 : 'auto' }}>
         <Text style={{ fontWeight: 'bold' }}>{item.event_date.toDateString()}</Text>
         <Text>{item.team_name}</Text>
         <Text>{item.event_type} at {item.place}</Text>
@@ -101,10 +106,10 @@ const EventList: React.FC<EventListProps> = ({ navigation, orientation,team_id }
         {events.map((event) => (
           <TouchableOpacity
             key={event.event_id}
-            onPress={() => handleEventPress(event.event_id,event.event_type)}
+            onPress={() => handleEventPress(event.event_id, event.event_type)}
           >
-            <View style={{ borderBottomWidth: 1, backgroundColor: 'white', borderRadius: 10, padding: 10, margin: 5 }}>
-              <Text style={{ fontWeight: 'bold' }}>{event.event_date.toDateString()}</Text>
+            <View className='p-3 m-1 bg-white border-b rounded-lg '>
+              <Text className='font-bold'>{event.event_date.toDateString()}</Text>
               <Text>{event.team_name}</Text>
               <Text>{event.event_type} at {event.place}</Text>
               <Text>{event.description}</Text>
