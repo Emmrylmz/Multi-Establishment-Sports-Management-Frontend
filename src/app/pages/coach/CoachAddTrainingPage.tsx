@@ -35,8 +35,11 @@ const CoachAddTrainingPage = ({ route }) => {
 	const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
 	const options = [
-		{ id: 1, label: 'Training' },
+		{ id: 1, label: 'Team Training' },
 		{ id: 2, label: 'Game' },
+		{ id: 3, label: 'Meeting' },
+		{ id: 10, label: "weight lifting"},
+
 	];
 
 	const handleInputChange = (name, value) => {
@@ -86,12 +89,10 @@ const CoachAddTrainingPage = ({ route }) => {
 
 	return (
 		<AppLayout>
-			<ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }} className="py-3">
-				<View className="pt-5">
-					<Text className="text-2xl font-bold">Create An Event</Text>
-				</View>
-				<View className="h-1/6 justify-center">
-					<View className="flex-row justify-between">
+			<ScrollView>
+				<View className="">
+					<Text className="mx-2 font-bold text-white">Categories</Text>
+					<View className="flex-row flex-wrap py-1">
 						{options.map((option) => (
 							<FormOption
 								key={option.id}
@@ -105,29 +106,15 @@ const CoachAddTrainingPage = ({ route }) => {
 						))}
 					</View>
 				</View>
-				<View className="h-1/4 justify-between p-2">
-					<View className="h-2/5">
-						<InputField
-							handleInputChange={handleInputChange}
-							name="description"
-							value={trainingForm.description}
-							placeholder="Enter a description..."
-							additionalStyles=""
-							placeholderTextColor="light"
-						/>
-					</View>
-					<View className="h-2/5">
 						<InputField
 							handleInputChange={handleInputChange}
 							name="place"
 							value={trainingForm.place}
 							placeholder="Enter a location..."
-							additionalStyles=""
+							additionalStyles='py-4 h-12 my-4'
 							placeholderTextColor="light"
 						/>
-					</View>
-				</View>
-				<View className="h-1/6 justify-between">
+				<View className='h-32'>
 					<DateTimeSelection
 						label="Starts"
 						date={trainingForm.start_date}
@@ -143,20 +130,21 @@ const CoachAddTrainingPage = ({ route }) => {
 						onTimeChange={(time) => handleInputChange('end_time', time)}
 					/>
 				</View>
-				<View className="h-1/6">
-					<InputField
-						handleInputChange={handleInputChange}
-						name="creator_id"
-						placeholder="Enter a description..."
-						additionalStyles="items-start p-2"
-						placeholderTextColor="light"
-					/>
-				</View>
+
+					<View className="w-full h-auto">
+						<InputField
+							handleInputChange={handleInputChange}
+							name="creator_id"
+							placeholder="Enter a description..."
+							additionalStyles="items-start py-4 my-3"
+							placeholderTextColor="light"
+						/>
+					</View>
 				<TouchableOpacity
-					className="bg-dacka-green p-3 rounded-xl items-center"
+					className="items-center p-3 bg-dacka-green rounded-xl"
 					onPress={postForm}
 				>
-					<Text className="text-white font-bold">Submit</Text>
+					<Text className="font-bold text-white">Submit</Text>
 				</TouchableOpacity>
 			</ScrollView>
 		</AppLayout>

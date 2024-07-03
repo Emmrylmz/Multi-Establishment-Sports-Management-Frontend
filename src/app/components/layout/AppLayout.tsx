@@ -13,7 +13,7 @@ type AuthLayoutProps = {
 const AppLayout = ({ children }: AuthLayoutProps) => {
 	const user = useSelector((state: RootState) => getAuthUser(state));
 	return (
-			<SafeAreaView className="w-full h-full px-5 bg-transparent ">
+			<SafeAreaView className="w-full h-full px-5 bg-dacka-black ">
 				{children}
 			</SafeAreaView>
 	);

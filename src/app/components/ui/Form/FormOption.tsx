@@ -15,7 +15,7 @@ const FormOption: React.FC<FormOptionProps> = ({
 	onSelect,
 }) => {
 	return (
-		<View className="flex-1 p-2">
+		<View className="m-2">
 			<TouchableOpacity
 				onPress={onSelect}
 				className={
