@@ -4,21 +4,19 @@ import AppNavigator from './src/navigation';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import DataFetcher from './src/app/components/utility/DataFetcher';
-import BackgroundImage from './src/app/components/ui/BackgroundImage/BackgroundImage';
-
-// import { StatusBar } from 'expo-status-bar';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function App() {
 	return (
-		<Provider store={store}>
-			<BackgroundImage>
+		<GestureHandlerRootView style={{ flex: 1 }}>
+			<Provider store={store}>
 				<AppNavigator />
 				{/* <StatusBar style="light" /> //this comes from expo */}
 				<DataFetcher />
 				<StatusBar barStyle="light-content" />
 				{/* this comes from react-native */}
-			</BackgroundImage>
-			{/* Both status bars are the same,couldn't decide on using one or the other */}
-		</Provider>
+				{/* Both status bars are the same,couldn't decide on using one or the other */}
+			</Provider>
+		</GestureHandlerRootView>
 	);
 }

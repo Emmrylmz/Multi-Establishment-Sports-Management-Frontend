@@ -5,7 +5,7 @@ import IconBar from './profileComponents/IconBar';
 import ProfileHeader from './profileComponents/ProfileHeader';
 import UserInfoItem from './profileComponents/UserInfoItem';
 import TabBarIcon from './tabs/tabBarIcon';
-import InputField from './ui/InputField';
+import InputField from './ui/Form/InputField';
 import PlayerCard from './ui/PlayerCard';
 import ProfileTextFields from './ui/ProfileTextFields';
 import TeamCard from './ui/TeamCard';

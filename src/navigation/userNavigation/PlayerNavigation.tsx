@@ -12,6 +12,7 @@ import PlayerHomePage from '../../app/pages/player/PlayerHomePage';
 import AttendancePage from '../../app/pages/coach/AttendancePage';
 import TeamsPage from '../../app/pages/common/TeamsPage';
 import TeamDetailPage from '../../app/pages/common/TeamDetailPage';
+import PushToken from '../../app/pages/PushToken/PushToken';
 
 
 const SStack = createNativeStackNavigator();
@@ -74,11 +75,11 @@ const PlayerNavigation = () => {
         component={ProfilePage}
         options={{ title: 'Profile' }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="PushNotifications"
         component={PushToken}
         options={{ title: 'Notifications' }}
-      /> */}
+      />
     </Tab.Navigator>
   );
 };

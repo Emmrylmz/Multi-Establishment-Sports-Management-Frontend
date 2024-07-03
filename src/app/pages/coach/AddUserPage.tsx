@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import AppLayout from '../../components/layout/AppLayout';
-import InputField from '../../components/ui/InputField';
+import InputField from '../../components/ui/Form/InputField';
 import { addUserPageTexts } from '../../../utils/constants/texts';
 import { FontAwesome, Feather, MaterialIcons } from '@expo/vector-icons';
 

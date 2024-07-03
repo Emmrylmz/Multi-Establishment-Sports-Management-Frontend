@@ -134,10 +134,10 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 	];
 
 	return (
-		<BackgroundImage>
 			<AppLayout>
 				<FlatList
 					data={mainData}
+					showsVerticalScrollIndicator={false}
 					keyExtractor={(item) => item.id}
 					renderItem={({ item }) => item.component}
 					refreshControl={
@@ -145,7 +145,6 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 					}
 				/>
 			</AppLayout>
-		</BackgroundImage>
 	);
 };
 

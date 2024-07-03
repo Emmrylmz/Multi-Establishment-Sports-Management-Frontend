@@ -3,14 +3,13 @@ import React, { useState } from 'react';
 import { AuthPayload } from '../../../features/auth/auth.interface';
 import useLogin from '../../../hooks/useLogin';
 import AppLayout from '../../components/layout/AppLayout';
-import InputField from '../../components/ui/InputField';
+import InputField from '../../components/ui/Form/InputField';
 import { loginPageTexts } from '../../../utils/constants/texts';
 import { FontAwesome, Feather } from '@expo/vector-icons';
 
 const LoginPage = () => {
   const { handleSubmit } = useLogin();
 
-<<<<<<< HEAD
 	const [formData, setFormData] = useState<AuthPayload>({
 		email: '',
 		password: '',
@@ -22,12 +21,6 @@ const LoginPage = () => {
 		}));
 	}
    
-=======
-  const [formData, setFormData] = useState<AuthPayload>({
-    email: '',
-    password: '',
-  });
->>>>>>> 985a48358a1818683a015ea781b4e01cb4b8b5d4
 
   function handleInputChange(name: string, text: string) {
     setFormData((prev) => ({

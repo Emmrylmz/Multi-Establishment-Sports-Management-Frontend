@@ -90,7 +90,7 @@ const EventList: React.FC<EventListProps> = ({ navigation, orientation, team_id 
     <TouchableOpacity
       onPress={() => handleEventPress(item.event_id, item.event_type,'horizontal',item.place,item.team_name,item.description)}
     >
-      <View className='p-3 m-1 bg-white border-b rounded-lg'
+      <View className='p-3 m-1 bg-white rounded-lg'
         style={{width: orientation === 'horizontal' ? 300 : 'auto' }}>
         <Text style={{ fontWeight: 'bold' }}>{item.event_date.toDateString()}</Text>
         <Text>{item.team_name}</Text>
@@ -124,6 +124,7 @@ const EventList: React.FC<EventListProps> = ({ navigation, orientation, team_id 
   return (
     <FlatList
       data={events}
+      showsHorizontalScrollIndicator={false}
       keyExtractor={(item) => item.event_id}
       renderItem={renderItem}
       horizontal
