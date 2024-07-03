@@ -43,7 +43,7 @@ const InputField: React.FC<InputFieldProps> = ({
   const eyeIcon = showPassword ? 'eye-off' : 'eye';
 
   return (
-    <View className={`relative w-full bg-white opacity-80 rounded-lg focus:opacity-100 h-12 flex-row items-center ${additionalStyles}`}>
+    <View className={`relative w-full flex-1 bg-white opacity-80 rounded-lg focus:opacity-100 flex-row items-center ${additionalStyles}`}>
       {icon && <View className="ml-3">{icon}</View>}
       <TextInput
         keyboardType={keyboardType}
@@ -57,7 +57,7 @@ const InputField: React.FC<InputFieldProps> = ({
       />
       {secureTextEntry && (
         <TouchableOpacity
-          className='absolute right-3 top-1'
+          className='absolute right-3'
           onPress={() => setShowPassword((prevState) => !prevState)}
         >
           <Feather name={eyeIcon} size={24} color="#919191" />
