@@ -13,7 +13,6 @@ export default function App() {
 				<AppNavigator />
 				{/* <StatusBar style="light" /> //this comes from expo */}
 				<DataFetcher />
-				<StatusBar barStyle="light-content" />
 				{/* this comes from react-native */}
 				{/* Both status bars are the same,couldn't decide on using one or the other */}
 			</Provider>

@@ -6,7 +6,7 @@ import { RootState } from "../../../../../store";
 import { getAuthUser } from '../../../../features/auth/auth.slice';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase } from '@react-navigation/native';
-import { parseISO } from 'date-fns'; // Import parseISO for robust date parsing
+import { parseISO } from 'date-fns';
 
 type Event = {
   event_id: string;
@@ -16,11 +16,7 @@ type Event = {
   end_datetime: Date;
   description: string;
   team_name: string;
-}
-
-type TeamEvent = {
-  team_name: string;
-  events: Event[];
+  team_id:string
 }
 
 type ApiResponse = {
@@ -32,38 +28,26 @@ type ApiResponse = {
     start_datetime: string;
     end_datetime: string;
     description: string;
+    team_id:string
   }[];
 }
 
 const transformData = (data: ApiResponse[]): Event[] => {
-  const transformed: TeamEvent[] = data.map((team) => ({
+  const transformed = data.map((team) => ({
     team_name: team.team_name,
-    events: team.events.map((event) => {
-      try {
-        return {
-          event_id: event.event_id,
-          event_type: event.event_type,
-          place: event.place,
-          start_datetime: event.start_datetime ? parseISO(event.start_datetime) : new Date(),
-          end_datetime: event.end_datetime ? parseISO(event.end_datetime) : new Date(),
-          description: event.description,
-        };
-      } catch (error) {
-        console.error('Error parsing date:', error, event);
-        return null;
-      }
-    }).filter(event => event !== null), // Filter out null events
+    events: team.events.map((event) => ({
+      event_id: event.event_id,
+      event_type: event.event_type,
+      place: event.place,
+      start_datetime: event.start_datetime ? parseISO(event.start_datetime) : new Date(),
+      end_datetime: event.end_datetime ? parseISO(event.end_datetime) : new Date(),
+      description: event.description,
+      team_name: team.team_name,
+      team_id:team.team_id
+    })).filter(event => event.start_datetime && event.end_datetime), // Filter out events with invalid dates
   }));
 
-  // Flatten the events and sort by start datetime
-  const flattenedEvents = transformed.flatMap((team) =>
-    team.events.map((event) => ({
-      ...event,
-      team_name: team.team_name,
-    }))
-  );
-
-  return flattenedEvents.sort(
+  return transformed.flatMap((team) => team.events).sort(
     (a, b) => a.start_datetime.getTime() - b.start_datetime.getTime()
   );
 };
@@ -71,10 +55,9 @@ const transformData = (data: ApiResponse[]): Event[] => {
 interface EventListProps {
   navigation: NativeStackNavigationProp<ParamListBase>;
   orientation: 'vertical' | 'horizontal';
-  team_id: string;
 }
 
-const EventList: React.FC<EventListProps> = ({ navigation, orientation, team_id }) => {
+const EventList: React.FC<EventListProps> = ({ navigation, orientation }) => {
   const user = useSelector((state: RootState) => getAuthUser(state));
   const { data, error, isLoading } = useListEventsQuery(user?.teams);
 
@@ -88,36 +71,40 @@ const EventList: React.FC<EventListProps> = ({ navigation, orientation, team_id 
 
   const events = data ? transformData(data) : [];
 
-  const handleEventPress = (event_id: string, event_type?: string, place?: string, team_name?: string, description?: string) => {
-    if (orientation === 'vertical') {
-      navigation.navigate('CoachAttendanceFormPage', { event_id: event_id, team_id: team_id, event_type: event_type, description: description });
-    } else {
-      navigation.navigate('EventDetailPage', { event_id: event_id, coordinates: { latitude: 0, longitude: 0 }, location: place, team_name: team_name, event_name: description });
-    }
+  const handleEventPress = (event: Event) => {
+    navigation.navigate('EventDetailPage', {
+      event_id: event.event_id,
+      coordinates: { latitude: 0, longitude: 0 }, // Pass actual coordinates if available
+      place: event.place,
+      team_name: event.team_name,
+      event_name: event.description,
+      team_id:event.team_id,
+      event_type: event.event_type,
+      start_datetime: event.start_datetime.toDateString(),
+    });
   };
 
   const renderItem: ListRenderItem<Event> = ({ item }) => (
     <TouchableOpacity
-      onPress={() => handleEventPress(item.event_id, item.event_type, item.place, item.team_name, item.description)}
+      onPress={() => handleEventPress(item)}
+      className="bg-white p-4 m-2 rounded-lg shadow-md"
+      style={{ width: orientation === 'horizontal' ? 300 : 'auto' }}
     >
-      <View className='p-3 m-1 bg-white rounded-lg'
-        style={{ width: orientation === 'horizontal' ? 300 : 'auto' }}>
-        <Text style={{ fontWeight: 'bold' }}>{item.start_datetime.toDateString()}</Text>
-        <Text>{item.team_name}</Text>
-        <Text>{item.event_type} at {item.place}</Text>
-        <Text>{item.description}</Text>
-      </View>
+      <Text className="font-bold">{item.start_datetime.toDateString()}</Text>
+      <Text>{item.team_name}</Text>
+      <Text>{item.event_type} at {item.place}</Text>
+      <Text className="text-gray-500">{item.description}</Text>
     </TouchableOpacity>
   );
 
   return (
     <FlatList
       data={events}
-      showsHorizontalScrollIndicator={orientation === 'horizontal'}
-      showsVerticalScrollIndicator={orientation === 'vertical'}
       keyExtractor={(item) => item.event_id}
       renderItem={renderItem}
       horizontal={orientation === 'horizontal'}
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={orientation === 'vertical'}
     />
   );
 };

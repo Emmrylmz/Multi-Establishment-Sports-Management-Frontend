@@ -50,9 +50,9 @@ const AddUserPage = () => {
 	return (
 		<AppLayout>
 			<View className="flex-1 justify-center items-center">
-				<View className="w-full rounded-2xl h-5/6 overflow-hidden bg-dacka-green">
+				<View className="w-full rounded-2xl h-5/6 overflow-hidden  bg-dacka-green">
 					<BackgroundImage additionalStyles="rounded-2xl">
-						<View className="p-4">
+						<View className="p-4 pt-10">
 							<Text className="text-3xl text-white">{addUserPageTexts.addUser}</Text>
 							<ScrollView 
 								contentContainerStyle={{ flexGrow: 1 }}
@@ -61,7 +61,7 @@ const AddUserPage = () => {
 								className="shadow-xl"
 							>
 								{Object.keys(form).map((key) => (
-									<View key={key} className="h-14 mt-2">
+									<View key={key} className="h-14 mt-5">
 										<InputField
 											name={key}
 											placeholder={addUserPageTexts[`${key}Placeholder`]}
@@ -81,7 +81,7 @@ const AddUserPage = () => {
 									</View>
 								))}
 							</ScrollView>
-							<View className="flex-row justify-end mt-4">
+							<View className="flex-row justify-end mt-4 ">
 								<TouchableOpacity className="px-4 py-2 rounded-xl bg-dacka-gray">
 									<Text className="text-base text-white">{addUserPageTexts.submitButton}</Text>
 								</TouchableOpacity>
