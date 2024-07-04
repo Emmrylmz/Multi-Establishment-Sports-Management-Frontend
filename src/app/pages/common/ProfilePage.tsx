@@ -1,25 +1,29 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../../store';
 import { getAuthUser } from '../../../features/auth/auth.slice';
-import { View } from 'react-native';
-import ProfileHeader from '../../components/profileComponents/ProfileHeader';
-import AccountInfo from '../../components/profileComponents/AccountInfo';
-import AppLayout from '../../components/layout/AppLayout';
-import useLogin from '../../../hooks/useLogin';
+import ProfileContainer from '../../components/profile/ProfileContainer';
+import { useGetUserInfoQuery } from '../../../features/query/userInfoQueryService';
+import { Text, View } from 'react-native';
+import { ProfileHeader } from '../../components';
 
 const ProfilePage: React.FC = () => {
 	const user = useSelector((state: RootState) => getAuthUser(state));
+	const { data: UserInfo, isLoading } = useGetUserInfoQuery(user?._id);
 
-	
+	console.log(user._id);
+	if (isLoading) {
+		return <Text>Loading...</Text>;
+	}
+
+	if (!UserInfo) {
+		return <Text>No user information available</Text>;
+	}
 
 	return (
-		<AppLayout>
-			<ProfileHeader isProfilePage={true} />
-			<View className='flex-1 w-10/12 mx-auto rounded-3xl bg-dacka-dark-gray'>
-				<AccountInfo user={user} />
-			</View>
-		</AppLayout>
+		<>
+			<ProfileContainer user={UserInfo} />
+		</>
 	);
 };
 
