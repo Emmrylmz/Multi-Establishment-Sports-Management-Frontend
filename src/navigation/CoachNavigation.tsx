@@ -20,6 +20,7 @@ import CoachAttendanceTeamsListPage from '../app/pages/coach/CoachAttendanceTeam
 import CoachAttendanceFormPage from '../app/pages/coach/CoachAttendanceFormPage';
 import CoachAttendanceEventSelectionPage from '../app/pages/coach/CoachAttendanceEventSelectionPage';
 import TeamCreationPage from '../app/pages/common/TeamCreationPage';
+import ProfileContainer from '../app/components/profile/ProfileContainer';
 
 const HomeStack = createNativeStackNavigator();
 function CoachHomeStackScreen() {
