@@ -59,6 +59,13 @@ const eventQueryService = createApi({
         body: attendanceForm,
       }),
     }),
+    fetchAttendancesByEventId: builder.query({
+      query: (event_id:string) => ({
+        url: `/events/fetch_attendances_for_event`,
+        method: 'POST',
+        body: {event_id: event_id},
+      }),
+    }),
     // Define other endpoints here
   }),
 });
@@ -69,7 +76,7 @@ export const {
   useGetEventQuery,
   useUpdateEventMutation,
   useDeleteEventMutation,
-  useAddAttendancesToEventMutation
+  useAddAttendancesToEventMutation,useFetchAttendancesByEventIdQuery,
 } = eventQueryService;
 
 export const selectListEventsResult = eventQueryService.endpoints.listEvents.select;

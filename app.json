@@ -3,9 +3,9 @@
 		"name": "expo-react-native-w-tailwind",
 		"slug": "expo-react-native-w-tailwind",
 		"version": "1.0.0",
+		"runtimeVersion": "1.0.0", // Add this line
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
-		"userInterfaceStyle": "light",
 		"splash": {
 			"image": "./assets/splash.png",
 			"resizeMode": "contain",
