@@ -1,9 +1,10 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import AppLayout from '../../components/layout/AppLayout';
 import InputField from '../../components/ui/Form/InputField';
 import { addUserPageTexts } from '../../../utils/constants/texts';
 import { FontAwesome, Feather, MaterialIcons } from '@expo/vector-icons';
+import BackgroundImage from '../../components/ui/BackgroundImage/BackgroundImage';
 
 const AddUserPage = () => {
 	type AddUserForm = {
@@ -48,41 +49,45 @@ const AddUserPage = () => {
 
 	return (
 		<AppLayout>
-			<View className=" flex-1 justify-center ">
-				<View className="w-full bg-dacka-gray  rounded-xl  p-4 ">
-					<Text className="mb-4 text-3xl text-left text-white">
-						{addUserPageTexts.addUser}
-					</Text>
-					<View className="h-4/6">
-						{Object.keys(form).map((key) => (
-							<View className="h-1/5">
-								<InputField
-									key={key}
-									name={key}
-									placeholder={addUserPageTexts[`${key}Placeholder`]}
-									placeholderTextColor="light"
-									additionalStyles="border-b my-2 border-dacka-gray p-1"
-									keyboardType={
-										key === 'email'
-											? 'email-address'
-											: key === 'phone'
-												? 'phone-pad'
-												: 'default'
-									}
-									secureTextEntry={key === 'password'}
-									handleInputChange={handleInputChange}
-									icon={fieldIcons[key as keyof AddUserForm]}
-								/>
+			<View className="flex-1 justify-center items-center">
+				<View className="w-full rounded-2xl h-5/6 overflow-hidden bg-dacka-green">
+					<BackgroundImage additionalStyles="rounded-2xl">
+						<View className="p-4">
+							<Text className="text-3xl text-white">{addUserPageTexts.addUser}</Text>
+							<ScrollView 
+								contentContainerStyle={{ flexGrow: 1 }}
+								style={{ maxHeight: '85%' }} 
+								showsVerticalScrollIndicator={false}
+								className="shadow-xl"
+							>
+								{Object.keys(form).map((key) => (
+									<View key={key} className="h-14 mt-2">
+										<InputField
+											name={key}
+											placeholder={addUserPageTexts[`${key}Placeholder`]}
+											placeholderTextColor="light"
+											additionalStyles="border-b border-dacka-gray p-1"
+											keyboardType={
+												key === 'email'
+													? 'email-address'
+													: key === 'phone'
+													? 'phone-pad'
+													: 'default'
+											}
+											secureTextEntry={key === 'password'}
+											handleInputChange={handleInputChange}
+											icon={fieldIcons[key as keyof AddUserForm]}
+										/>
+									</View>
+								))}
+							</ScrollView>
+							<View className="flex-row justify-end mt-4">
+								<TouchableOpacity className="px-4 py-2 rounded-xl bg-dacka-gray">
+									<Text className="text-base text-white">{addUserPageTexts.submitButton}</Text>
+								</TouchableOpacity>
 							</View>
-						))}
-					</View>
-					<View className="flex-row justify-end w-full px-4">
-						<TouchableOpacity className="px-4 py-2 rounded-xl bg-dacka-gray">
-							<Text className="text-base text-white">
-								{addUserPageTexts.submitButton}
-							</Text>
-						</TouchableOpacity>
-					</View>
+						</View>
+					</BackgroundImage>
 				</View>
 			</View>
 		</AppLayout>
