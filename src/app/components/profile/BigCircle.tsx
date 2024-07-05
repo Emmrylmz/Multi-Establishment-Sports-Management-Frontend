@@ -1,33 +1,29 @@
-import { View, Text } from 'react-native';
 import React from 'react';
-import {LinearGradient} from 'expo-linear-gradient';
+import { View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const BigCircle = () => {
   return (
-    <LinearGradient
-      colors={["#ffffff",'#4ca2d5','#3FA454']} // Customize the colors as needed
-      style={BigCircleStyles}
-    >
-    </LinearGradient>
+    <View style={styles.container}>
+      <LinearGradient
+        colors={["#ffffff", '#4ca2d5', '#3FA454']}
+        style={styles.gradient}
+      />
+    </View>
   );
 };
 
-const BigCircleStyles = {
-  width: 700,
-  height: 700,
-  top: -400,
-  left: -150,
-  borderRadius: 350, // Use 350 to match half of the width/height
-  justifyContent: 'center',
-  alignItems: 'center',
-  position: 'absolute',
-  zIndex: -1
-};
-
-const TextStyle = {
-  color: 'white',
-  fontSize: 24,
-  fontWeight: 'bold'
+const styles = {
+  container: {
+    width: '200%',
+    height: '200%',
+    position: 'absolute',
+  },
+  gradient: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 1000, // A large value to ensure it's always circular
+  },
 };
 
 export default BigCircle;

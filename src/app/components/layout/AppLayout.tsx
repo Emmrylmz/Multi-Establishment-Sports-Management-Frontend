@@ -12,7 +12,7 @@ type AuthLayoutProps = {
 
 const AppLayout = ({ children }: AuthLayoutProps) => {
 	return (
-			<SafeAreaView className="w-full h-full px-5 bg-dacka-black ">
+			<SafeAreaView className="w-full h-full px-5  ">
 				{children}
 			</SafeAreaView>
 	);
