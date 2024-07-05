@@ -27,7 +27,7 @@ const DateTimeSelection = ({ label, date, time, onDateChange, onTimeChange }) =>
   return (
     <View className="flex-row items-center justify-between h-auto p-3">
       <View>
-        <Text className="font-bold text-white text-md">{label}</Text>
+        <Text className="font-bold  text-md">{label}</Text>
       </View>
       <View className="flex-row gap-4">
         <TouchableOpacity
