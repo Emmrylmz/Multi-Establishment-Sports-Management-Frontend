@@ -87,7 +87,7 @@ const EventList: React.FC<EventListProps> = ({ navigation, orientation }) => {
   const renderItem: ListRenderItem<Event> = ({ item }) => (
     <TouchableOpacity
       onPress={() => handleEventPress(item)}
-      className="bg-white p-4 m-2 rounded-lg shadow-md"
+      className="p-4 m-2 bg-white shadow-md rounded-xl"
       style={{ width: orientation === 'horizontal' ? 300 : 'auto' }}
     >
       <Text className="font-bold">{item.start_datetime.toDateString()}</Text>

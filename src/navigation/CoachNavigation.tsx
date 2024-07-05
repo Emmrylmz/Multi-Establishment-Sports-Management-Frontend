@@ -69,13 +69,21 @@ const CoachNavigation = () => {
       ),
       tabBarActiveTintColor: '#fff',
       tabBarInactiveTintColor: '#919191',
-      headerShown: false,
       tabBarStyle: {
         backgroundColor: '#101010',
         borderTopWidth: 0,
         elevation: 0,
         shadowOpacity: 0,
       
+      },
+      headerBackTitleVisible: true,
+      headerBackTitle: 'Back',
+      headerTintColor: '#fff',
+      headerStyle: {
+        backgroundColor: '#101010',
+      },
+      headerTitleStyle: {
+        color: '#fff',
       },
     })}
   >

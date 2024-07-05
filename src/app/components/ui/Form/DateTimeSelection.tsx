@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -9,11 +9,13 @@ const DateTimeSelection = ({ label, date, time, onDateChange, onTimeChange }) =>
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
+    setShowDatePicker(Platform.OS === 'ios');
     onDateChange(currentDate);
   };
 
   const handleTimeChange = (event, selectedTime) => {
     const currentTime = selectedTime || time;
+    setShowTimePicker(Platform.OS === 'ios');
     onTimeChange(currentTime);
   };
 
@@ -46,51 +48,74 @@ const DateTimeSelection = ({ label, date, time, onDateChange, onTimeChange }) =>
         </TouchableOpacity>
       </View>
 
-      <Modal
-        transparent={true}
-        animationType="slide"
-        visible={showDatePicker || showTimePicker}
-        onRequestClose={() => {
-          setShowDatePicker(false);
-          setShowTimePicker(false);
-        }}
-      >
-        <View className="justify-end flex-1 bg-black bg-opacity-50">
-          <View className="p-5 bg-dacka-dark-gray rounded-t-2xl">
-            {showDatePicker && (
-              <DateTimePicker
-                value={date}
-                mode="date"
-                display="default"
-                style={{ backgroundColor: '#bbb', width: '30%', alignSelf: 'flex-end' }}
-                accentColor='#fff'
-                textColor='#fff'
-                onChange={handleDateChange}
-              />
-            )}
-            {showTimePicker && (
-              <DateTimePicker
-                value={time}
-                mode="time"
-                display="default"
-                style={{ backgroundColor: '#bbb', width: '20%', alignSelf: 'flex-end' }}
-                accentColor='#fff'
-                textColor='#fff'
-                onChange={handleTimeChange}
-              />
-            )}
-            <TouchableOpacity
-              className="items-center p-3 mt-5 rounded-lg bg-dacka-black"
-              onPress={() => {
-                setShowDatePicker(false);
-                setShowTimePicker(false);
-              }}
-            >
-              <Text className="font-bold text-white">Close</Text>
-            </TouchableOpacity>
+      {Platform.OS === 'ios' && (
+        <Modal
+          transparent={true}
+          animationType="slide"
+          visible={showDatePicker || showTimePicker}
+          onRequestClose={() => {
+            setShowDatePicker(false);
+            setShowTimePicker(false);
+          }}
+        >
+          <View className="justify-end flex-1 bg-black bg-opacity-50">
+            <View className="p-5 bg-dacka-dark-gray rounded-t-2xl">
+              {showDatePicker && (
+                <DateTimePicker
+                  value={date}
+                  mode="date"
+                  display="default"
+                  style={{ backgroundColor: '#bbb', width: '30%', alignSelf: 'flex-end' }}
+                  accentColor='#fff'
+                  textColor='#fff'
+                  onChange={handleDateChange}
+                />
+              )}
+              {showTimePicker && (
+                <DateTimePicker
+                  value={time}
+                  mode="time"
+                  display="default"
+                  style={{ backgroundColor: '#bbb', width: '20%', alignSelf: 'flex-end' }}
+                  accentColor='#fff'
+                  textColor='#fff'
+                  onChange={handleTimeChange}
+                />
+              )}
+              <TouchableOpacity
+                className="items-center p-3 mt-5 rounded-lg bg-dacka-black"
+                onPress={() => {
+                  setShowDatePicker(false);
+                  setShowTimePicker(false);
+                }}
+              >
+                <Text className="font-bold text-white">Close</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      )}
+
+      {Platform.OS === 'android' && (
+        <>
+          {showDatePicker && (
+            <DateTimePicker
+              value={date}
+              mode="date"
+              display="default"
+              onChange={handleDateChange}
+            />
+          )}
+          {showTimePicker && (
+            <DateTimePicker
+              value={time}
+              mode="time"
+              display="spinner"
+              onChange={handleTimeChange}
+            />
+          )}
+        </>
+      )}
     </View>
   );
 };

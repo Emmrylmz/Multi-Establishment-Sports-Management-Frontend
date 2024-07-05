@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import AppLayout from '../../components/layout/AppLayout';
 import InputField from '../../components/ui/Form/InputField';
 import { addUserPageTexts } from '../../../utils/constants/texts';
-import { FontAwesome, Feather, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome, Feather, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import BackgroundImage from '../../components/ui/BackgroundImage/BackgroundImage';
 
 const AddUserPage = () => {
@@ -44,16 +44,15 @@ const AddUserPage = () => {
 		address: <FontAwesome name="home" size={24} color="#919191" />,
 		city: <MaterialIcons name="location-city" size={24} color="#919191" />,
 		birthDate: <FontAwesome name="birthday-cake" size={24} color="#919191" />,
-		school: <FontAwesome name="school" size={24} color="#919191" />,
+		school: <Ionicons name="school" size={24} color="#919191" />
 	};
 
 	return (
 		<AppLayout>
-			<View className="flex-1 justify-center items-center">
-				<View className="w-full rounded-2xl h-5/6 overflow-hidden  bg-dacka-green">
+			<View className="items-center justify-center flex-1">
+				<View className="w-full overflow-hidden rounded-2xl h-5/6 bg-dacka-dark-gray">
 					<BackgroundImage additionalStyles="rounded-2xl">
 						<View className="p-4 pt-10">
-							<Text className="text-3xl text-white">{addUserPageTexts.addUser}</Text>
 							<ScrollView 
 								contentContainerStyle={{ flexGrow: 1 }}
 								style={{ maxHeight: '85%' }} 
@@ -61,7 +60,7 @@ const AddUserPage = () => {
 								className="shadow-xl"
 							>
 								{Object.keys(form).map((key) => (
-									<View key={key} className="h-14 mt-5">
+									<View key={key} className="mt-5 h-14">
 										<InputField
 											name={key}
 											placeholder={addUserPageTexts[`${key}Placeholder`]}

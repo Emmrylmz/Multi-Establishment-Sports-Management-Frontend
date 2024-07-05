@@ -11,7 +11,6 @@ const ProfilePage: React.FC = () => {
 	const user = useSelector((state: RootState) => getAuthUser(state));
 	const { data: UserInfo, isLoading } = useGetUserInfoQuery(user?._id);
 
-	console.log(user._id);
 	if (isLoading) {
 		return <Text>Loading...</Text>;
 	}
