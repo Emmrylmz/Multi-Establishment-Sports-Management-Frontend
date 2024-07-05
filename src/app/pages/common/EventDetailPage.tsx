@@ -6,13 +6,11 @@ import {
 	Platform,
 	Linking,
 	TouchableOpacity,
-	ScrollView,
 	Animated,
 	Image,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
-import AppLayout from '../../components/layout/AppLayout';
 import MapView, { Marker } from 'react-native-maps';
 import { PlayerCard } from '../../components';
 import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryService';
@@ -129,7 +127,8 @@ const EventDetailPage: React.FC<{ route: any }> = ({ route }) => {
 		]).start();
 	}, []);
 
-	// ... (keep existing functions)
+  console.log(mergedData)
+
 
 	return (
 		<Animated.ScrollView
