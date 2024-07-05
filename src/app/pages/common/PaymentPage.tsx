@@ -58,7 +58,6 @@ const PaymentPage = () => {
   const displayedPayments = filterPayments(allPayments[activePaymentTab]);
 
   return (
-    <AppLayout>
       <View className='w-full h-full'>
         <TextInput
           placeholder='Search'
@@ -69,7 +68,7 @@ const PaymentPage = () => {
           onChangeText={handleSearchChange}
           value={searchText}
         />
-        <View className='flex-row w-full'>
+        <View className='flex-row w-full '>
           <TouchableOpacity
             className={`w-1/2 py-2 bg-dacka-dark-gray ${activePaymentTab === 0 ? 'border-b border-dacka-gray' : ''}`}
             onPress={() => changeActivePaymentTab('upcoming')}
@@ -87,13 +86,12 @@ const PaymentPage = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        <ScrollView className='mt-3'>
+        <ScrollView className='mt-3 p-4'>
           {displayedPayments.map((payment, index) => (
             <ExpenseCard key={payment.item_id} date={payment.date} type={payment.type} name={payment.item_name} price={payment.price} />
           ))}
         </ScrollView>
       </View>
-    </AppLayout>
   );
 };
 

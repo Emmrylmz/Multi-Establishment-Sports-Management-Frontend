@@ -98,7 +98,7 @@ const AddUserPage = () => {
 		// Handle form submission logic here
 	};
 	const scrollY = useRef(new Animated.Value(0)).current;
-	const headerHeight = SCREEN_HEIGHT * 0.35;
+	const headerHeight = SCREEN_HEIGHT * 0.33;
 
 	const imageScale = scrollY.interpolate({
 		inputRange: [0, headerHeight],
@@ -137,15 +137,11 @@ const AddUserPage = () => {
 						/>
 					</View>
 
-					<View className="rounded-t-3xl  p-4">
+					<View className="rounded-t-3xl bg-white p-4">
 						<Text className="text-3xl font-bold text-center text-[#3FA454] ">
 							{addUserPageTexts.title}
 						</Text>
-						<View className="">
-							<Text className="text-3xl ">
-								Sign user up !!
-							</Text>
-						</View>
+						
 						{Object.keys(form).map((key) => (
 							<View key={key} className="mb-4 p-4 h-20">
 								<InputField
