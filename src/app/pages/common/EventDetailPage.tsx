@@ -108,8 +108,10 @@ const EventDetailPage: React.FC<{ route: any }> = ({ route }) => {
 		});
 	}, [teamUsers, attendanceData]);
 
+	const scrollY = React.useRef(new Animated.Value(0)).current;
 	const fadeAnim = React.useRef(new Animated.Value(0)).current;
 	const slideAnim = React.useRef(new Animated.Value(50)).current;
+	const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 	React.useEffect(() => {
 		Animated.parallel([
@@ -130,25 +132,44 @@ const EventDetailPage: React.FC<{ route: any }> = ({ route }) => {
 	// ... (keep existing functions)
 
 	return (
-		<ScrollView contentContainerStyle={{ backgroundColor: '#f0f2f5' }}>
+		<Animated.ScrollView
+			contentContainerStyle={{ backgroundColor: '#f0f2f5' }}
+			onScroll={Animated.event(
+				[{ nativeEvent: { contentOffset: { y: scrollY } } }],
+				{ useNativeDriver: true }
+			)}
+			scrollEventThrottle={16}
+		>
 			<LinearGradient colors={['#4ca2d5', '#3FA454']} className="flex-1">
-				{event_type === 'Training' ? (
-					<Image
-						source={require('../../../assets/Basketball-rafiki.png')}
-						style={{ width: '100%', height: 200 }}
-					/>
-				) : event_type === 'Game' ? (
-					<Image
-						source={require('../../../assets/Basketball-bro.png')}
-						style={{ width: '100%', height: 200 }}
-					/>
-				) : (
-					<Image
-						source={require('../../../assets/Basketball-bro.png')}
-						style={{ width: '100%', height: 200 }}
-            
-					/>
-				)}
+				<AnimatedImage
+					source={
+						event_type === 'Training'
+							? require('../../../assets/Basketball-rafiki.png')
+							: event_type === 'Game'
+								? require('../../../assets/Basketball-bro.png')
+								: require('../../../assets/Basketball-bro.png')
+					}
+					style={{
+						width: '100%',
+						height: 250,
+						transform: [
+							{
+								translateY: scrollY.interpolate({
+									inputRange: [-300, 0, 300],
+									outputRange: [-50, 0, 100],
+									extrapolate: 'clamp',
+								}),
+							},
+							{
+								scale: scrollY.interpolate({
+									inputRange: [-300, 0, 300],
+									outputRange: [1.2, 1, 0.75],
+									extrapolate: 'clamp',
+								}),
+							},
+						],
+					}}
+				/>
 			</LinearGradient>
 			<Text
 				style={{
@@ -328,7 +349,7 @@ const EventDetailPage: React.FC<{ route: any }> = ({ route }) => {
 						/>
 					))}
 			</View>
-		</ScrollView>
+		</Animated.ScrollView>
 	);
 };
 
