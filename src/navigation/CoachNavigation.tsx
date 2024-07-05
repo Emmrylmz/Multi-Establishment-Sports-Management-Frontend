@@ -87,7 +87,7 @@ const CoachNavigation = () => {
       },
     })}
   >
-    <Tab.Screen name='CoachHomePageStack' component={CoachHomeStackScreen} options={{ title: 'Home'}} />
+    <Tab.Screen name='CoachHomePageStack' component={CoachHomeStackScreen} options={{ title: 'Home',headerShown:false}} />
     <Tab.Screen name='CoachSchedulePage' component={CoachSchedulePage} options={{ title: 'Schedule' }} />
     <Tab.Screen name='AddUserPage' component={AddUserPage} options={{ title: 'Add User' }} />
     <Tab.Screen name='CoachProfilePage' component={ProfilePage} options={{ title: 'Profile' }} />
