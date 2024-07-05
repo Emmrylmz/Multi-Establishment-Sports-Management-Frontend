@@ -10,6 +10,7 @@ import { ProfileHeader } from '../../components';
 const ProfilePage: React.FC = () => {
 	const user = useSelector((state: RootState) => getAuthUser(state));
 	const { data: UserInfo, isLoading } = useGetUserInfoQuery(user?._id);
+	console.log(UserInfo)
 
 	if (isLoading) {
 		return <Text>Loading...</Text>;
@@ -22,6 +23,7 @@ const ProfilePage: React.FC = () => {
 	return (
 		<>
 			<ProfileContainer user={UserInfo} />
+			{/* <ProfileHeader isProfilePage={true} /> */}
 		</>
 	);
 };

@@ -18,7 +18,7 @@ export type User = {
     password: string;
   }
   
-  export type UserInfo = {
+  export type UserInfoType = {
     _id: string;
     name: string;
     age: number;
