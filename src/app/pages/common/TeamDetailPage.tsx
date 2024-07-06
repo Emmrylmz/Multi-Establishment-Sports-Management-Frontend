@@ -6,7 +6,7 @@ import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryServi
 import { PlayerCard } from '../../components';
 import myImage from '../../../../assets/user.png'
 const CoachTeamsPage = ({ route, navigation }) => {
-  const { team_id } = route.params;
+  const { team_id,from } = route.params;
   const { data: teamUsers, error, isLoading } = useGetTeamUsersByIdQuery(team_id);
 
 
@@ -18,17 +18,25 @@ const CoachTeamsPage = ({ route, navigation }) => {
     return <Text>Error fetching team users: {error.message}</Text>;
   }
 
+  function navigationFunction(user_id:string){
+    if(from === 'manager'){
+      return navigation.navigate('ManagerPlayerPaymentDetailPage',{player_id: user_id})
+    }
+    return navigation.navigate('PlayerDetailPage', { player_id: user_id })
+  }
+
   return (
     <AppLayout>
       <ScrollView className='w-full h-full'>
         {teamUsers?.map((user) => (
           <PlayerCard
-            key={user._id}
-            name={user.name}
-            dateOfBirth='19-05-2002'
-            image={myImage}
-            navigation={() => navigation.navigate('PlayerDetailPage', { player_id: user._id })}
-          />
+          id={user._id}
+          key={user._id}
+          name={user.name}
+          dateOfBirth='19-05-2002'
+          image={myImage}
+          onPress={() => navigationFunction(user._id)}
+        />
         ))}
       </ScrollView>
     </AppLayout>

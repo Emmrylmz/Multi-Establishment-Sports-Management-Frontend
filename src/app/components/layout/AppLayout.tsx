@@ -5,16 +5,17 @@ import { useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Navbar from './Navbar';
 import BackgroundImage from '../ui/BackgroundImage/BackgroundImage';
+import { View } from 'react-native';
 
 type AuthLayoutProps = {
-	children: any;
+	children: React.ReactNode;
 };
 
 const AppLayout = ({ children }: AuthLayoutProps) => {
 	return (
-			<SafeAreaView className="w-full h-full px-5  ">
+			<View className="w-full h-full px-5 bg-white dark:bg-dacka-black">
 				{children}
-			</SafeAreaView>
+			</View>
 	);
 };
 

@@ -21,18 +21,18 @@ const ProfilePage: React.FC = () => {
     const { data: UserInfo, isLoading } = useGetUserInfoQuery(user?._id);
     console.log(UserInfo)
 
-    if (isLoading) {
-        return <LoadingSpinner />;
-    }
+    // if (isLoading) {
+    //     return <LoadingSpinner />;
+    // }
 
-    if (!UserInfo) {
-        return <Text>No user information available</Text>;
-    }
+    // if (!UserInfo) {
+    //     return <Text>No user information available</Text>;
+    // }
 
     return (
         <>
-            <ProfileContainer user={UserInfo} />
-            {/* <ProfileHeader isProfilePage={true} /> */}
+            {/* <ProfileContainer user={UserInfo} /> */}
+            <ProfileHeader isProfilePage={true} />
         </>
     );
 };

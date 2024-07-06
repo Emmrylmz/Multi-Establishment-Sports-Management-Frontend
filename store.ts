@@ -8,6 +8,7 @@ import eventQueryService from './src/features/query/eventQueryService';
 import authSlice from './src/features/auth/auth.slice';
 import teamQueryService from './src/features/query/teamQueryService';
 import userInfoQueryService from './src/features/query/userInfoQueryService'; // Import the userInfoQueryService
+import paymentQueryService from './src/features/query/paymentQueryService'; // Import the paymentQueryService
 
 const persistConfig = {
   key: 'root',
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   [authQueryService.reducerPath]: authQueryService.reducer,
   [eventQueryService.reducerPath]: eventQueryService.reducer,
   [teamQueryService.reducerPath]: teamQueryService.reducer,
-  [userInfoQueryService.reducerPath]: userInfoQueryService.reducer // Add the userInfoQueryService reducer
+  [userInfoQueryService.reducerPath]: userInfoQueryService.reducer, // Add the userInfoQueryService reducer
+  [paymentQueryService.reducerPath]: paymentQueryService.reducer, // Add the paymentQueryService reducer
   // other reducers can be added here
 });
 
@@ -37,7 +39,8 @@ const store = configureStore({
       authQueryService.middleware,
       eventQueryService.middleware,
       teamQueryService.middleware,
-      userInfoQueryService.middleware // Add the userInfoQueryService middleware
+      userInfoQueryService.middleware, // Add the userInfoQueryService middleware
+      paymentQueryService.middleware
     ),
 });
 

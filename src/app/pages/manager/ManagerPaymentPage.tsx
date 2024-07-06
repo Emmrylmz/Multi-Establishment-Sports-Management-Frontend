@@ -1,13 +1,13 @@
-import { View, Text,ScrollView } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import React from 'react'
-import AppLayout from '../../components/layout/AppLayout'
+import { AppLayout } from '../../components'
 import TeamCard from '../../components/ui/TeamCard'
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import { useGetTeamUsersQuery } from '../../../features/query/teamQueryService'
 import { getAuthUser } from '../../../features/auth/auth.slice'
 
-const CoachTeamsPage = ({navigation}) => {
+const ManagerPaymentPage = ({navigation}) => {
   const user = useSelector((state: RootState) => getAuthUser(state));
   console.log(user)
   const { data, isLoading, isError } = useGetTeamUsersQuery(user?.teams);
@@ -25,10 +25,10 @@ const CoachTeamsPage = ({navigation}) => {
     <AppLayout>
       <ScrollView className='w-full h-full' showsVerticalScrollIndicator={false}>
         {data.map((team) => (
-          <TeamCard key={team._id} teamName={team.team_name} teamId={team._id} coachName={'Ahmet Köksal'}  navigation={() => navigation.navigate('TeamDetailPage',{team_id: team._id})} />))}
+          <TeamCard key={team._id} teamName={team.team_name} teamId={team._id} coachName={'Ahmet Köksal'}  navigation={() => navigation.navigate('TeamDetailPage',{team_id: team._id,from:'manager'})} />))}
       </ScrollView>
     </AppLayout>
   )
 }
 
-export default CoachTeamsPage
+export default ManagerPaymentPage

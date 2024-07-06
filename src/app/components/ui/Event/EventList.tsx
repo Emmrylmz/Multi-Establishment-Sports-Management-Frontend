@@ -87,12 +87,12 @@ const EventList: React.FC<EventListProps> = ({ navigation, orientation }) => {
   const renderItem: ListRenderItem<Event> = ({ item }) => (
     <TouchableOpacity
       onPress={() => handleEventPress(item)}
-      className="p-4 m-2 bg-white shadow-md rounded-xl"
+      className="p-4 m-2 bg-white shadow-md dark:bg-dacka-dark-gray rounded-xl"
       style={{ width: orientation === 'horizontal' ? 300 : 'auto' }}
     >
-      <Text className="font-bold">{item.start_datetime.toDateString()}</Text>
-      <Text>{item.team_name}</Text>
-      <Text>{item.event_type} at {item.place}</Text>
+      <Text className="font-bold text-dacka-black dark:text-white">{item.start_datetime.toDateString()}</Text>
+      <Text className='text-dacka-black dark:text-white'>{item.team_name}</Text>
+      <Text className='text-dacka-black dark:text-white'>{item.event_type} at {item.place}</Text>
       <Text className="text-gray-500">{item.description}</Text>
     </TouchableOpacity>
   );
