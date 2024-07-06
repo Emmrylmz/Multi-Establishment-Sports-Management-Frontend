@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import CalendarPicker from 'react-native-calendar-picker';
 import { useSelector } from 'react-redux';
 import { getAuthUser } from '../../../../features/auth/auth.slice';
@@ -17,13 +17,14 @@ const Calendar = () => {
 	// Ensure that listEventsResult and its properties exist
 	const events = listEventsResult?.data?.[0]?.events || [];
 
-	const customDatesStyles = events.map((date) => ({
-		date: new Date(date.event_date),
-		style: { backgroundColor: '#3FA454' },
-		textStyle: { color: '#000' },
-	}));
-
-	console.log(events);
+	const customDatesStyles = useMemo(() => 
+		events.map((event) => ({
+			date: new Date(event.event_date),
+			style: { backgroundColor: '#3FA454' },
+			textStyle: { color: '#000' },
+		})),
+		[events]
+	);
 
 	return (
 		<CalendarPicker

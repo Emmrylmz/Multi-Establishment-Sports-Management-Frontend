@@ -1,22 +1,31 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Animated,
+  Image,
+  Dimensions,
+} from 'react-native';
 import AppLayout from '../../components/layout/AppLayout';
 import InputField from '../../components/ui/Form/InputField';
 import { addUserPageTexts } from '../../../utils/constants/texts';
-import { FontAwesome, Feather, MaterialIcons } from '@expo/vector-icons';
+import {
+  FontAwesome,
+  Feather,
+  MaterialIcons,
+  Ionicons,
+} from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import AnimatedHeader from '../../components/ui/Form/AnimatedHeader';
+import FormSection from '../../components/ui/Form/FormSection';
+import { fieldIcons } from '../../components/ui/Form/FormConfig';
+import SubmitButton from '../../components/ui/Form/SubmitButton';
+
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const AddUserPage = () => {
-  type AddUserForm = {
-    name: string;
-    email: string;
-    password: string;
-    phone: string;
-    address: string;
-    city: string;
-    birthDate: string;
-    school: string;
-  };
-
   const [form, setForm] = useState<AddUserForm>({
     name: '',
     email: '',
@@ -28,60 +37,67 @@ const AddUserPage = () => {
     school: '',
   });
 
-  const handleInputChange = (key: string, value: string) => {
+  const handleInputChange = (name: string, value: string) => {
     setForm((prevState) => ({
       ...prevState,
-      [key]: value,
+      [name]: value,
     }));
   };
 
-  const fieldIcons = {
-    name: <FontAwesome name="user" size={24} color="#919191" />,
-    email: <FontAwesome name="envelope" size={24} color="#919191" />,
-    password: <Feather name="lock" size={24} color="#919191" />,
-    phone: <FontAwesome name="phone" size={24} color="#919191" />,
-    address: <FontAwesome name="home" size={24} color="#919191" />,
-    city: <MaterialIcons name="location-city" size={24} color="#919191" />,
-    birthDate: <FontAwesome name="birthday-cake" size={24} color="#919191" />,
-    school: <FontAwesome name="school" size={24} color="#919191" />,
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const headerHeight = SCREEN_HEIGHT * 0.33;
+
+  const formRef = useRef(form);
+
+  useEffect(() => {
+    formRef.current = form;
+  }, [form]);
+
+  const handleSubmit = () => {
+    console.log('Form submitted:', formRef.current);
   };
 
   return (
-    <AppLayout>
-      <View className="justify-center flex-1 items-center">
-        <View className="w-full  rounded-xl  p-4 justify-center">
-          <Text className="mb-4 text-3xl text-left text-white">
-            {addUserPageTexts.addUser}
+    <LinearGradient
+      colors={['#ffffff', '#4ca2d5', '#3FA454']}
+      className="flex-1"
+    >
+      <Animated.ScrollView
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
+        )}
+        scrollEventThrottle={16}
+        className="flex-grow"
+      >
+        <AnimatedHeader
+          imageSource={require('../../../assets/Mobile login-amico.png')}
+          scrollY={scrollY}
+          headerHeight={headerHeight}
+        />
+
+        <View className="bg-white rounded-t-3xl px-6 pt-8 pb-6 -mt-8 shadow-lg">
+          <Text className="text-3xl font-bold text-center  mb-8 shadow-sm">
+            Add New User
           </Text>
-          {Object.keys(form).map((key) => (
-            <InputField
-              key={key}
-              name={key}
-              placeholder={addUserPageTexts[`${key}Placeholder`]}
-              placeholderTextColor="light"
-              additionalStyles="border-b my-2 border-dacka-gray p-1"
-              keyboardType={
-                key === 'email'
-                  ? 'email-address'
-                  : key === 'phone'
-                  ? 'phone-pad'
-                  : 'default'
-              }
-              secureTextEntry={key === 'password'}
-              handleInputChange={handleInputChange}
-              icon={fieldIcons[key as keyof AddUserForm]}
-            />
-          ))}
-          <View className="flex-row justify-end w-full px-4">
-            <TouchableOpacity className="px-4 py-2 rounded-xl bg-dacka-gray">
-              <Text className="text-base text-white">
-                {addUserPageTexts.submitButton}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          
+          <Text className="text-xl font-semibold text-gray-700 mb-6">
+            User Information
+          </Text>
+
+          <FormSection
+            form={form}
+            fieldIcons={fieldIcons}
+            handleInputChange={handleInputChange}
+          />
+
+          <SubmitButton
+            onPress={handleSubmit}
+            title="Create User"
+          />
         </View>
-      </View>
-    </AppLayout>
+      </Animated.ScrollView>
+    </LinearGradient>
   );
 };
 

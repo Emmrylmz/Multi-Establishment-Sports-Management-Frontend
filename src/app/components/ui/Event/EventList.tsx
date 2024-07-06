@@ -1,24 +1,22 @@
 import React from 'react';
-import { View, Text, ScrollView, FlatList, ListRenderItem, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, ListRenderItem, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useListEventsQuery } from '../../../../features/query/eventQueryService';
 import { RootState } from "../../../../../store";
 import { getAuthUser } from '../../../../features/auth/auth.slice';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase } from '@react-navigation/native';
+import { parseISO } from 'date-fns';
 
 type Event = {
   event_id: string;
   event_type: string;
   place: string;
-  event_date: Date;
+  start_datetime: Date;
+  end_datetime: Date;
   description: string;
   team_name: string;
-}
-
-type TeamEvent = {
-  team_name: string;
-  events: Event[];
+  team_id:string
 }
 
 type ApiResponse = {
@@ -27,43 +25,39 @@ type ApiResponse = {
     event_id: string;
     event_type: string;
     place: string;
-    event_date: string;
+    start_datetime: string;
+    end_datetime: string;
     description: string;
+    team_id:string
   }[];
 }
 
 const transformData = (data: ApiResponse[]): Event[] => {
-  const transformed: TeamEvent[] = data.map((team) => ({
+  const transformed = data.map((team) => ({
     team_name: team.team_name,
     events: team.events.map((event) => ({
       event_id: event.event_id,
       event_type: event.event_type,
       place: event.place,
-      event_date: new Date(event.event_date),
+      start_datetime: event.start_datetime ? parseISO(event.start_datetime) : new Date(),
+      end_datetime: event.end_datetime ? parseISO(event.end_datetime) : new Date(),
       description: event.description,
-    })),
+      team_name: team.team_name,
+      team_id:team.team_id
+    })).filter(event => event.start_datetime && event.end_datetime), // Filter out events with invalid dates
   }));
 
-  // Flatten the events and sort by date
-  const flattenedEvents = transformed.flatMap((team) =>
-    team.events.map((event) => ({
-      ...event,
-      team_name: team.team_name,
-    }))
-  );
-
-  return flattenedEvents.sort(
-    (a, b) => a.event_date.getTime() - b.event_date.getTime()
+  return transformed.flatMap((team) => team.events).sort(
+    (a, b) => a.start_datetime.getTime() - b.start_datetime.getTime()
   );
 };
 
 interface EventListProps {
   navigation: NativeStackNavigationProp<ParamListBase>;
   orientation: 'vertical' | 'horizontal';
-  team_id: string;
 }
 
-const EventList: React.FC<EventListProps> = ({ navigation, orientation, team_id }) => {
+const EventList: React.FC<EventListProps> = ({ navigation, orientation }) => {
   const user = useSelector((state: RootState) => getAuthUser(state));
   const { data, error, isLoading } = useListEventsQuery(user?.teams);
 
@@ -77,57 +71,40 @@ const EventList: React.FC<EventListProps> = ({ navigation, orientation, team_id 
 
   const events = data ? transformData(data) : [];
 
-  const handleEventPress = (event_id: string, event_type?: string,oriantation?:string,place?:string,team_name?:string,description?:string) => {
-    if(oriantation === 'vertical'){
-      navigation.navigate('CoachAttendanceFormPage', { event_id: event_id, team_id: team_id, event_type: event_type, description: description});
-      return;
-    }else{
-      navigation.navigate('EventDetailPage', { event_id: event_id, coordinates: { latitude: 0, longitude: 0 },location:place,team_name:team_name,event_name:description})
-    }
+  const handleEventPress = (event: Event) => {
+    navigation.navigate('EventDetailPage', {
+      event_id: event.event_id,
+      coordinates: { latitude: 0, longitude: 0 }, // Pass actual coordinates if available
+      place: event.place,
+      team_name: event.team_name,
+      event_name: event.description,
+      team_id:event.team_id,
+      event_type: event.event_type,
+      start_datetime: event.start_datetime.toDateString(),
+    });
   };
 
   const renderItem: ListRenderItem<Event> = ({ item }) => (
     <TouchableOpacity
-      onPress={() => handleEventPress(item.event_id, item.event_type,'horizontal',item.place,item.team_name,item.description)}
+      onPress={() => handleEventPress(item)}
+      className="p-4 m-2 bg-white shadow-md rounded-xl"
+      style={{ width: orientation === 'horizontal' ? 300 : 'auto' }}
     >
-      <View className='p-3 m-1 bg-white rounded-lg'
-        style={{width: orientation === 'horizontal' ? 300 : 'auto' }}>
-        <Text style={{ fontWeight: 'bold' }}>{item.event_date.toDateString()}</Text>
-        <Text>{item.team_name}</Text>
-        <Text>{item.event_type} at {item.place}</Text>
-        <Text>{item.description}</Text>
-      </View>
+      <Text className="font-bold">{item.start_datetime.toDateString()}</Text>
+      <Text>{item.team_name}</Text>
+      <Text>{item.event_type} at {item.place}</Text>
+      <Text className="text-gray-500">{item.description}</Text>
     </TouchableOpacity>
   );
 
-  if (orientation === 'vertical') {
-    return (
-      <ScrollView>
-        {events.map((event) => (
-          <TouchableOpacity
-            key={event.event_id}
-            onPress={() => handleEventPress(event.event_id, event.event_type)}
-          >
-            <View className='p-3 m-1 bg-white border-b rounded-lg '>
-              <Text className='font-bold'>{event.event_date.toDateString()}</Text>
-              <Text>{event.team_name}</Text>
-              <Text>{event.event_type} at {event.place}</Text>
-              <Text>{event.description}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    );
-  }
-
-  // Default to rendering in a FlatList (horizontal layout)
   return (
     <FlatList
       data={events}
-      showsHorizontalScrollIndicator={false}
       keyExtractor={(item) => item.event_id}
       renderItem={renderItem}
-      horizontal
+      horizontal={orientation === 'horizontal'}
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={orientation === 'vertical'}
     />
   );
 };

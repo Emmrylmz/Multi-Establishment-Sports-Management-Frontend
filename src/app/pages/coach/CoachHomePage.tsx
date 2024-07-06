@@ -36,7 +36,7 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 		{
 			id: 1,
 			component: (
-				<View className="p-3 bg-white rounded-[38px] my-3">
+				<View className="p-3 bg-white rounded-[38px]">
 					<Calendar />
 				</View>
 			),
@@ -71,7 +71,7 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 		{
 			id: 'eventList',
 			component: (
-				<View className="my-2">
+				<View>
 					<Text className="text-xl text-white">Upcoming Events</Text>
 					<EventList navigation={navigation} orientation="horizontal" />
 				</View>
@@ -81,6 +81,7 @@ const CoachHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 			id: 'horizontalList',
 			component: (
 				<FlatList
+					className="mt-2 mb-3"
 					horizontal
 					data={horizontalData}
 					keyExtractor={(item) => item.id.toString()}
