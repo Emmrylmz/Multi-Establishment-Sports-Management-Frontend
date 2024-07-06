@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getAuthUser } from '../features/auth/auth.slice';
-import CoachNavigation from './CoachNavigation';
-import PlayerNavigation from './userNavigation/PlayerNavigation';
+import CoachNavigation from './CoachNavigation/CoachNavigation';
+import PlayerNavigation from './UserNavigation/PlayerNavigation';
 import LoginNavigation from './LoginNavigation';
 import { ActivityIndicator, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';

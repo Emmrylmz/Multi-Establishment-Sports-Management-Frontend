@@ -14,7 +14,7 @@ type PlayerCardProps = {
   onPress: () => void,
 };
 
-const PlayerCard = ({ name, id, image, attended, additionalStyles, onPress }: PlayerCardProps) => {
+const PlayerCard:React.FC <PlayerCardProps> = ({ name, id, image, attended, additionalStyles, onPress }: PlayerCardProps) => {
   return (
     <TouchableOpacity 
       onPress={onPress} 
