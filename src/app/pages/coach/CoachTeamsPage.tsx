@@ -9,9 +9,7 @@ import { getAuthUser } from '../../../features/auth/auth.slice'
 
 const CoachTeamsPage = ({navigation}) => {
   const user = useSelector((state: RootState) => getAuthUser(state));
-  console.log(user)
   const { data, isLoading, isError } = useGetTeamUsersQuery(user?.teams);
-  console.log(data)
   if (isLoading) {
     return <View><Text>Loading...</Text></View>;
   }

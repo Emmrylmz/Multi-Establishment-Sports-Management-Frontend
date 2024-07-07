@@ -20,7 +20,7 @@ const CoachTeamsPage = ({ route, navigation }) => {
 
   function navigationFunction(user_id:string){
     if(from === 'manager'){
-      return navigation.navigate('ManagerPlayerPaymentDetailPage',{player_id: user_id})
+      return navigation.navigate('ManagerPlayerPaymentDetailPage',{player_id: user_id,team_id: team_id})
     }
     return navigation.navigate('PlayerDetailPage', { player_id: user_id })
   }

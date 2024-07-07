@@ -8,17 +8,18 @@ const PaymnentQueryService = createApi({
   endpoints: (builder) => ({
     getPayment: builder.query({
       query: (user_id) => ({
-        url: `/payments/$${user_id}`,
+        url: `/payments/${user_id}`,
         method: 'GET',
       }),
     }),
     createPayment: builder.mutation({
       query: (payment) => ({
-        url: '/payments',
+        url: '/payments/create_payment_for_months',
         method: 'POST',
         body: payment,
       }),
     }),
+
   }),
 });
 

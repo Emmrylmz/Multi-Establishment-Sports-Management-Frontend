@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { AppLayout } from '../../components';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PaymentOverview from '../../components/ui/payments/PaymentOverview';
 import ConfirmOrCancelView from '../../components/ui/payments/ConfirmOrCancelView';
 import PaymentItem from '../../components/ui/payments/PaymentItem';
-import { useGetPaymentQuery } from '../../../features/query/paymentQueryService';
+import { useGetPaymentQuery, useCreatePaymentMutation } from '../../../features/query/paymentQueryService';
+import PaymentAnimation from '../../components/ui/payments/PaymentAnimation';
 
 type Payment = {
   month: number;
@@ -15,15 +14,50 @@ type Payment = {
   paid: boolean;
 };
 
+type FormState = {
+  user_id: string;
+  team_id: string;
+  amount: number;
+  months: number[];
+  year: number;
+  paid: boolean;
+  paid_date: string;
+};
+
 const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
-  const { player_id } = route.params;
-  console.log('player_id:', player_id);
-  const { data, error, isLoading } = useGetPaymentQuery(player_id);
-  console.log('data:', data);
+  const { player_id, team_id } = route.params;
+  const { data, error, isLoading: isLoadingPayments, refetch } = useGetPaymentQuery(player_id);
+  const [createPayment, { isLoading: isCreatingPayment, isError: isCreatePaymentError }] = useCreatePaymentMutation();
 
   const insets = useSafeAreaInsets();
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedMonths, setSelectedMonths] = useState<number[]>([]);
+
+  const [fadeAnim] = useState(new Animated.Value(0));
+  const [scaleAnim] = useState(new Animated.Value(0.5));
+
+  useEffect(() => {
+    if (isCreatingPayment || isCreatePaymentError) {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.spring(scaleAnim, {
+          toValue: 1,
+          friction: 4,
+          useNativeDriver: true,
+        })
+      ]).start();
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isCreatingPayment, isCreatePaymentError]);
 
   const generateAnnualPayment = (data: Payment[]) => {
     const monthsInYear = 12;
@@ -50,8 +84,8 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
   };
 
   const toggleMonthSelection = (index: number) => {
-    if (annualPayment[index].paid) return;
-    
+    if (annualPayment[index].paid || !isSelectionMode) return;
+
     setSelectedMonths(prev => {
       if (prev.includes(index)) {
         return prev.filter(i => i !== index);
@@ -61,18 +95,36 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
     });
   };
 
-  const markAsPaid = () => {
-    // Ideally, update the backend to mark these months as paid
+  const markAsPaid = async () => {
     setSelectedMonths([]);
     setIsSelectionMode(false);
+
+    const existingMonths = data.filter(payment => payment.paid).map(payment => payment.month);
+    const uniqueMonths = Array.from(new Set([...existingMonths, ...selectedMonths]));
+
+    const newPayment: FormState = {
+      user_id: player_id,
+      team_id: team_id,
+      amount: selectedMonths.length * 2000,
+      months: selectedMonths,
+      year: new Date().getFullYear(),
+      paid: true,
+      paid_date: new Date().toISOString()
+    };
+
+    try {
+      await createPayment(newPayment).unwrap();
+      refetch();
+    } catch (error) {
+      console.error('Error creating payment:', error);
+    }
   };
 
-  if (isLoading) {
+  if (isLoadingPayments) {
     return <Text>Loading...</Text>;
   }
 
   if (error) {
-    console.error('Error fetching payment:', error);
     return <Text>Error loading payment data.</Text>;
   }
 
@@ -92,7 +144,7 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
               paid={payment.paid}
               isSelected={selectedMonths.includes(index)}
               isSelectionMode={isSelectionMode}
-              onPress={() => toggleMonthSelection(index)}
+              onPress={isSelectionMode ? () => toggleMonthSelection(index) : null}
             />
           ))}
         </ScrollView>
@@ -108,6 +160,15 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
             </TouchableOpacity>
           )}
         </View>
+        {(isCreatingPayment || isCreatePaymentError) && (
+          <PaymentAnimation
+            truthyState={isCreatingPayment}
+            falsyState={isCreatePaymentError}
+            scaleAnim={scaleAnim}
+            fadeAnim={fadeAnim}
+            onRetry={() => {/* Add retry logic here */}}
+          />
+        )}
       </View>
     </AppLayout>
   );
