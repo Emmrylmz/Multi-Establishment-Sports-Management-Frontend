@@ -13,7 +13,8 @@ type PlayerCardProps = {
   additionalStyles?: string,
   onPress: () => void,
 };
-const PlayerCard = ({ name, id, image, attended, additionalStyles, onPress }: PlayerCardProps) => {
+
+const PlayerCard:React.FC <PlayerCardProps> = ({ name, id, image, attended, additionalStyles, onPress }: PlayerCardProps) => {
   return (
     <TouchableOpacity 
       onPress={onPress} 
