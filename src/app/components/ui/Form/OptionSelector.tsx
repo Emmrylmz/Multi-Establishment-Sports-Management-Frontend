@@ -15,16 +15,16 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({
 		{['Training', 'Game'].map((type) => (
 			<TouchableOpacity
 				key={type}
-				className={`flex-row items-center bg-gray-200 py-3 px-6 rounded-full flex-1 mx-1 ${eventType === type ? 'bg-blue-500' : ''}`}
+				className={`flex-row items-center bg-gray-200 py-3 px-6 rounded-full flex-1 mx-1 ${eventType === type ? 'bg-teal-600' : ''}`}
 				onPress={() => onEventTypeChange(type)}
 			>
 				<Icon
 					name={type === 'Training' ? 'whistle' : 'basketball'}
 					size={24}
-					color={eventType === type ? '#fff' : '#4ca2d5'}
+					color={eventType === type ? '#fff' : '#00897B'}
 				/>
 				<Text
-					className={`ml-2 font-bold ${eventType === type ? 'text-white' : 'text-blue-500'}`}
+					className={`ml-2 font-bold ${eventType === type ? 'text-white' : 'text-teal-600'}`}
 				>
 					{type}
 				</Text>

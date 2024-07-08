@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import AppLayout from '../../components/layout/AppLayout';
-import TeamCard from '../../components/ui/TeamCard';
+import TeamCard from '../../components/ui/Team/TeamCard';
 import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryService';
 import { PlayerCard } from '../../components';
 import myImage from '../../../../assets/user.png'

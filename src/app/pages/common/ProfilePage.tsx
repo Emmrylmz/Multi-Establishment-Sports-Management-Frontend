@@ -31,8 +31,8 @@ const ProfilePage: React.FC = () => {
 
     return (
         <>
-            {/* <ProfileContainer user={UserInfo} /> */}
-            <ProfileHeader isProfilePage={true} />
+            <ProfileContainer user={UserInfo} />
+            {/* <ProfileHeader isProfilePage={true} /> */}
         </>
     );
 };

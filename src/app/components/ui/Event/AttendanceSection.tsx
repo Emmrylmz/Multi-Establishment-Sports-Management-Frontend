@@ -7,11 +7,13 @@ import PlayerCard from '../PlayerCard';
 interface AttendanceSectionProps {
   hasEventPassed: boolean;
   mergedData: any[];
+  NavigateUserDetails: (userId: string) => void;
 }
 
 const AttendanceSection: React.FC<AttendanceSectionProps> = React.memo(({
   hasEventPassed,
   mergedData,
+  NavigateUserDetails
 }) => {
   const navigation = useNavigation();
 
@@ -32,7 +34,7 @@ const AttendanceSection: React.FC<AttendanceSectionProps> = React.memo(({
           name={user.name}
           image={user.image}
           attended={user.attended}
-          onPress={() => handleNavigateUserDetails(user._id)}
+          onPress={() => NavigateUserDetails(user._id)}
         />
       ))}
     </View>

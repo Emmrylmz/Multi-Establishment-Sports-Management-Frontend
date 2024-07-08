@@ -26,14 +26,13 @@ const MapSection: React.FC<MapSectionProps> = React.memo(({
   <View style={{ marginBottom: 20 }}>
     <TouchableOpacity
       style={{
-        backgroundColor: '#4a90e2',
         padding: 15,
-        borderRadius: 10,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
         marginBottom: 20,
       }}
+      className="bg-teal-600 rounded-xl"
       onPress={toggleShowMap}
     >
       <Icon
