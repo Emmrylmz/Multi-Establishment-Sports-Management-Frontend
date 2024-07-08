@@ -5,6 +5,7 @@ import CoachAttendanceStack from './CoachAttendanceStack';
 import CoachSchedulePage from '../../app/pages/coach/CoachSchedulePage';
 import AddUserPage from '../../app/pages/coach/AddUserPage';
 import ProfilePage from '../../app/pages/common/ProfilePage';
+import { TabBarIcon } from '../../app/components';
 
 const Tab = createBottomTabNavigator();
 
