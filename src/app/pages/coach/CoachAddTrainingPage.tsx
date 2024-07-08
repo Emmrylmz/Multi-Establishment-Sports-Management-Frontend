@@ -1,15 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-  View,
-  Text,
-  Animated,
-  Dimensions,
-} from 'react-native';
+import { View, Text, Animated, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector } from 'react-redux';
 import {
-  useCreateEventMutation,
-  useListEventsQuery,
+	useCreateEventMutation,
+	useListEventsQuery,
 } from '../../../features/query/eventQueryService';
 import { RootState } from '../../../../store';
 import { getAuthUser } from '../../../features/auth/auth.slice';
@@ -20,173 +15,199 @@ import FailureModal from '../../components/ui/Modals/FailureModal';
 import OptionSelector from '../../components/ui/Form/OptionSelector';
 import AnimatedHeader from '../../components/ui/Form/AnimatedHeader';
 import SubmitButton from '../../components/ui/Form/SubmitButton';
+import GoBackButton from '../../components/ui/GoBackButton';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const CoachAddTrainingPage = ({ route, navigation }) => {
-  const user = useSelector((state: RootState) => getAuthUser(state));
-  const { team_id } = route.params;
-  const dateNow = new Date();
-  const [createEvent] = useCreateEventMutation();
-  const { refetch } = useListEventsQuery([team_id]);
+	const user = useSelector((state: RootState) => getAuthUser(state));
+	const { team_id } = route.params;
+	const dateNow = new Date();
+	const [createEvent] = useCreateEventMutation();
+	const { refetch } = useListEventsQuery([team_id]);
 
-  const [trainingForm, setTrainingForm] = useState({
-    event_type: 'Training',
-    creator_id: user ? user._id : '',
-    place: '',
-    created_at: new Date().toISOString(),
-    team_id: team_id,
-    description: '',
-  });
+	const [eventForm, setEventForm] = useState({
+		event_type: 'Training',
+		place: '',
+		description: '',
+		team_id: team_id,
+		creator_id: user ? user._id : '',
+		creator_name: user ? user.name : '',
+	});
 
-  const [date, setDate] = useState({
-    start_date: dateNow,
-    start_time: dateNow,
-    end_date: dateNow,
-    end_time: dateNow,
-  });
+	const [dateTime, setDateTime] = useState({
+		start_date: dateNow,
+		start_time: dateNow,
+		end_date: dateNow,
+		end_time: new Date(dateNow.getTime() + 60 * 60 * 1000), // Default to 1 hour later
+	});
 
-  const [successModalVisible, setSuccessModalVisible] = useState(false);
-  const [failureModalVisible, setFailureModalVisible] = useState(false);
+	const [successModalVisible, setSuccessModalVisible] = useState(false);
+	const [failureModalVisible, setFailureModalVisible] = useState(false);
 
-  const handleInputChange = (name, value) => {
-    setTrainingForm((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+	const handleInputChange = (name, value) => {
+		setEventForm((prevState) => ({
+			...prevState,
+			[name]: value,
+		}));
+	};
 
-  const handleDateChange = (name, value) => {
-    setDate((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+	const handleDateTimeChange = (name, value) => {
+		setDateTime((prevState) => ({
+			...prevState,
+			[name]: value,
+		}));
+	};
 
-  const scrollY = useRef(new Animated.Value(0)).current;
-  const headerHeight = SCREEN_HEIGHT * 0.33;
+	const scrollY = useRef(new Animated.Value(0)).current;
+	const headerHeight = SCREEN_HEIGHT * 0.33;
 
-  const formRef = useRef(trainingForm);
+	const formRef = useRef(eventForm);
+	const dateTimeRef = useRef(dateTime);
 
-  useEffect(() => {
-    formRef.current = trainingForm;
-  }, [trainingForm]);
+	useEffect(() => {
+		formRef.current = eventForm;
+	}, [eventForm]);
 
-  const postForm = async () => {
-    try {
-      const response = await createEvent({
-        ...formRef.current,
-        start_date: date.start_date,
-        start_time: date.start_time,
-        end_date: date.end_date,
-        end_time: date.end_time,
-      }).unwrap();
-      
-      if (response) {
-        setSuccessModalVisible(true);
-        await refetch();
-      }
-    } catch (error) {
-      setFailureModalVisible(true);
-    }
-  };
+	useEffect(() => {
+		dateTimeRef.current = dateTime;
+	}, [dateTime]);
 
-  const handleSuccessClose = () => {
-    setSuccessModalVisible(false);
-    navigation.goBack();
-  };
+	const mergeDateAndTime = (date, time) => {
+		const mergedDate = new Date(date);
+		mergedDate.setHours(
+			time.getHours(),
+			time.getMinutes(),
+			time.getSeconds(),
+			time.getMilliseconds()
+		);
+		return mergedDate.toISOString();
+	};
 
-  const handleFailureClose = () => {
-    setFailureModalVisible(false);
-  };
+	const postForm = async () => {
+		try {
+			const startDateTime = mergeDateAndTime(
+				dateTimeRef.current.start_date,
+				dateTimeRef.current.start_time
+			);
+			const endDateTime = mergeDateAndTime(
+				dateTimeRef.current.end_date,
+				dateTimeRef.current.end_time
+			);
 
-  return (
-    <LinearGradient
-      colors={['#ffffff', '#4ca2d5', '#3FA454']}
-      className="flex-1"
-    >
-      <Animated.ScrollView
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: false }
-        )}
-        scrollEventThrottle={16}
-      >
-        <AnimatedHeader
-          imageSource={require('../../../assets/Generating new leads-bro.png')}
-          scrollY={scrollY}
-          headerHeight={headerHeight}
-        />
+			const eventData = {
+				...formRef.current,
+				start_datetime: startDateTime,
+				end_datetime: endDateTime,
+				created_at: new Date().toISOString(),
+			};
 
-        <View className="rounded-t-3xl bg-white p-6">
-          <Text className="text-3xl font-bold text-center text-[#3FA454] mb-6">
-            Add New Event
-          </Text>
+			const response = await createEvent(eventData).unwrap();
 
-          <View>
-            <Text className="text-lg font-bold mb-3 text-gray-800">
-              Event Type
-            </Text>
-            <OptionSelector
-              eventType={trainingForm.event_type}
-              onEventTypeChange={(type) => handleInputChange('event_type', type)}
-            />
+			if (response) {
+				setSuccessModalVisible(true);
+				await refetch();
+			}
+		} catch (error) {
+			setFailureModalVisible(true);
+		}
+	};
 
-            <InputField
-              handleInputChange={handleInputChange}
-              name="place"
-              value={trainingForm.place}
-              placeholder="Enter a location..."
-              additionalStyles="bg-gray-200 rounded-lg py-3 px-4 mb-4"
-              placeholderTextColor="#999"
-            />
+	const handleSuccessClose = () => {
+		setSuccessModalVisible(false);
+		navigation.goBack();
+	};
 
-            <DateTimeSelection
-              label="Starts"
-              date={date.start_date}
-              time={date.start_time}
-              onDateChange={(date) => handleDateChange('start_date', date)}
-              onTimeChange={(time) => handleDateChange('start_time', time)}
-            />
-            <DateTimeSelection
-              label="Ends"
-              date={date.end_date}
-              time={date.end_time}
-              onDateChange={(date) => handleDateChange('end_date', date)}
-              onTimeChange={(time) => handleDateChange('end_time', time)}
-            />
+	const handleFailureClose = () => {
+		setFailureModalVisible(false);
+	};
 
-            <InputField
-              handleInputChange={handleInputChange}
-              name="description"
-              value={trainingForm.description}
-              placeholder="Enter a description..."
-              additionalStyles="bg-gray-200 rounded-lg py-3 px-4 mb-6 h-24"
-              placeholderTextColor="#999"
-              multiline
-            />
+	return (
+		<>
+			<GoBackButton />
+			<LinearGradient colors={['#00897B', '#3FA454']} className="flex-1">
+				<Animated.ScrollView
+					onScroll={Animated.event(
+						[{ nativeEvent: { contentOffset: { y: scrollY } } }],
+						{ useNativeDriver: false }
+					)}
+					scrollEventThrottle={16}
+				>
+					<AnimatedHeader
+						imageSource={require('../../../assets/Generating new leads-bro.png')}
+						scrollY={scrollY}
+						headerHeight={headerHeight}
+					/>
 
-            <SubmitButton
-              onPress={postForm}
-              title="Create Event"
-            />
-          </View>
-        </View>
-      </Animated.ScrollView>
+					<View className="rounded-t-3xl bg-white p-6">
+						<View>
+							<Text className="text-lg font-bold mb-3 text-gray-800">
+								Event Type
+							</Text>
+							<OptionSelector
+								eventType={eventForm.event_type}
+								onEventTypeChange={(type) =>
+									handleInputChange('event_type', type)
+								}
+							/>
 
-      <SuccessModal
-        visible={successModalVisible}
-        onClose={handleSuccessClose}
-        message="Event created successfully!"
-      />
+							<InputField
+								handleInputChange={handleInputChange}
+								name="place"
+								value={eventForm.place}
+								placeholder="Enter a location..."
+								additionalStyles=" rounded-lg py-3 px-4 mb-4"
+								placeholderTextColor="#999"
+							/>
 
-      <FailureModal
-        visible={failureModalVisible}
-        onClose={handleFailureClose}
-        message="Failed to create event. Please try again."
-      />
-    </LinearGradient>
-  );
+							<DateTimeSelection
+								label="Starts"
+								date={dateTime.start_date}
+								time={dateTime.start_time}
+								onDateChange={(date) =>
+									handleDateTimeChange('start_date', date)
+								}
+								onTimeChange={(time) =>
+									handleDateTimeChange('start_time', time)
+								}
+							/>
+							<DateTimeSelection
+								label="Ends"
+								date={dateTime.end_date}
+								time={dateTime.end_time}
+								onDateChange={(date) => handleDateTimeChange('end_date', date)}
+								onTimeChange={(time) => handleDateTimeChange('end_time', time)}
+							/>
+
+							<InputField
+								handleInputChange={handleInputChange}
+								name="description"
+								value={eventForm.description}
+								placeholder="Enter a description..."
+								additionalStyles=" rounded-lg py-3 px-4 mb-6 h-24"
+								placeholderTextColor="#999"
+								multiline
+							/>
+
+							<SubmitButton onPress={postForm} title="Create Event" />
+						</View>
+					</View>
+				</Animated.ScrollView>
+
+				<SuccessModal
+					visible={successModalVisible}
+					onClose={handleSuccessClose}
+					message="Event created successfully!"
+				/>
+
+				<FailureModal
+					visible={failureModalVisible}
+					onClose={handleFailureClose}
+					message="Failed to create event. Please try again."
+				/>
+			</LinearGradient>
+		</>
+	);
 };
 
 export default CoachAddTrainingPage;

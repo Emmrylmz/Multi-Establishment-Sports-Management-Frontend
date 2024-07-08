@@ -22,7 +22,7 @@ const teamQueryService = createApi({
         body: { user_ids: user_ids, team_ids: team_ids },
       }),
     }),
-    getTeamUsers: builder.query({
+    getTeamInfo: builder.query({
       query: (team_id) => ({
         url: '/teams/get_team_by_id',
         method: 'POST',
@@ -40,5 +40,5 @@ const teamQueryService = createApi({
   }),
 });
 
-export const { useCreateTeamMutation, useGetTeamUsersQuery, useInsertUsersToTeamsMutation, useLazyGetTeamUsersQuery, useGetTeamUsersByIdQuery } = teamQueryService;
+export const { useCreateTeamMutation, useGetTeamInfoQuery, useInsertUsersToTeamsMutation, useGetTeamUsersByIdQuery } = teamQueryService;
 export default teamQueryService;

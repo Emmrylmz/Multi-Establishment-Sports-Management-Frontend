@@ -1,12 +1,22 @@
 import React from 'react';
-import { View, Text, FlatList, ListRenderItem, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  ListRenderItem,
+  TouchableOpacity,
+  ActivityIndicator,
+  StyleSheet,
+} from 'react-native';
 import { useSelector } from 'react-redux';
 import { useListEventsQuery } from '../../../../features/query/eventQueryService';
-import { RootState } from "../../../../../store";
+import { RootState } from '../../../../../store';
 import { getAuthUser } from '../../../../features/auth/auth.slice';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase } from '@react-navigation/native';
-import { parseISO } from 'date-fns';
+import { parseISO, format } from 'date-fns';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 
 type Event = {
   event_id: string;
@@ -16,8 +26,8 @@ type Event = {
   end_datetime: Date;
   description: string;
   team_name: string;
-  team_id:string
-}
+  team_id: string;
+};
 
 type ApiResponse = {
   team_name: string;
@@ -28,28 +38,23 @@ type ApiResponse = {
     start_datetime: string;
     end_datetime: string;
     description: string;
-    team_id:string
+    team_id: string;
   }[];
-}
+};
 
 const transformData = (data: ApiResponse[]): Event[] => {
-  const transformed = data.map((team) => ({
-    team_name: team.team_name,
-    events: team.events.map((event) => ({
-      event_id: event.event_id,
-      event_type: event.event_type,
-      place: event.place,
-      start_datetime: event.start_datetime ? parseISO(event.start_datetime) : new Date(),
-      end_datetime: event.end_datetime ? parseISO(event.end_datetime) : new Date(),
-      description: event.description,
+  const transformed = data.flatMap((team) =>
+    team.events.map((event) => ({
+      ...event,
       team_name: team.team_name,
-      team_id:team.team_id
-    })).filter(event => event.start_datetime && event.end_datetime), // Filter out events with invalid dates
-  }));
-
-  return transformed.flatMap((team) => team.events).sort(
-    (a, b) => a.start_datetime.getTime() - b.start_datetime.getTime()
+      start_datetime: parseISO(event.start_datetime),
+      end_datetime: parseISO(event.end_datetime),
+    }))
   );
+
+  return transformed
+    .filter((event) => event.start_datetime && event.end_datetime)
+    .sort((a, b) => a.start_datetime.getTime() - b.start_datetime.getTime());
 };
 
 interface EventListProps {
@@ -62,11 +67,11 @@ const EventList: React.FC<EventListProps> = ({ navigation, orientation }) => {
   const { data, error, isLoading } = useListEventsQuery(user?.teams);
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <ActivityIndicator size="large" color="#4FD1C5" />;
   }
 
   if (error) {
-    return <Text>Error loading events</Text>;
+    return <Text style={styles.errorText}>Error loading events</Text>;
   }
 
   const events = data ? transformData(data) : [];
@@ -74,26 +79,38 @@ const EventList: React.FC<EventListProps> = ({ navigation, orientation }) => {
   const handleEventPress = (event: Event) => {
     navigation.navigate('EventDetailPage', {
       event_id: event.event_id,
-      coordinates: { latitude: 0, longitude: 0 }, // Pass actual coordinates if available
+      coordinates: { latitude: 0, longitude: 0 },
       place: event.place,
       team_name: event.team_name,
       event_name: event.description,
-      team_id:event.team_id,
+      team_id: event.team_id,
       event_type: event.event_type,
       start_datetime: event.start_datetime.toDateString(),
     });
   };
 
   const renderItem: ListRenderItem<Event> = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => handleEventPress(item)}
-      className="p-4 m-2 bg-white shadow-md dark:bg-dacka-dark-gray rounded-xl"
-      style={{ width: orientation === 'horizontal' ? 300 : 'auto' }}
-    >
-      <Text className="font-bold text-dacka-black dark:text-white">{item.start_datetime.toDateString()}</Text>
-      <Text className='text-dacka-black dark:text-white'>{item.team_name}</Text>
-      <Text className='text-dacka-black dark:text-white'>{item.event_type} at {item.place}</Text>
-      <Text className="text-gray-500">{item.description}</Text>
+    <TouchableOpacity onPress={() => handleEventPress(item)}>
+      <LinearGradient
+        colors={['#3FA454', '#2D3748']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[
+          styles.linearGradient,
+          orientation === 'horizontal' ? styles.horizontal : styles.vertical,
+        ]}
+      >
+        <View style={styles.header}>
+          <Text style={styles.eventType}>{item.event_type}</Text>
+          <Ionicons name="calendar" size={24} color="#4FD1C5" />
+        </View>
+        <Text style={styles.dateText}>
+          {format(item.start_datetime, "MMM d, yyyy 'at' h:mm a")}
+        </Text>
+        <Text style={styles.placeText}>{item.place}</Text>
+        <Text style={styles.teamNameText}>{item.team_name}</Text>
+        <Text style={styles.descriptionText}>{item.description}</Text>
+      </LinearGradient>
     </TouchableOpacity>
   );
 
@@ -105,8 +122,63 @@ const EventList: React.FC<EventListProps> = ({ navigation, orientation }) => {
       horizontal={orientation === 'horizontal'}
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={orientation === 'vertical'}
+      contentContainerStyle={
+        orientation === 'vertical' ? styles.verticalContentContainer : {}
+      }
     />
   );
 };
+
+const styles = StyleSheet.create({
+  errorText: {
+    color: 'red',
+  },
+  linearGradient: {
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  horizontal: {
+    width: 288,
+    marginRight: 16,
+  },
+  vertical: {
+    width: '100%',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  eventType: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  dateText: {
+    fontSize: 14,
+    color: '#D1D5DB',
+    marginBottom: 4,
+  },
+  placeText: {
+    fontSize: 14,
+    color: '#D1D5DB',
+    marginBottom: 8,
+  },
+  teamNameText: {
+    fontSize: 12,
+    color: '#A0AEC0',
+  },
+  descriptionText: {
+    fontSize: 12,
+    color: '#A0AEC0',
+    marginTop: 8,
+    fontStyle: 'italic',
+  },
+  verticalContentContainer: {
+    paddingHorizontal: 16,
+  },
+});
 
 export default EventList;
