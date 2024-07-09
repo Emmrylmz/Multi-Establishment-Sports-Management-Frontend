@@ -95,17 +95,19 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
     });
   };
 
+
   const markAsPaid = async () => {
     setSelectedMonths([]);
     setIsSelectionMode(false);
 
     const existingMonths = data.filter(payment => payment.paid).map(payment => payment.month);
     const uniqueMonths = Array.from(new Set([...existingMonths, ...selectedMonths]));
+    console.log('unique aylar: ',uniqueMonths)
 
     const newPayment: FormState = {
       user_id: player_id,
       team_id: team_id,
-      amount: selectedMonths.length * 2000,
+      amount: 2000,
       months: selectedMonths,
       year: new Date().getFullYear(),
       paid: true,
@@ -116,7 +118,6 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
       await createPayment(newPayment).unwrap();
       refetch();
     } catch (error) {
-      console.error('Error creating payment:', error);
     }
   };
 
@@ -130,7 +131,7 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 
   return (
     <AppLayout>
-      <View className={`flex-1 bg-slate-200 dark:bg-dacka-black pt-${insets.top}`}>
+      <View className={`flex-1 bg-white dark:bg-dacka-black pt-${insets.top}`}>
         <PaymentOverview totalPayment={totalPayment} totalPaid={totalPaid} />
         <ScrollView 
           showsVerticalScrollIndicator={false} 

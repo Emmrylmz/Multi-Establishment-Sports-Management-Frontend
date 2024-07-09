@@ -11,9 +11,9 @@ const ConfirmOrCancelView = ({toggleSelectionMode, markAsPaid}: ConfirmOrCancelV
     <View className="flex-row justify-between">
       <TouchableOpacity 
         onPress={toggleSelectionMode}
-        className="px-6 py-3 bg-gray-300 rounded-full"
+        className="px-6 py-3 bg-red-400 rounded-full"
       >
-        <Text className="font-semibold text-gray-700">Cancel</Text>
+        <Text className="font-semibold text-white">Cancel</Text>
       </TouchableOpacity>
       <TouchableOpacity 
         onPress={markAsPaid}

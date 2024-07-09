@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ManagerHomePage from '../app/pages/manager/ManagerHomePage';
 import TabBarIcon from '../app/components/tabs/tabBarIcon';
 import ManagerPaymentPage from '../app/pages/manager/ManagerPaymentPage';
@@ -10,7 +10,6 @@ import CoachTeamsPage from '../app/pages/coach/CoachTeamsPage';
 import { useColorScheme } from 'react-native';
 import TeamDetailPage from '../app/pages/common/TeamDetailPage';
 import EventDetailPage from '../app/pages/common/EventDetailPage';
-
 import MangerPlayerPaymentDetailPage from '../app/pages/manager/MangerPlayerPaymentDetailPage';
 import PlayerDetailPage from '../app/pages/common/PlayerDetailPage';
 
@@ -50,7 +49,7 @@ const ManagerNavigation = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName="ManagerHomePageStack"
+      initialRouteName="ManagerHomeStack"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => (
           <TabBarIcon routeName={route.name} color={color} size={size} />
@@ -74,7 +73,7 @@ const ManagerNavigation = () => {
         },
       })}
     >
-      <Tab.Screen name="ManagerHomePage" options={{ headerShown: false, title: 'Home Page' }} component={ManagerHomeStackScreen} />
+      <Tab.Screen name="ManagerHomeStack" options={{ headerShown: false, title: 'Home' }} component={ManagerHomeStackScreen} />
       <Tab.Screen name="ManagerTeamsPage" options={{ title: 'Teams List' }} component={CoachTeamsPage} />
       <Tab.Screen name="ManagerEventsPage" options={{ title: 'Events' }} component={ManagerEventsPage} />
       <Tab.Screen name="ManagerPaymentPage" options={{ title: 'See Payments' }} component={ManagerPaymentPage} />

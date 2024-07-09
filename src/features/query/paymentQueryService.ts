@@ -19,11 +19,31 @@ const PaymnentQueryService = createApi({
         body: payment,
       }),
     }),
-
+    getMonthlyRevenue: builder.query({
+      query:(body) => ({
+        url: '/payments/get_monthly_revenue',
+        method: 'POST',
+        body: body,
+      }),
+    }),
+    getYearlyRevenue: builder.query({
+      query:(body) => ({
+        url: '/payments/get_yearly_revenue',
+        method: 'POST',
+        body: body,
+      }),
+    }),
+    getRevenueByMonthRange: builder.query({
+      query:(body) => ({
+        url: '/payments/get_revenue_by_month_range',
+        method: 'POST',
+        body: body,
+      }),
+    }),
   }),
 });
 
 
-export const { useGetPaymentQuery, useCreatePaymentMutation } = PaymnentQueryService;
+export const { useGetPaymentQuery, useCreatePaymentMutation, useGetMonthlyRevenueQuery, useGetYearlyRevenueQuery,useGetRevenueByMonthRangeQuery } = PaymnentQueryService;
 
 export default PaymnentQueryService;
