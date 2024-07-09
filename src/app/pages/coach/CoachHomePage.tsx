@@ -20,7 +20,7 @@ const CoachHomePage = ({ navigation }) => {
 			<AppLayout>
 				<StatsOverview user={user} />
 				<QuickActions user={user} />
-				<UpcomingEvents navigation={navigation} />
+				<UpcomingEvents navigation={navigation} user={user} />
 			</AppLayout>
 		</ScrollView>
 	);

@@ -8,7 +8,7 @@ import PaymentPage from '../../app/pages/common/PaymentPage';
 import NotificationPage from '../../app/pages/common/NotificationPage';
 import PlayerDetailPage from '../../app/pages/common/PlayerDetailPage';
 import AttendancePage from '../../app/pages/coach/AttendancePage';
-import TeamDetail from '../../app/components/ui/Team/TeamDetail';
+import TeamDetail from '../../app/pages/common/TeamDetailPage';
 
 const HomeStack = createNativeStackNavigator();
 
