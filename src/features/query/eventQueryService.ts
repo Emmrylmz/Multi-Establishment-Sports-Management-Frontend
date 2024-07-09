@@ -29,7 +29,15 @@ const eventQueryService = createApi({
       query: (team_id) => ({
         url: '/events/get_team_events',
         method: 'POST',
-        body: { team_id: team_id },
+        body: { team_ids: team_id },
+      }),
+      providesTags: ['Events'],
+    }),
+    listUpcomingEvents: builder.query({
+      query: (team_id) => ({
+        url: '/events/get_upcoming_events',
+        method: 'POST',
+        body: { team_ids: team_id },
       }),
       providesTags: ['Events'],
     }),
@@ -66,6 +74,13 @@ const eventQueryService = createApi({
         body: {event_id: event_id},
       }),
     }),
+    updateAttendances: builder.mutation({
+      query: (newAttendanceForm) => ({
+        url: `/events/update_attendances`,
+        method: 'PUT',
+        body: newAttendanceForm,
+      }),
+    }),
     // Define other endpoints here
   }),
 });
@@ -77,6 +92,8 @@ export const {
   useUpdateEventMutation,
   useDeleteEventMutation,
   useAddAttendancesToEventMutation,useFetchAttendancesByEventIdQuery,
+  useListUpcomingEventsQuery,
+  useUpdateAttendancesMutation
 } = eventQueryService;
 
 export const selectListEventsResult = eventQueryService.endpoints.listEvents.select;

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import {
 	View,
 	Text,
@@ -7,6 +7,7 @@ import {
 	Linking,
 	Animated,
 	Dimensions,
+	TouchableOpacity,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
@@ -16,8 +17,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import AnimatedHeader from '../../components/ui/Form/AnimatedHeader';
 import EventDetailsSection from '../../components/ui/Event/EventDetailsSection';
 import MapSection from '../../components/ui/Event/MapSection';
-import AttendanceSection from '../../components/ui/Event/AttendanceSection';
 import GoBackButton from '../../components/ui/GoBackButton';
+import { PlayerCard } from '../../components';
+import SubmitButton from '../../components/ui/Form/SubmitButton';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -38,13 +40,16 @@ const EventDetailPage = ({ route, navigation }) => {
 	const now = new Date();
 	const hasEventPassed = now > eventDate;
 
-	const { data: teamUsers = [] } = useGetTeamUsersByIdQuery(team_id);
-	const { data: attendanceData = [] } = useFetchAttendancesByEventIdQuery(
-		event_id,
-		{
-			skip: !hasEventPassed,
-		}
-	);
+	const {
+		data: teamUsers = {},
+		isLoading: isTeamUsersLoading,
+		isError: isTeamUsersError,
+	} = useGetTeamUsersByIdQuery(team_id);
+	const {
+		data: attendanceData = [],
+		isLoading: isAttendanceLoading,
+		isError: isAttendanceError,
+	} = useFetchAttendancesByEventIdQuery(event_id, { skip: !hasEventPassed });
 
 	const scrollY = useRef(new Animated.Value(0)).current;
 	const headerHeight = SCREEN_HEIGHT * 0.33;
@@ -60,10 +65,10 @@ const EventDetailPage = ({ route, navigation }) => {
 		}
 
 		Alert.alert('Open Maps', 'Choose an app to open this location:', buttons);
-	}, []);
+	}, [coordinates, place, event_name]);
 
 	const openMaps = useCallback(
-		(type: string) => {
+		(type) => {
 			const latitude = coordinates.latitude;
 			const longitude = coordinates.longitude;
 			const label = encodeURIComponent(`${place} - ${event_name}`);
@@ -92,13 +97,17 @@ const EventDetailPage = ({ route, navigation }) => {
 		[coordinates, place, event_name]
 	);
 
-	const NavigateUserDetails = useCallback((user_id: string) => {
-		navigation.navigate('ProfileContainer', { user_id });
-	}, []);
+	const NavigateUserDetails = useCallback(
+		(user_id) => {
+			navigation.navigate('UserProfile', { user_id });
+		},
+		[navigation]
+	);
 
-	const mergedData = React.useMemo(() => {
-		if (!attendanceData.length) return teamUsers;
-		return teamUsers.map((user) => {
+	const mergedData = useMemo(() => {
+		const allUsers = [...(teamUsers.player_infos || [])];
+		if (!attendanceData.length) return allUsers;
+		return allUsers.map((user) => {
 			const attendanceRecord = attendanceData.find(
 				(att) => att.user_id === user._id
 			);
@@ -115,7 +124,7 @@ const EventDetailPage = ({ route, navigation }) => {
 		setShowMap((prevState) => !prevState);
 	}, []);
 
-	const imageSource = React.useMemo(() => {
+	const imageSource = useMemo(() => {
 		switch (event_type) {
 			case 'Training':
 				return require('../../../assets/Basketball-rafiki.png');
@@ -126,8 +135,24 @@ const EventDetailPage = ({ route, navigation }) => {
 		}
 	}, [event_type]);
 
+	const navigateToAttendance = useCallback(() => {
+		navigation.navigate('TakeAttendance', {
+			event_id,
+			event_type,
+			mergedData,
+		});
+	}, [navigation, event_id, event_type, mergedData]);
+
+	if (isTeamUsersLoading || isAttendanceLoading) {
+		return <Text>Loading...</Text>;
+	}
+
+	if (isTeamUsersError || isAttendanceError) {
+		return <Text>Error loading data</Text>;
+	}
+
 	return (
-		<LinearGradient colors={['#00897B', '#3FA454']} className="flex-1">
+		<LinearGradient colors={['#00897B', '#3FA454']} style={{ flex: 1 }}>
 			<GoBackButton />
 			<Animated.ScrollView
 				onScroll={Animated.event(
@@ -142,13 +167,29 @@ const EventDetailPage = ({ route, navigation }) => {
 					headerHeight={headerHeight}
 				/>
 
-				<View className="rounded-t-3xl bg-gray-100 p-6">
+				<View
+					style={{
+						borderTopLeftRadius: 30,
+						borderTopRightRadius: 30,
+						backgroundColor: '#F8F8F8',
+						padding: 20,
+					}}
+				>
 					<EventDetailsSection
 						team_name={team_name}
 						event_type={event_type}
 						place={place}
 						eventDate={eventDate}
 					/>
+
+					{user?.role === 'Coach' && (
+						<View className="mb-5">
+							<SubmitButton
+								onPress={navigateToAttendance}
+								title="Take Attendance"
+							/>
+						</View>
+					)}
 
 					<MapSection
 						showMap={showMap}
@@ -160,11 +201,71 @@ const EventDetailPage = ({ route, navigation }) => {
 						handleMarkerPress={handleMarkerPress}
 					/>
 
-					<AttendanceSection
-						hasEventPassed={hasEventPassed}
-						mergedData={mergedData}
-						NavigateUserDetails={NavigateUserDetails}
-					/>
+					<View style={{ marginTop: 20 }}>
+						<Text
+							style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}
+						>
+							Coaches
+						</Text>
+						{(teamUsers.coach_infos || []).map((coach) => (
+							<PlayerCard
+								id={coach._id}
+								key={coach._id}
+								name={coach.name}
+								image={{
+									uri:
+										coach.photo || 'https://avatar.iran.liara.run/public/boy',
+								}}
+								position="Coach"
+								onPress={() => NavigateUserDetails(coach._id)}
+							/>
+						))}
+					</View>
+
+					{!hasEventPassed && (
+						<View style={{ marginTop: 20 }}>
+							<Text
+								style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}
+							>
+								Players
+							</Text>
+							{(teamUsers.player_infos || []).map((player) => (
+								<PlayerCard
+									id={player._id}
+									key={player._id}
+									name={player.name}
+									image={{
+										uri:
+											player.photo ||
+											'https://avatar.iran.liara.run/public/boy',
+									}}
+									position="Player"
+									onPress={() => NavigateUserDetails(player._id)}
+								/>
+							))}
+						</View>
+					)}
+
+					<View style={{ marginTop: 20 }}>
+						<Text
+							style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}
+						>
+							Attendance
+						</Text>
+						{mergedData.map((user) => (
+							<PlayerCard
+								id={user._id}
+								key={user._id}
+								name={user.name}
+								image={{
+									uri: user.photo || 'https://avatar.iran.liara.run/public/boy',
+								}}
+								position="Player"
+								attended={user.attended}
+								onPress={() => NavigateUserDetails(user._id)}
+							/>
+						))}
+					</View>
 				</View>
 			</Animated.ScrollView>
 		</LinearGradient>

@@ -19,8 +19,12 @@ const QuickActions = ({ user }) => {
 		navigation.navigate('CoachAddTrainingPage', { team_id: teamId });
 	};
 
+	const routeEventHistory = () => {
+		navigation.navigate('EventHistoryPage');
+	};
+
 	return (
-		<View className="px-4 mb-6">
+		<View className=" mb-6">
 			<Text className="text-xl font-bold text-gray-800 mb-4">
 				Quick Actions
 			</Text>
@@ -35,10 +39,10 @@ const QuickActions = ({ user }) => {
 				</TouchableOpacity>
 				<TouchableOpacity
 					className="bg-white rounded-xl p-4 items-center w-[30%] shadow-sm"
-					onPress={handleNewPracticePress}
+					onPress={routeEventHistory}
 				>
 					<Ionicons name="calendar" size={24} color="#0D9488" />
-					<Text className="text-sm text-gray-600 mt-2">All Events</Text>
+					<Text className="text-sm text-gray-600 mt-2">Event History</Text>
 				</TouchableOpacity>
 
 				<TouchableOpacity

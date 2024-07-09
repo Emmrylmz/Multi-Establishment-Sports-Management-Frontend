@@ -8,7 +8,6 @@ import ManagerEventsPage from '../app/pages/manager/ManagerEventsPage';
 import ManagerTeamsPage from '../app/pages/manager/ManagerTeamsPage';
 import CoachTeamsPage from '../app/pages/coach/CoachTeamsPage';
 import { useColorScheme } from 'react-native';
-import TeamDetailPage from '../app/pages/common/TeamDetailPage';
 import EventDetailPage from '../app/pages/common/EventDetailPage';
 
 import MangerPlayerPaymentDetailPage from '../app/pages/manager/MangerPlayerPaymentDetailPage';
@@ -36,7 +35,6 @@ function ManagerHomeStackScreen() {
     >
       <HomeStack.Screen name="ManagerHomePage" options={{ title: 'Home Page' }} component={ManagerHomePage} />
       <HomeStack.Screen name="EventDetailPage" options={{ title: 'Event Detail' }} component={EventDetailPage} />
-      <HomeStack.Screen name='TeamDetailPage' component={TeamDetailPage} />
       <HomeStack.Screen name='PlayerDetailPage' component={PlayerDetailPage} />
       <HomeStack.Screen name='ManagerPlayerPaymentDetailPage' component={MangerPlayerPaymentDetailPage}/>
     </HomeStack.Navigator>

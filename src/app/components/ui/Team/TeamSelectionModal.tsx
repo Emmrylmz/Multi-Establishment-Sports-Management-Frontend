@@ -28,7 +28,7 @@ const TeamSelectionModal: React.FC<TeamSelectionModalProps> = ({
       transparent={true}
       onRequestClose={onClose}
     >
-      <View className="flex-1 justify-end bg-black bg-opacity-50">
+      <View className="flex-1 justify-end  bg-opacity-50">
         <View className="bg-gray-100 rounded-t-3xl p-4 h-5/6">
           <Text className="text-xl font-bold text-gray-800 mb-4">Select a Team</Text>
           <TeamList
