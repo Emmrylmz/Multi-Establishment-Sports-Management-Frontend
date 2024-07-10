@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { getAuthUser } from '../features/auth/auth.slice';
 import CoachNavigation from './CoachNavigation';
 import ManagerNavigation from './ManagerNavigation';
-import PlayerNavigation from './userNavigation/PlayerNavigation';
 import LoginNavigation from './LoginNavigation';
 import { ActivityIndicator, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -13,6 +12,7 @@ import { useAuthStatus } from '../hooks/useAuthStatus';
 import EventDetailPage from '../app/pages/common/EventDetailPage';
 import { navigationRef } from './rootNavigation';
 import { usePushNotifications } from '../hooks/usePushNotifications';
+import PlayerNavigation from './UserNavigation/PlayerNavigation';
 
 const Stack = createNativeStackNavigator();
 

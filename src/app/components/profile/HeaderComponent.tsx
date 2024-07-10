@@ -1,6 +1,8 @@
-import React from 'react';
-import { Animated, StyleSheet, Text, View, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { Animated, StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ProfileSidebar from './ProfileSidebar';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const HEADER_MAX_HEIGHT = SCREEN_HEIGHT * 0.4;
@@ -17,6 +19,8 @@ interface HeaderComponentProps {
 }
 
 const HeaderComponent: React.FC<HeaderComponentProps> = ({ scrollY, user }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const headerTranslateY = scrollY.interpolate({
     inputRange: [0, HEADER_SCROLL_DISTANCE],
     outputRange: [0, -HEADER_SCROLL_DISTANCE],
@@ -36,28 +40,41 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({ scrollY, user }) => {
   });
 
   return (
-    <Animated.View
-      style={[
-        styles.header,
-        { transform: [{ translateY: headerTranslateY }] },
-      ]}
-    >
-      <LinearGradient
-        colors={['#00897B', '#3FA454']}
-        style={[StyleSheet.absoluteFill, styles.gradient]}
-      />
-      <Animated.View style={[styles.headerContent, { opacity: headerOpacity }]}>
-        <Animated.Image
-          source={{ uri: user?.photo || 'https://avatar.iran.liara.run/public/boy' }}
-          style={[
-            styles.profileImage,
-            { transform: [{ scale: imageScale }] },
-          ]}
+    <>
+      <Animated.View
+        style={[
+          styles.header,
+          { transform: [{ translateY: headerTranslateY }] },
+        ]}
+      >
+        <LinearGradient
+          colors={['#00897B', '#3FA454']}
+          style={[StyleSheet.absoluteFill, styles.gradient]}
         />
-        <Text style={styles.name}>{user?.name || 'N/A'}</Text>
-        <Text style={styles.role}>{user?.role || 'Team Member'}</Text>
+        <TouchableOpacity
+          style={styles.menuButton}
+          onPress={() => setIsSidebarOpen(true)}
+        >
+          <Icon name="menu" size={24} color="#fff" />
+        </TouchableOpacity>
+        <Animated.View style={[styles.headerContent, { opacity: headerOpacity }]}>
+          <Animated.Image
+            source={{ uri: user?.photo || 'https://avatar.iran.liara.run/public/boy' }}
+            style={[
+              styles.profileImage,
+              { transform: [{ scale: imageScale }] },
+            ]}
+          />
+          <Text style={styles.name}>{user?.name || 'N/A'}</Text>
+          <Text style={styles.role}>{user?.role || 'Team Member'}</Text>
+        </Animated.View>
       </Animated.View>
-    </Animated.View>
+      <ProfileSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        user={user}
+      />
+    </>
   );
 };
 
@@ -99,6 +116,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     marginTop: 5,
+  },
+  menuButton: {
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    zIndex: 1,
   },
 });
 
