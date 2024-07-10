@@ -8,7 +8,6 @@ import ManagerEventsPage from '../app/pages/manager/ManagerEventsPage';
 import ManagerTeamsPage from '../app/pages/manager/ManagerTeamsPage';
 import CoachTeamsPage from '../app/pages/coach/CoachTeamsPage';
 import { useColorScheme } from 'react-native';
-import TeamDetailPage from '../app/pages/common/TeamDetailPage';
 import EventDetailPage from '../app/pages/common/EventDetailPage';
 import MangerPlayerPaymentDetailPage from '../app/pages/manager/MangerPlayerPaymentDetailPage';
 import PlayerDetailPage from '../app/pages/common/PlayerDetailPage';
@@ -35,9 +34,14 @@ function ManagerHomeStackScreen() {
     >
       <HomeStack.Screen name="ManagerHomePage" options={{ title: 'Home Page' }} component={ManagerHomePage} />
       <HomeStack.Screen name="EventDetailPage" options={{ title: 'Event Detail' }} component={EventDetailPage} />
+<<<<<<< HEAD
       <HomeStack.Screen name='TeamDetailPage' options={{title: 'Team Details'}} component={TeamDetailPage} />
       <HomeStack.Screen name='PlayerDetailPage' options={{title: 'Player Details'}} component={PlayerDetailPage} />
       <HomeStack.Screen name='ManagerPlayerPaymentDetailPage' options={{title: 'Player Payment Detail'}} component={MangerPlayerPaymentDetailPage}/>
+=======
+      <HomeStack.Screen name='PlayerDetailPage' component={PlayerDetailPage} />
+      <HomeStack.Screen name='ManagerPlayerPaymentDetailPage' component={MangerPlayerPaymentDetailPage}/>
+>>>>>>> 076ab3ae04606f798d46db3402aabc6564f52792
     </HomeStack.Navigator>
   );
 }

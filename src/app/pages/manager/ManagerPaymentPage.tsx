@@ -1,7 +1,7 @@
 import { View, Text, ScrollView } from 'react-native'
 import React from 'react'
 import { AppLayout } from '../../components'
-import TeamCard from '../../components/ui/TeamCard'
+import TeamCard from '../../components/ui/Team/TeamCard'
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import { useGetTeamUsersQuery } from '../../../features/query/teamQueryService'
