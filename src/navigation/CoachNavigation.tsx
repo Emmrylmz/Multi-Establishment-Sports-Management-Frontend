@@ -24,6 +24,7 @@ import EventHistoryPage from '../app/pages/common/EventHistoryPage';
 import TeamListPage from '../app/pages/common/TeamListPage';
 import UserProfile from '../app/components/profile/UserProfile';
 import TakeAttendance from '../app/components/ui/attendance/TakeAttendance';
+import CoachNotesPage from '../app/pages/common/CoachNotesPage';
 const HomeStack = createNativeStackNavigator();
 function CoachHomeStackScreen() {
   return (
@@ -59,6 +60,7 @@ function CoachHomeStackScreen() {
       <HomeStack.Screen name='EventHistory' options={{title: 'Event History'}} component={EventHistory} /> 
       <HomeStack.Screen name='EventHistoryPage' options={{title: 'Event History Page'}} component={EventHistoryPage} /> 
       <HomeStack.Screen name='TakeAttendance' options={{title: 'Attendance Section'}} component={TakeAttendance} /> 
+      <HomeStack.Screen name='CoachNotesPage' options={{title: 'Coach Notes Page'}} component={CoachNotesPage} /> 
     </HomeStack.Navigator>
   );
 }
