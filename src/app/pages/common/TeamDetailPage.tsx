@@ -9,6 +9,7 @@ const CoachTeamsPage = ({ route, navigation }) => {
   const { team_id,from } = route.params;
   const { data: teamUsers, error, isLoading } = useGetTeamUsersByIdQuery(team_id);
 
+  console.log(teamUsers)
 
   if (isLoading) {
     return <ActivityIndicator size="large" color="#0000ff" />;

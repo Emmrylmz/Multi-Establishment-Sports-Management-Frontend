@@ -35,9 +35,9 @@ function ManagerHomeStackScreen() {
     >
       <HomeStack.Screen name="ManagerHomePage" options={{ title: 'Home Page' }} component={ManagerHomePage} />
       <HomeStack.Screen name="EventDetailPage" options={{ title: 'Event Detail' }} component={EventDetailPage} />
-      <HomeStack.Screen name='TeamDetailPage' component={TeamDetailPage} />
-      <HomeStack.Screen name='PlayerDetailPage' component={PlayerDetailPage} />
-      <HomeStack.Screen name='ManagerPlayerPaymentDetailPage' component={MangerPlayerPaymentDetailPage}/>
+      <HomeStack.Screen name='TeamDetailPage' options={{title: 'Team Details'}} component={TeamDetailPage} />
+      <HomeStack.Screen name='PlayerDetailPage' options={{title: 'Player Details'}} component={PlayerDetailPage} />
+      <HomeStack.Screen name='ManagerPlayerPaymentDetailPage' options={{title: 'Player Payment Detail'}} component={MangerPlayerPaymentDetailPage}/>
     </HomeStack.Navigator>
   );
 }
