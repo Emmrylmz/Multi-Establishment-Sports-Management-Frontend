@@ -4,13 +4,13 @@ import { AppLayout } from '../../components'
 import TeamCard from '../../components/ui/Team/TeamCard'
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
-import { useGetTeamUsersQuery } from '../../../features/query/teamQueryService'
+import { useGetTeamInfoQuery } from '../../../features/query/teamQueryService'
 import { getAuthUser } from '../../../features/auth/auth.slice'
 
 const ManagerPaymentPage = ({navigation}) => {
   const user = useSelector((state: RootState) => getAuthUser(state));
   console.log(user)
-  const { data, isLoading, isError } = useGetTeamUsersQuery(user?.teams);
+  const { data, isLoading, isError } = useGetTeamInfoQuery(user?.teams);
   console.log(data)
   if (isLoading) {
     return <View><Text>Loading...</Text></View>;

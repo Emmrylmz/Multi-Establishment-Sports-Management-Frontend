@@ -24,7 +24,7 @@ function ManagerHomeStackScreen() {
       screenOptions={{
         headerBackTitleVisible: true,
         headerBackTitle: 'Back',
-        headerTintColor: '#fff',
+        headerTintColor: isDarkMode ? '#fff' : '#000',
         headerStyle: {
           backgroundColor: isDarkMode ? '#101010' : '#fff',
         },

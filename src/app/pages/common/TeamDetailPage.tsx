@@ -7,6 +7,7 @@ import { PlayerCard } from '../../components';
 
 const TeamDetailPage = ({ route, navigation }) => {
 	// Assuming we receive the team data through route params
+	const {from} =route.params;
 	const {
 		team_id,
 		team_name,
@@ -24,7 +25,10 @@ const TeamDetailPage = ({ route, navigation }) => {
 	console.log(teamUsers);
 
 	const navigateToUserDetail = (user_id) => {
-		navigation.navigate('UserProfile', { user_id: user_id });
+		if(from ==='manager'){
+			return navigation.navigate('ManagerPlayerPaymentDetailPage', { player_id: user_id })
+		}
+		navigation.navigate('PlayerDetailPage', { player_id: user_id });
 	};
 
 	const renderMember = (member, role) => (
@@ -44,7 +48,6 @@ const TeamDetailPage = ({ route, navigation }) => {
 	return (
 		<ScrollView className="flex-1 bg-gray-100">
 			<View className="px-4 pt-12 pb-6 bg-teal-600 shadow-md rounded-b-3xl">
-				<GoBackButton />
 				<View className="items-center mt-8">
 					<Image
 						source={{

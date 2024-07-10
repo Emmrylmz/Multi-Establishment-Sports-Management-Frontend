@@ -26,6 +26,7 @@ type FormState = {
 
 const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
   const { player_id, team_id } = route.params;
+  console.log(player_id, team_id)
   const { data, error, isLoading: isLoadingPayments, refetch } = useGetPaymentQuery(player_id);
   const [createPayment, { isLoading: isCreatingPayment, isError: isCreatePaymentError }] = useCreatePaymentMutation();
 
