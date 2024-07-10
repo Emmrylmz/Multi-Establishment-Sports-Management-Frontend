@@ -1,11 +1,19 @@
 import React, { useRef } from 'react';
-import { View, Text, ScrollView, StyleSheet, Animated, Dimensions, TouchableOpacity, Image } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Animated,
+  Dimensions,
+  Image,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UserInfoType } from '../../../features/auth/auth.interface';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-const HEADER_MAX_HEIGHT = SCREEN_HEIGHT * 0.4; // Increased height to accommodate profile picture
+const HEADER_MAX_HEIGHT = SCREEN_HEIGHT * 0.4;
 const HEADER_MIN_HEIGHT = SCREEN_HEIGHT * 0.15;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
@@ -75,11 +83,11 @@ const ProfileContainer: React.FC<UserProfilePageProps> = ({ user }) => {
         )}
       >
         <View style={styles.content}>
-          {renderStatsCard()}
+          {user && renderStatsCard()}
           {renderInfoCard('Personal Info', [
-            { label: 'Age', value: user?.age || 'N/A' },
-            { label: 'Height', value: `${user?.height || 'N/A'} cm` },
-            { label: 'Weight', value: `${user?.weight || 'N/A'} kg` },
+            { label: 'Age', value: user?.age },
+            { label: 'Height', value: `${user?.height} cm` },
+            { label: 'Weight', value: `${user?.weight} kg` },
           ])}
           {renderInfoCard('Performance', [
             { label: 'Training Attendance', value: `${user?.training_attendance_ratio || 0}%` },
@@ -91,33 +99,25 @@ const ProfileContainer: React.FC<UserProfilePageProps> = ({ user }) => {
       <Animated.View
         style={[
           styles.header,
-          {
-            transform: [{ translateY: headerTranslateY }],
-          },
+          { transform: [{ translateY: headerTranslateY }] },
         ]}
       >
         <LinearGradient
-          colors={['#4ca2d5', '#3FA454']}
+          colors={['#00897B', '#3FA454']}
           style={[StyleSheet.absoluteFill, styles.gradient]}
         />
         <Animated.View style={[styles.headerContent, { opacity: headerOpacity }]}>
           <Animated.Image
-            source={{ uri: user?.photo || 'https://via.placeholder.com/150' }}
+            source={{ uri: user?.photo || 'https://avatar.iran.liara.run/public/boy' }}
             style={[
               styles.profileImage,
-              {
-                transform: [{ scale: imageScale }],
-              },
+              { transform: [{ scale: imageScale }] },
             ]}
           />
           <Text style={styles.name}>{user?.name || 'N/A'}</Text>
           <Text style={styles.role}>{user?.role || 'Team Member'}</Text>
         </Animated.View>
       </Animated.View>
-
-      <TouchableOpacity style={styles.editButton}>
-        <Icon name="pencil" size={24} color="#fff" />
-      </TouchableOpacity>
     </View>
   );
 };
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 14,
-    color: '#666',
+    color: '#9E9E9E',
     marginTop: 2,
   },
   infoRow: {
@@ -212,28 +212,12 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 16,
-    color: '#666',
+    color: '#9E9E9E',
   },
   infoValue: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#333',
-  },
-  editButton: {
-    position: 'absolute',
-    right: 20,
-    bottom: 20,
-    backgroundColor: '#4ca2d5',
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 5,
+    color: '#00897B',
   },
 });
 

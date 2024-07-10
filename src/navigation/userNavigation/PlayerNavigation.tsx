@@ -10,8 +10,6 @@ import EventDetailPage from '../../app/pages/common/EventDetailPage';
 import PaymentPage from '../../app/pages/common/PaymentPage';
 import PlayerHomePage from '../../app/pages/player/PlayerHomePage';
 import AttendancePage from '../../app/pages/coach/AttendancePage';
-import TeamsPage from '../../app/pages/common/TeamsPage';
-import TeamDetailPage from '../../app/pages/common/TeamDetailPage';
 import PushToken from '../../app/pages/PushToken/PushToken';
 
 
@@ -36,8 +34,6 @@ function PlayerHomeStackScreen() {
       <SStack.Screen name="EventDetailPage" options={{title: 'Event Detail'}} component={EventDetailPage} />
       <SStack.Screen name='PaymentPage' options={{title: 'Payment History'}} component={PaymentPage} />
       <SStack.Screen name='AttendancePage' options={{title: 'Attendance Page'}} component={AttendancePage} />
-      <SStack.Screen name='TeamsPage' options={{title: 'All Teams'}} component={TeamsPage} />
-      <SStack.Screen name='TeamDetailPage' options={{title: 'Team Detail'}} component={TeamDetailPage} />
     </SStack.Navigator>
   );
 }

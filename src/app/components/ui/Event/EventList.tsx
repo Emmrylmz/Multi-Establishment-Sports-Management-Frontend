@@ -1,112 +1,108 @@
-import React from 'react';
-import { View, Text, FlatList, ListRenderItem, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
-import { useListEventsQuery } from '../../../../features/query/eventQueryService';
-import { RootState } from "../../../../../store";
-import { getAuthUser } from '../../../../features/auth/auth.slice';
+import React, { useMemo } from 'react';
+import { Text, FlatList, ActivityIndicator } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase } from '@react-navigation/native';
-import { parseISO } from 'date-fns';
+import { parseISO, isValid } from 'date-fns';
+import EventCard from './EventCard';
 
-type Event = {
-  event_id: string;
-  event_type: string;
-  place: string;
-  start_datetime: Date;
-  end_datetime: Date;
-  description: string;
-  team_name: string;
-  team_id:string
-}
+export type Event = {
+	description: string;
+	end_datetime: string;
+	event_id: string;
+	event_type: string;
+	place: string;
+	start_datetime: string;
+	team_id: string;
+};
 
-type ApiResponse = {
-  team_name: string;
-  events: {
-    event_id: string;
-    event_type: string;
-    place: string;
-    start_datetime: string;
-    end_datetime: string;
-    description: string;
-    team_id:string
-  }[];
-}
-
-const transformData = (data: ApiResponse[]): Event[] => {
-  const transformed = data.map((team) => ({
-    team_name: team.team_name,
-    events: team.events.map((event) => ({
-      event_id: event.event_id,
-      event_type: event.event_type,
-      place: event.place,
-      start_datetime: event.start_datetime ? parseISO(event.start_datetime) : new Date(),
-      end_datetime: event.end_datetime ? parseISO(event.end_datetime) : new Date(),
-      description: event.description,
-      team_name: team.team_name,
-      team_id:team.team_id
-    })).filter(event => event.start_datetime && event.end_datetime), // Filter out events with invalid dates
-  }));
-
-  return transformed.flatMap((team) => team.events).sort(
-    (a, b) => a.start_datetime.getTime() - b.start_datetime.getTime()
-  );
+type TeamEvents = {
+	events: Event[];
+	team_id: string;
+	team_name: string;
 };
 
 interface EventListProps {
-  navigation: NativeStackNavigationProp<ParamListBase>;
-  orientation: 'vertical' | 'horizontal';
+	navigation: NativeStackNavigationProp<ParamListBase>;
+	orientation: 'vertical' | 'horizontal';
+	teamEvents: TeamEvents[];
+	isLoading: boolean;
+	error: any;
 }
 
-const EventList: React.FC<EventListProps> = ({ navigation, orientation }) => {
-  const user = useSelector((state: RootState) => getAuthUser(state));
-  const { data, error, isLoading } = useListEventsQuery(user?.teams);
+const EventList: React.FC<EventListProps> = ({
+	navigation,
+	orientation,
+	teamEvents,
+	isLoading,
+	error,
+}) => {
+	const flattenedEvents = useMemo(() => {
+		return teamEvents.flatMap((team) =>
+			team.events.map((event) => ({
+				...event,
+				team_name: team.team_name,
+			}))
+		);
+	}, [teamEvents]);
 
-  if (isLoading) {
-    return <Text>Loading...</Text>;
-  }
+	const validEvents = useMemo(() => {
+		return flattenedEvents.filter((event) => {
+			const startDate = parseISO(event.start_datetime);
+			const endDate = parseISO(event.end_datetime);
+			return isValid(startDate) && isValid(endDate);
+		});
+	}, [flattenedEvents]);
 
-  if (error) {
-    return <Text>Error loading events</Text>;
-  }
+	const sortedEvents = useMemo(() => {
+		return [...validEvents].sort((a, b) => {
+			const dateA = parseISO(a.start_datetime);
+			const dateB = parseISO(b.start_datetime);
+			return dateA.getTime() - dateB.getTime();
+		});
+	}, [validEvents]);
 
-  const events = data ? transformData(data) : [];
+	if (isLoading) {
+		return <ActivityIndicator size="large" color="#4FD1C5" />;
+	}
 
-  const handleEventPress = (event: Event) => {
-    navigation.navigate('EventDetailPage', {
-      event_id: event.event_id,
-      coordinates: { latitude: 0, longitude: 0 }, // Pass actual coordinates if available
-      place: event.place,
-      team_name: event.team_name,
-      event_name: event.description,
-      team_id:event.team_id,
-      event_type: event.event_type,
-      start_datetime: event.start_datetime.toDateString(),
-    });
-  };
+	if (error) {
+		return <Text className="text-red-500">Error loading events</Text>;
+	}
 
-  const renderItem: ListRenderItem<Event> = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => handleEventPress(item)}
-      className="p-4 m-2 bg-white shadow-md dark:bg-dacka-dark-gray rounded-xl"
-      style={{ width: orientation === 'horizontal' ? 300 : 'auto' }}
-    >
-      <Text className="font-bold text-dacka-black dark:text-white">{item.start_datetime.toDateString()}</Text>
-      <Text className='text-dacka-black dark:text-white'>{item.team_name}</Text>
-      <Text className='text-dacka-black dark:text-white'>{item.event_type} at {item.place}</Text>
-      <Text className="text-gray-500">{item.description}</Text>
-    </TouchableOpacity>
-  );
+	const handleEventPress = (event: Event & { team_name: string }) => {
+		navigation.navigate('EventDetailPage', {
+			event_id: event.event_id,
+			coordinates: { latitude: 0, longitude: 0 },
+			place: event.place,
+			team_name: event.team_name,
+			event_name: event.description,
+			team_id: event.team_id,
+			event_type: event.event_type,
+			start_datetime: event.start_datetime,
+		});
+	};
 
-  return (
-    <FlatList
-      data={events}
-      keyExtractor={(item) => item.event_id}
-      renderItem={renderItem}
-      horizontal={orientation === 'horizontal'}
-      showsHorizontalScrollIndicator={false}
-      showsVerticalScrollIndicator={orientation === 'vertical'}
-    />
-  );
+	const renderItem = ({ item }: { item: Event & { team_name: string } }) => (
+		<EventCard
+			event={item}
+			onPress={() => handleEventPress(item)}
+			orientation={orientation}
+		/>
+	);
+
+	return (
+		<FlatList
+			data={sortedEvents}
+			keyExtractor={(item) => item.event_id}
+			renderItem={renderItem}
+			horizontal={orientation === 'horizontal'}
+			showsHorizontalScrollIndicator={false}
+			showsVerticalScrollIndicator={orientation === 'horizontal'}
+			contentContainerStyle={
+				orientation === 'vertical' ? { paddingHorizontal: 16 } : undefined
+			}
+		/>
+	);
 };
 
 export default EventList;

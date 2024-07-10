@@ -1,46 +1,93 @@
 import React from 'react';
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
-import AppLayout from '../../components/layout/AppLayout';
-import TeamCard from '../../components/ui/TeamCard';
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import GoBackButton from '../../components/ui/GoBackButton';
 import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryService';
 import { PlayerCard } from '../../components';
-import myImage from '../../../../assets/user.png'
-const CoachTeamsPage = ({ route, navigation }) => {
-  const { team_id,from } = route.params;
-  const { data: teamUsers, error, isLoading } = useGetTeamUsersByIdQuery(team_id);
 
+const TeamDetailPage = ({ route, navigation }) => {
+	// Assuming we receive the team data through route params
+	const {
+		team_id,
+		team_name,
+		team_players,
+		team_coaches,
+		created_at,
+		province,
+	} = route.params;
 
-  if (isLoading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
+	const {
+		data: teamUsers,
+		isLoading,
+		isError,
+	} = useGetTeamUsersByIdQuery(team_id);
+	console.log(teamUsers);
 
-  if (error) {
-    return <Text>Error fetching team users: {error.message}</Text>;
-  }
+	const navigateToUserDetail = (user_id) => {
+		navigation.navigate('UserProfile', { user_id: user_id });
+	};
 
-  function navigationFunction(user_id:string){
-    if(from === 'manager'){
-      return navigation.navigate('ManagerPlayerPaymentDetailPage',{player_id: user_id,team_id: team_id})
-    }
-    return navigation.navigate('PlayerDetailPage', { player_id: user_id })
-  }
+	const renderMember = (member, role) => (
+		<PlayerCard
+			id={member._id}
+			key={member._id}
+			name={member.name}
+			image={{
+				uri: member.avatarUrl || 'https://avatar.iran.liara.run/public/boy',
+			}}
+			position={role}
+			onPress={() => navigateToUserDetail(member._id)}
+			attended={member.attended}
+		/>
+	);
 
-  return (
-    <AppLayout>
-      <ScrollView className='w-full h-full'>
-        {teamUsers?.map((user) => (
-          <PlayerCard
-          id={user._id}
-          key={user._id}
-          name={user.name}
-          dateOfBirth='19-05-2002'
-          image={myImage}
-          onPress={() => navigationFunction(user._id)}
-        />
-        ))}
-      </ScrollView>
-    </AppLayout>
-  );
+	return (
+		<ScrollView className="flex-1 bg-gray-100">
+			<View className="bg-teal-600 pt-12 pb-6 px-4 rounded-b-3xl shadow-md">
+				<GoBackButton />
+				<View className="items-center mt-8">
+					<Image
+						source={{
+							uri: 'https://upload.wikimedia.org/wikipedia/en/5/55/Darussafaka_basketball_logo.png',
+						}}
+						className="w-44 h-44 rounded-full mb-4"
+					/>
+					<Text className="text-3xl font-bold text-white">{team_name}</Text>
+					<Text className="text-lg text-teal-100">{province}</Text>
+				</View>
+			</View>
+
+			<View className="px-4 mt-6">
+				<Text className="text-xl font-bold text-gray-800 mb-4">Coaches</Text>
+				{teamUsers &&
+				teamUsers.coach_infos &&
+				teamUsers.coach_infos.length > 0 ? (
+					teamUsers.coach_infos.map((coach) => renderMember(coach, 'Coach'))
+				) : (
+					<Text className="text-gray-500 italic">No coaches added yet.</Text>
+				)}
+			</View>
+
+			<View className="px-4 mt-6 mb-6">
+				<Text className="text-xl font-bold text-gray-800 mb-4">Players</Text>
+				{teamUsers &&
+				teamUsers.player_infos &&
+				teamUsers.player_infos.length > 0 ? (
+					teamUsers.player_infos.map((player) =>
+						renderMember(player, player.position || 'Player')
+					)
+				) : (
+					<Text className="text-gray-500 italic">No players added yet.</Text>
+				)}
+			</View>
+
+			<View className="px-4 mb-6">
+				<Text className="text-sm text-gray-500">
+					Team created on: {new Date(created_at).toLocaleDateString()}
+				</Text>
+			</View>
+		</ScrollView>
+	);
 };
 
-export default CoachTeamsPage;
+export default TeamDetailPage;
