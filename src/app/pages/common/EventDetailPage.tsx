@@ -152,7 +152,7 @@ const EventDetailPage = ({ route, navigation }) => {
 	}
 
 	return (
-		<LinearGradient colors={['#00897B', '#3FA454']} style={{ flex: 1 }}>
+		<>
 			<GoBackButton />
 			<Animated.ScrollView
 				onScroll={Animated.event(
@@ -160,6 +160,8 @@ const EventDetailPage = ({ route, navigation }) => {
 					{ useNativeDriver: false }
 				)}
 				scrollEventThrottle={16}
+				className="flex-1"
+				contentContainerStyle={{ paddingTop: headerHeight }}
 			>
 				<AnimatedHeader
 					imageSource={imageSource}
@@ -182,14 +184,14 @@ const EventDetailPage = ({ route, navigation }) => {
 						eventDate={eventDate}
 					/>
 
-					{user?.role === 'Coach' && (
+					{user?.role === 'Coach' && hasEventPassed ? (
 						<View className="mb-5">
 							<SubmitButton
 								onPress={navigateToAttendance}
 								title="Take Attendance"
 							/>
 						</View>
-					)}
+					) : null}
 
 					<MapSection
 						showMap={showMap}
@@ -246,29 +248,32 @@ const EventDetailPage = ({ route, navigation }) => {
 						</View>
 					)}
 
-					<View style={{ marginTop: 20 }}>
-						<Text
-							style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}
-						>
-							Attendance
-						</Text>
-						{mergedData.map((user) => (
-							<PlayerCard
-								id={user._id}
-								key={user._id}
-								name={user.name}
-								image={{
-									uri: user.photo || 'https://avatar.iran.liara.run/public/boy',
-								}}
-								position="Player"
-								attended={user.attended}
-								onPress={() => NavigateUserDetails(user._id)}
-							/>
-						))}
-					</View>
+					{hasEventPassed && (
+						<View style={{ marginTop: 20 }}>
+							<Text
+								style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}
+							>
+								Attendance
+							</Text>
+							{mergedData.map((user) => (
+								<PlayerCard
+									id={user._id}
+									key={user._id}
+									name={user.name}
+									image={{
+										uri:
+											user.photo || 'https://avatar.iran.liara.run/public/boy',
+									}}
+									position="Player"
+									attended={user.attended}
+									onPress={() => NavigateUserDetails(user._id)}
+								/>
+							))}
+						</View>
+					)}
 				</View>
 			</Animated.ScrollView>
-		</LinearGradient>
+		</>
 	);
 };
 

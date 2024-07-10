@@ -16,7 +16,7 @@ const CoachHomePage = ({ navigation }) => {
 
 	return (
 		<ScrollView className="flex-1 bg-gray-100">
-			<Header user={user} />
+			<Header user={user} navigation={navigation} />
 			<AppLayout>
 				<StatsOverview user={user} />
 				<QuickActions user={user} />

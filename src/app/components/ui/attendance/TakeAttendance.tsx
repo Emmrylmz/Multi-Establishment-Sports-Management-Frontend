@@ -1,16 +1,18 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { View, Text, FlatList, Alert, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
-import {
+import { useDispatch, useSelector } from 'react-redux';
+import eventQueryService, {
 	useAddAttendancesToEventMutation,
 	useUpdateAttendancesMutation,
 } from '../../../../features/query/eventQueryService';
 import { RootState } from '../../../../../store';
 import PlayerCard from '../PlayerCard';
+import userInfoQueryService from '../../../../features/query/userInfoQueryService';
 
 const TakeAttendance = ({ route, navigation }) => {
 	const { event_id, event_type, mergedData } = route.params;
 	const user = useSelector((state: RootState) => state.auth.user);
+	const dispatch = useDispatch();
 
 	const [addAttendance] = useAddAttendancesToEventMutation();
 	const [updateAttendance] = useUpdateAttendancesMutation();
@@ -33,10 +35,10 @@ const TakeAttendance = ({ route, navigation }) => {
 
 		const attendanceForm = {
 			event_id: event_id,
-			event_type: 'training',
+			event_type: event_type.toLowerCase(),
 			attendances: newAttendances,
 		};
-		console.log(mergedData);
+		console.log(attendanceForm);
 		try {
 			if (mergedData.some((item) => 'attended' in item)) {
 				await updateAttendance(attendanceForm).unwrap();
@@ -45,17 +47,30 @@ const TakeAttendance = ({ route, navigation }) => {
 				await addAttendance(attendanceForm).unwrap();
 				Alert.alert('Success', 'Attendance records submitted successfully');
 			}
+			dispatch(
+				eventQueryService.util.invalidateTags([
+					{ type: 'Attendances', id: event_id },
+				])
+			);
+			dispatch(
+				userInfoQueryService.util.invalidateTags(
+					attendanceList.map((item) => ({ type: 'UserInfo', id: item._id }))
+				)
+			);
 			navigation.goBack();
 		} catch (error) {
 			Alert.alert('Error', 'Failed to submit attendance. Please try again.');
 		}
 	}, [
-		attendanceList,
-		event_id,
-		event_type,
-		addAttendance,
-		updateAttendance,
-		navigation,
+		[
+			attendanceList,
+			event_id,
+			event_type,
+			addAttendance,
+			updateAttendance,
+			dispatch,
+			navigation,
+		],
 	]);
 
 	const renderAttendanceItem = useCallback(

@@ -24,8 +24,8 @@ const FormSection = ({ form, fieldIcons, handleInputChange }) => (
           placeholder={`Enter ${key}`}
           handleInputChange={handleInputChange}
           icon={fieldIcons[key]}
-          additionalStyles='border-b-2 border-gray-300'
-          placeholderTextColor='#808080'
+          additionalStyles='border-b-2 border-gray-300 p-3 shadow-md'
+          placeholderTextColor='#999'
         />
       </View>
     ))}
