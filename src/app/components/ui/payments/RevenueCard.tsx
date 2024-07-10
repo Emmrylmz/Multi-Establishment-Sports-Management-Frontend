@@ -1,4 +1,4 @@
-import { View, Text,Dimensions, useColorScheme } from 'react-native'
+import { View, Text,Dimensions, useColorScheme,ActivityIndicator } from 'react-native'
 import { Card, Title, Paragraph, IconButton } from 'react-native-paper';
 import { LineChart, BarChart } from 'react-native-chart-kit';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -12,14 +12,16 @@ type RevenueCardProps = {
   chartData: any;
   chartType: string;
   options?: boolean;
-  onChange?: (item: { label: string, value: string }) => void;
+  onChange?: (item: {label: string, value: {start_month: number, end_month: number}}) => void;
+  dropdownOptions?: Array<{ label: string,value:{start_month: number,end_month: number}}>
+  isLoading: boolean;
 };
 
 
 const { width } = Dimensions.get('window');
 const chartWidth = width - 64; // Adjusted to fit within the card content
 
-const RevenueCard = ({ title, amount, icon, chartData, chartType,options,onChange }: RevenueCardProps) => {
+const RevenueCard = ({ title, amount, icon, chartData, chartType,options,onChange, dropdownOptions,isLoading}: RevenueCardProps) => {
   const isDark = useColorScheme() === 'dark';
   const chartConfig = {
     backgroundGradientFrom: isDark ? '#1E1E1E' : '#FFF',
@@ -31,13 +33,14 @@ const RevenueCard = ({ title, amount, icon, chartData, chartType,options,onChang
     decimalPlaces: 0,
   };
 
-  const selectDropDownOptions = [
-    {label: 'first',value:1},
-    {label: 'second',value:2},
-    {label: 'third',value:3},
-    {label: 'fourth',value:4},
-    {label: 'fifth',value:5}
-  ]
+  if (isLoading) {
+    return (
+      <View className="items-center justify-center" style={{ height: 180 }}>
+        <ActivityIndicator size="large" color="#6200ee" />
+        <Text className="mt-2 text-dacka-black dark:text-white">Loading...</Text>
+      </View>
+    );
+  }
 
   if(options){
     return (
@@ -54,9 +57,9 @@ const RevenueCard = ({ title, amount, icon, chartData, chartType,options,onChang
             </View>
             <Dropdown
               className={`w-full p-2 bg-gray-400 shadow-md dark:bg-gray-800 rounded-lg`}
-              data={selectDropDownOptions}
+              data={dropdownOptions}
               onChange={onChange}
-              renderItem={(item: { label: string, value: string }) => (
+              renderItem={(item: { label: string, value: number }) => (
                 <DropDownRenderItem item={item}/>
               )}
               labelField='label'

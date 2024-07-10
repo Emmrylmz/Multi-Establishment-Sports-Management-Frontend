@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import { Title } from 'react-native-paper';
 
@@ -23,7 +23,13 @@ const ManagerHomePage = () => {
 
   const { data: monthlyRevenue, isLoading:isLoadingMonthly } = useGetMonthlyRevenueQuery(monthlyRevenueData);
   const { data: yearlyRevenue, isLoading: isLoadingYearly } = useGetYearlyRevenueQuery(yearlyRevenueData);
-  const { data: rangeRevenue, isLoading: isLoadingRange } = useGetRevenueByMonthRangeQuery(rangeRevenueData);
+  const { data: rangeRevenue, isLoading: isLoadingRange, refetch: refetchRangeRevenue } = useGetRevenueByMonthRangeQuery(rangeRevenueData);
+
+  useEffect(() => {
+    refetchRangeRevenue();
+  }, [rangeRevenueData, refetchRangeRevenue]);
+
+  console.log(monthlyRevenue, yearlyRevenue, rangeRevenue)
 
   const defaultYearlyRevenue = 24000;
   const defaultRangeRevenue = 14000;
@@ -61,6 +67,51 @@ const ManagerHomePage = () => {
     ],
   };
 
+  const selectDropDownOptions = [
+    {
+      label: 'Q1',
+      value:{
+        start_month: 0,
+        end_month: 2
+      }
+    },
+    {
+      label: 'Q2',
+      value:{
+        start_month: 3,
+        end_month: 5
+      }
+    },
+    {
+      label: 'Q3',
+      value:{
+        start_month: 6,
+        end_month: 8
+      }
+    },
+    {
+      label: 'Q4',
+      value:{
+        start_month: 9,
+        end_month: 11
+      }
+    }
+  ]
+
+  const handleRangeRevenueChange = (item: {label: string, value: {start_month: number, end_month: number}}) => {
+    const { start_month, end_month } = item.value;
+    console.log('from parameters: ', start_month, end_month);
+    
+    setRangeRevenueData(prevState => {
+      const newState = {
+        ...prevState,
+        start_month: start_month, // Adding 1 because months are 0-indexed
+        end_month: end_month
+      };
+      console.log('new state: ', newState);
+      return newState;
+    });
+  };
 
   return (
       <ScrollView contentContainerStyle={{ paddingBottom: 16 }} className='bg-white dark:bg-dacka-black'>
@@ -74,6 +125,7 @@ const ManagerHomePage = () => {
           icon="chart-line"
           chartData={yearlyData}
           chartType="line"
+          isLoading={isLoadingYearly}
         />
 
         <RevenueCard
@@ -82,6 +134,7 @@ const ManagerHomePage = () => {
           icon="chart-bar"
           chartData={monthlyData}
           chartType="bar"
+          isLoading={isLoadingMonthly}
         />
 
         <RevenueCard
@@ -91,7 +144,9 @@ const ManagerHomePage = () => {
           chartData={rangeData}
           chartType="line"
           options={true}
-          onChange={(item: {label: string, value: string}) => console.log(item.label, item.value)}
+          onChange={(item: {label: string, value: {start_month: number, end_month: number}}) => handleRangeRevenueChange(item)}
+          dropdownOptions={selectDropDownOptions}
+          isLoading={isLoadingRange}
         />
       </ScrollView>
   );

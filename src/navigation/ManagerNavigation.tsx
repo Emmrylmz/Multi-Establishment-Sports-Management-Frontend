@@ -11,6 +11,7 @@ import { useColorScheme } from 'react-native';
 import EventDetailPage from '../app/pages/common/EventDetailPage';
 import MangerPlayerPaymentDetailPage from '../app/pages/manager/MangerPlayerPaymentDetailPage';
 import PlayerDetailPage from '../app/pages/common/PlayerDetailPage';
+import TeamDetailPage from '../app/pages/common/TeamDetailPage';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -34,8 +35,9 @@ function ManagerHomeStackScreen() {
     >
       <HomeStack.Screen name="ManagerHomePage" options={{ title: 'Home Page' }} component={ManagerHomePage} />
       <HomeStack.Screen name="EventDetailPage" options={{ title: 'Event Detail' }} component={EventDetailPage} />
-      <HomeStack.Screen name='PlayerDetailPage' component={PlayerDetailPage} />
-      <HomeStack.Screen name='ManagerPlayerPaymentDetailPage' component={MangerPlayerPaymentDetailPage}/>
+      <HomeStack.Screen name='TeamDetailPage' options={{title: 'Team Details'}} component={TeamDetailPage} />
+      <HomeStack.Screen name='PlayerDetailPage' options={{title: 'Player Details'}} component={PlayerDetailPage} />
+      <HomeStack.Screen name='ManagerPlayerPaymentDetailPage' options={{title: 'Player Payment Detail'}} component={MangerPlayerPaymentDetailPage}/>
     </HomeStack.Navigator>
   );
 }
