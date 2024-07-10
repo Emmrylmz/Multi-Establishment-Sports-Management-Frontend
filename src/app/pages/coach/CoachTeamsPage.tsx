@@ -4,12 +4,12 @@ import AppLayout from '../../components/layout/AppLayout'
 import TeamCard from '../../components/ui/Team/TeamCard'
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
-import { useGetTeamUsersQuery } from '../../../features/query/teamQueryService'
+import { useGetTeamInfoQuery } from '../../../features/query/teamQueryService'
 import { getAuthUser } from '../../../features/auth/auth.slice'
 
 const CoachTeamsPage = ({navigation}) => {
   const user = useSelector((state: RootState) => getAuthUser(state));
-  const { data, isLoading, isError } = useGetTeamUsersQuery(user?.teams);
+  const { data, isLoading, isError } = useGetTeamInfoQuery(user?.teams);
   if (isLoading) {
     return <View><Text>Loading...</Text></View>;
   }
