@@ -5,9 +5,6 @@ import GoBackButton from '../../components/ui/GoBackButton';
 import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryService';
 import { PlayerCard } from '../../components';
 
-<<<<<<< HEAD
-  console.log(teamUsers)
-=======
 const TeamDetailPage = ({ route, navigation }) => {
 	// Assuming we receive the team data through route params
 	const {
@@ -18,7 +15,6 @@ const TeamDetailPage = ({ route, navigation }) => {
 		created_at,
 		province,
 	} = route.params;
->>>>>>> 076ab3ae04606f798d46db3402aabc6564f52792
 
 	const {
 		data: teamUsers,
@@ -47,14 +43,14 @@ const TeamDetailPage = ({ route, navigation }) => {
 
 	return (
 		<ScrollView className="flex-1 bg-gray-100">
-			<View className="bg-teal-600 pt-12 pb-6 px-4 rounded-b-3xl shadow-md">
+			<View className="px-4 pt-12 pb-6 bg-teal-600 shadow-md rounded-b-3xl">
 				<GoBackButton />
 				<View className="items-center mt-8">
 					<Image
 						source={{
 							uri: 'https://upload.wikimedia.org/wikipedia/en/5/55/Darussafaka_basketball_logo.png',
 						}}
-						className="w-44 h-44 rounded-full mb-4"
+						className="mb-4 rounded-full w-44 h-44"
 					/>
 					<Text className="text-3xl font-bold text-white">{team_name}</Text>
 					<Text className="text-lg text-teal-100">{province}</Text>
@@ -62,18 +58,18 @@ const TeamDetailPage = ({ route, navigation }) => {
 			</View>
 
 			<View className="px-4 mt-6">
-				<Text className="text-xl font-bold text-gray-800 mb-4">Coaches</Text>
+				<Text className="mb-4 text-xl font-bold text-gray-800">Coaches</Text>
 				{teamUsers &&
 				teamUsers.coach_infos &&
 				teamUsers.coach_infos.length > 0 ? (
 					teamUsers.coach_infos.map((coach) => renderMember(coach, 'Coach'))
 				) : (
-					<Text className="text-gray-500 italic">No coaches added yet.</Text>
+					<Text className="italic text-gray-500">No coaches added yet.</Text>
 				)}
 			</View>
 
 			<View className="px-4 mt-6 mb-6">
-				<Text className="text-xl font-bold text-gray-800 mb-4">Players</Text>
+				<Text className="mb-4 text-xl font-bold text-gray-800">Players</Text>
 				{teamUsers &&
 				teamUsers.player_infos &&
 				teamUsers.player_infos.length > 0 ? (
@@ -81,7 +77,7 @@ const TeamDetailPage = ({ route, navigation }) => {
 						renderMember(player, player.position || 'Player')
 					)
 				) : (
-					<Text className="text-gray-500 italic">No players added yet.</Text>
+					<Text className="italic text-gray-500">No players added yet.</Text>
 				)}
 			</View>
 
