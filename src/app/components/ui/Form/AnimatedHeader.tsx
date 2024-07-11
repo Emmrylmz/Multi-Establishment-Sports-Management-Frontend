@@ -63,7 +63,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
       >
         <Image
           source={imageSource}
-          className="w-[200%] h-[200%]"
+          className="w-[140%] h-[150%]"
           resizeMode="contain"
         />
       </Animated.View>

@@ -29,7 +29,7 @@ const AddUserPage = () => {
 	};
 
 	const scrollY = useRef(new Animated.Value(0)).current;
-	const headerHeight = SCREEN_HEIGHT * 0.33;
+	const headerHeight = SCREEN_HEIGHT * 0.4;
 
 	const formRef = useRef(form);
 
@@ -58,7 +58,7 @@ const AddUserPage = () => {
 				className="flex-1"
 				contentContainerStyle={{ paddingTop: headerHeight }}
 			>
-				<View className="px-4 py-8">
+				<View className="px-5 py-5">
 					<View className="bg-white rounded-xl shadow-md p-6 mb-6">
 						<Text className="text-2xl font-bold text-gray-800 mb-6">
 							User Information

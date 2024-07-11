@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Animated, StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ProfileSidebar from './ProfileSidebar';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const HEADER_MAX_HEIGHT = SCREEN_HEIGHT * 0.4;
@@ -19,7 +18,6 @@ interface HeaderComponentProps {
 }
 
 const HeaderComponent: React.FC<HeaderComponentProps> = ({ scrollY, user }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const headerTranslateY = scrollY.interpolate({
     inputRange: [0, HEADER_SCROLL_DISTANCE],
@@ -51,12 +49,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({ scrollY, user }) => {
           colors={['#00897B', '#3FA454']}
           style={[StyleSheet.absoluteFill, styles.gradient]}
         />
-        <TouchableOpacity
-          style={styles.menuButton}
-          onPress={() => setIsSidebarOpen(true)}
-        >
-          <Icon name="menu" size={24} color="#fff" />
-        </TouchableOpacity>
+       
         <Animated.View style={[styles.headerContent, { opacity: headerOpacity }]}>
           <Animated.Image
             source={{ uri: user?.photo || 'https://avatar.iran.liara.run/public/boy' }}
@@ -69,11 +62,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({ scrollY, user }) => {
           <Text style={styles.role}>{user?.role || 'Team Member'}</Text>
         </Animated.View>
       </Animated.View>
-      <ProfileSidebar
-        isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
-        user={user}
-      />
+     
     </>
   );
 };

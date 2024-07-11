@@ -8,6 +8,8 @@ const UserProfile = ({ route }) => {
 	const { user_id } = route.params;
 	const { data: User, isLoading, isError } = useGetUserInfoQuery(user_id);
 
+	console.log(user_id)
+
 	if (isLoading) {
 		return <Text>Loading...</Text>;
 	}
