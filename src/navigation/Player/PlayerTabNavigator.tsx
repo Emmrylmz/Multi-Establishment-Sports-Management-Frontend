@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Tab } from '../StackNavigators';
 import { TabBarIcon } from '../../app/components';
-import { CommonTeamStackNavigator } from '../Common/CommonTeamStack';
+import { CommonTeamStackNavigator } from '../Common/CommonTeamStackNavigator';
 import { CommonProfileStackNavigator } from '../Common/CommonProfileStack';
 import PlayerHomeStackNavigator from './PlayerHomeStackNavigator';
 import PlayerPaymentPage from '../../app/pages/player/PlayerPaymentPage';

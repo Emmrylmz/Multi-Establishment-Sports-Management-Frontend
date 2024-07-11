@@ -18,7 +18,7 @@ interface CoachNotesProps {
 const CoachNotes: React.FC<CoachNotesProps> = ({ playerName, notes }) => {
 	return (
 		<View className="flex-1 bg-gray-100">
-			<View className="bg-teal-600 py-4 px-6 rounded-b-3xl shadow-lg">
+			<View className="bg-teal-600 py-10 px-6  rounded-b-3xl shadow-lg">
 				<Text className="text-2xl font-bold text-white">{playerName}</Text>
 				<Text className="text-sm text-teal-100">Coach Notes</Text>
 			</View>

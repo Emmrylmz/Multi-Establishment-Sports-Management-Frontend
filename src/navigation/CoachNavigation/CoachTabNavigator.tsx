@@ -5,7 +5,7 @@ import AddUserPage from '../../app/pages/coach/AddUserPage';
 import { TabBarIcon } from '../../app/components';
 import {  Tab } from '../StackNavigators';
 import { CommonProfileStackNavigator } from '../Common/CommonProfileStack';
-import { CommonTeamStackNavigator } from '../Common/CommonTeamStack';
+import { CommonTeamStackNavigator } from '../Common/CommonTeamStackNavigator';
 
 const CoachTabNavigator = () => {
   return (

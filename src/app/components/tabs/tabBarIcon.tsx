@@ -17,7 +17,7 @@ const TabBarIcon = ({ routeName, color, size = 20 }: TabBarIconProps) => {
       iconName = 'home';
       IconComponent = FontAwesome5;
       break;
-    case 'CommonTeamStack':
+    case 'CommonTeamStackNavigator':
       iconName = 'people-group';
       IconComponent = FontAwesome6;
       break;
@@ -27,6 +27,10 @@ const TabBarIcon = ({ routeName, color, size = 20 }: TabBarIconProps) => {
       break;
     case 'CommonProfileStack':
       iconName = 'user-alt';
+      IconComponent = FontAwesome5;
+      break;
+    case 'ManagerPaymentStackNavigator':
+      iconName = 'money-bill';
       IconComponent = FontAwesome5;
       break;
     default:
