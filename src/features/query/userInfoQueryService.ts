@@ -16,8 +16,16 @@ const userInfoQueryService = createApi({
 				{ type: 'UserInfo', id: user_id },
 			],
 		}),
+		searchUsers: builder.query({
+			query: ({ query = '', province = '' }) => ({
+				url: '/user_info/users/search',
+				params: { query, province },
+			}),
+			providesTags: ['UserInfo'],
+		}),
 	}),
 });
 
-export const { useGetUserInfoQuery } = userInfoQueryService;
+export const { useGetUserInfoQuery, useSearchUsersQuery, useLazySearchUsersQuery } =
+	userInfoQueryService;
 export default userInfoQueryService;
