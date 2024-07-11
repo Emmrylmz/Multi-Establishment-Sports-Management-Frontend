@@ -9,7 +9,8 @@ import { getAuthUser } from '../../../features/auth/auth.slice'
 
 const ManagerPaymentPage = ({navigation}) => {
   const user = useSelector((state: RootState) => getAuthUser(state));
-  console.log(user)
+
+  console.log('user: ',user)
   const { data, isLoading, isError } = useGetTeamInfoQuery(user?.teams);
   console.log(data)
   if (isLoading) {

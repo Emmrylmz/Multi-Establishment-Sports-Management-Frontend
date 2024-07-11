@@ -16,6 +16,7 @@ const ManagerTabNavigator = () => (
 			),
 			tabBarActiveTintColor: '#fff',
 			tabBarInactiveTintColor: '#919191',
+			headerShown: false,
 			tabBarStyle: {
 				backgroundColor: '#101010',
 				borderTopWidth: 0,
@@ -45,7 +46,7 @@ const ManagerTabNavigator = () => (
 		/>
 
 		<Tab.Screen
-			name="ManagerPaymentPage"
+			name="ManagerPaymentStack"
 			options={{ title: 'See Payments' }}
 			component={ManagerPaymentStackNavigator}
 		/>

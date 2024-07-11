@@ -26,7 +26,7 @@ const TeamDetailPage = ({ route, navigation }) => {
 
 	const navigateToUserDetail = (user_id) => {
 		if(from ==='manager'){
-			return navigation.navigate('ManagerPlayerPaymentDetailPage', { user_id: user_id })
+			return navigation.navigate('ManagerPlayerPaymentDetailPage', { player_id: user_id,team_id: team_id })
 		}
 		navigation.navigate('UserProfile', { user_id: user_id });
 	};

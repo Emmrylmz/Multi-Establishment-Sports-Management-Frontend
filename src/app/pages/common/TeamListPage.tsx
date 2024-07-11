@@ -27,6 +27,8 @@ interface TeamListPageProps {
 const TeamListPage: React.FC<TeamListPageProps> = ({ navigation }) => {
 	const user = useSelector((state: RootState) => getAuthUser(state));
 	const { data, isLoading, isError } = useGetTeamInfoQuery(user?.teams);
+	console.log(user?.teams)
+	console.log(data);
 
 	if (isLoading) {
 		return (

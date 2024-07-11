@@ -11,8 +11,6 @@ const ManagerPaymentStackNavigator = () => (
 			name="ManagerPaymentPage"
 			component={ManagerPaymentPage}
 		/>
-		
-        
 		{/* Add manager-specific screens here */}
 	</ManagerPaymentStack.Navigator>
 );
