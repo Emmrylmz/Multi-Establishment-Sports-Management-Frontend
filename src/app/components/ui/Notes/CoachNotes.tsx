@@ -51,7 +51,6 @@ const CoachNotes: React.FC<CoachNotesProps> = ({ playerName, notes }) => {
 					</View>
 				))}
 			</ScrollView>
-
 		</View>
 	);
 };

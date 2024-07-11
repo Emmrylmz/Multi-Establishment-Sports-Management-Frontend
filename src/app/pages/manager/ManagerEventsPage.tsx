@@ -3,6 +3,7 @@ import React from 'react'
 import { AppLayout } from '../../components'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import EventList from '../../components/ui/Event/EventList'
+import { ParamListBase } from '@react-navigation/native';
 
 type ManagerEventsPageProps = {
   navigation: NativeStackNavigationProp<ParamListBase>;
@@ -11,7 +12,7 @@ type ManagerEventsPageProps = {
 const ManagerEventsPage = ({navigation}:ManagerEventsPageProps) => {
   return (
       <View className="w-full h-full bg-white dark:bg-dacka-black">
-        <EventList navigation={navigation} orientation="vertical" />
+        {/* <EventList  teamEvents={[]} navigation={navigation} orientation="vertical" /> */}
       </View>
   )
 }

@@ -7,7 +7,6 @@ import ProfilePage from '../../app/pages/common/ProfilePage';
 // import PushToken from '../../app/pages/PushToken/PushToken';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import EventDetailPage from '../../app/pages/common/EventDetailPage';
-import PaymentPage from '../../app/pages/common/PaymentPage';
 import PlayerHomePage from '../../app/pages/player/PlayerHomePage';
 import AttendancePage from '../../app/pages/coach/AttendancePage';
 import PushToken from '../../app/pages/PushToken/PushToken';
@@ -32,7 +31,6 @@ function PlayerHomeStackScreen() {
       }}>
       <SStack.Screen name="PlayerHomePage" options={{title: 'Home Page'}} component={PlayerHomePage} />
       <SStack.Screen name="EventDetailPage" options={{title: 'Event Detail'}} component={EventDetailPage} />
-      <SStack.Screen name='PaymentPage' options={{title: 'Payment History'}} component={PaymentPage} />
       <SStack.Screen name='AttendancePage' options={{title: 'Attendance Page'}} component={AttendancePage} />
     </SStack.Navigator>
   );

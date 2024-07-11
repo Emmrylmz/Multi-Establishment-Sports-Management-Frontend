@@ -37,7 +37,7 @@ const EventList: React.FC<EventListProps> = ({
 	error,
 }) => {
 	const flattenedEvents = useMemo(() => {
-		return teamEvents.flatMap((team) =>
+		return teamEvents?.flatMap((team) =>
 			team.events.map((event) => ({
 				...event,
 				team_name: team.team_name,
@@ -46,7 +46,7 @@ const EventList: React.FC<EventListProps> = ({
 	}, [teamEvents]);
 
 	const validEvents = useMemo(() => {
-		return flattenedEvents.filter((event) => {
+		return flattenedEvents?.filter((event) => {
 			const startDate = parseISO(event.start_datetime);
 			const endDate = parseISO(event.end_datetime);
 			return isValid(startDate) && isValid(endDate);
@@ -54,7 +54,7 @@ const EventList: React.FC<EventListProps> = ({
 	}, [flattenedEvents]);
 
 	const sortedEvents = useMemo(() => {
-		return [...validEvents].sort((a, b) => {
+		return validEvents && [...validEvents].sort((a, b) => {
 			const dateA = parseISO(a.start_datetime);
 			const dateB = parseISO(b.start_datetime);
 			return dateA.getTime() - dateB.getTime();

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useRef, useCallback, useMemo, memo } from 'react';
 import {
 	View,
 	Text,
@@ -52,7 +52,7 @@ const EventDetailPage = ({ route, navigation }) => {
 	} = useFetchAttendancesByEventIdQuery(event_id, { skip: !hasEventPassed });
 
 	const scrollY = useRef(new Animated.Value(0)).current;
-	const headerHeight = SCREEN_HEIGHT * 0.33;
+	const headerHeight = SCREEN_HEIGHT * 0.4;
 
 	const handleMarkerPress = useCallback(() => {
 		const buttons = [
@@ -154,6 +154,11 @@ const EventDetailPage = ({ route, navigation }) => {
 	return (
 		<>
 			<GoBackButton />
+			<AnimatedHeader
+				imageSource={imageSource}
+				scrollY={scrollY}
+				headerHeight={headerHeight}
+			/>
 			<Animated.ScrollView
 				onScroll={Animated.event(
 					[{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -163,12 +168,6 @@ const EventDetailPage = ({ route, navigation }) => {
 				className="flex-1"
 				contentContainerStyle={{ paddingTop: headerHeight }}
 			>
-				<AnimatedHeader
-					imageSource={imageSource}
-					scrollY={scrollY}
-					headerHeight={headerHeight}
-				/>
-
 				<View
 					style={{
 						borderTopLeftRadius: 30,
@@ -277,4 +276,4 @@ const EventDetailPage = ({ route, navigation }) => {
 	);
 };
 
-export default EventDetailPage;
+export default memo(EventDetailPage);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import GoBackButton from '../../components/ui/GoBackButton';
@@ -26,9 +26,9 @@ const TeamDetailPage = ({ route, navigation }) => {
 
 	const navigateToUserDetail = (user_id) => {
 		if(from ==='manager'){
-			return navigation.navigate('ManagerPlayerPaymentDetailPage', { player_id: user_id })
+			return navigation.navigate('ManagerPlayerPaymentDetailPage', { user_id: user_id })
 		}
-		navigation.navigate('PlayerDetailPage', { player_id: user_id });
+		navigation.navigate('UserProfile', { user_id: user_id });
 	};
 
 	const renderMember = (member, role) => (
@@ -93,4 +93,4 @@ const TeamDetailPage = ({ route, navigation }) => {
 	);
 };
 
-export default TeamDetailPage;
+export default memo(TeamDetailPage);
