@@ -22,7 +22,6 @@ const TeamDetailPage = ({ route, navigation }) => {
 		isLoading,
 		isError,
 	} = useGetTeamUsersByIdQuery(team_id);
-	console.log(teamUsers);
 
 	const navigateToUserDetail = (user_id) => {
 		if(from ==='manager'){
@@ -46,8 +45,8 @@ const TeamDetailPage = ({ route, navigation }) => {
 	);
 
 	return (
-		<ScrollView className="flex-1 bg-gray-100">
-			<View className="px-4 pt-12 pb-6 bg-teal-600 shadow-md rounded-b-3xl">
+		<ScrollView className="flex-1 bg-gray-100 dark:bg-dacka-black">
+			<View className="px-4 pt-12 pb-6 bg-teal-300 shadow-md dark:bg-teal-600 rounded-b-3xl">
 				<View className="items-center mt-8">
 					<Image
 						source={{
@@ -55,24 +54,24 @@ const TeamDetailPage = ({ route, navigation }) => {
 						}}
 						className="mb-4 rounded-full w-44 h-44"
 					/>
-					<Text className="text-3xl font-bold text-white">{team_name}</Text>
-					<Text className="text-lg text-teal-100">{province}</Text>
+					<Text className="text-3xl font-bold text-gray-800 dark:text-gray-200">{team_name}</Text>
+					<Text className="text-lg text-gray-700 dark:text-gray-100">{province}</Text>
 				</View>
 			</View>
 
 			<View className="px-4 mt-6">
-				<Text className="mb-4 text-xl font-bold text-gray-800">Coaches</Text>
+				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">Coaches</Text>
 				{teamUsers &&
 				teamUsers.coach_infos &&
 				teamUsers.coach_infos.length > 0 ? (
 					teamUsers.coach_infos.map((coach) => renderMember(coach, 'Coach'))
 				) : (
-					<Text className="italic text-gray-500">No coaches added yet.</Text>
+					<Text className="italic text-gray-700 dark:text-gray-200">No coaches added yet.</Text>
 				)}
 			</View>
 
 			<View className="px-4 mt-6 mb-6">
-				<Text className="mb-4 text-xl font-bold text-gray-800">Players</Text>
+				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">Players</Text>
 				{teamUsers &&
 				teamUsers.player_infos &&
 				teamUsers.player_infos.length > 0 ? (
@@ -80,12 +79,12 @@ const TeamDetailPage = ({ route, navigation }) => {
 						renderMember(player, player.position || 'Player')
 					)
 				) : (
-					<Text className="italic text-gray-500">No players added yet.</Text>
+					<Text className="italic text-gray-700 dark:text-gray-200">No players added yet.</Text>
 				)}
 			</View>
 
 			<View className="px-4 mb-6">
-				<Text className="text-sm text-gray-500">
+				<Text className="text-sm text-gray-800 dark:text-gray-300">
 					Team created on: {new Date(created_at).toLocaleDateString()}
 				</Text>
 			</View>

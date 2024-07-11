@@ -13,26 +13,26 @@ import { getAuthUser } from '../../../features/auth/auth.slice';
 const ManagerHomePage = ({navigation}) => {
     const user = useSelector((state: RootState) => getAuthUser(state));
   return (
-    <ScrollView className="bg-gray-100">
+    <ScrollView className="bg-gray-100 dark:bg-dacka-black">
       <Header user={user} navigation={navigation} />
       <View className="px-4 py-6">
         <RevenueChart />
         <View>
-          <Text className='text-2xl'>Quick Actions</Text>
+          <Text className='text-2xl text-dacka-black dark:text-gray-100'>Quick Actions</Text>
           <ScrollView horizontal={true} className="flex-row mt-4">
             <TouchableOpacity
-            className="items-center p-4 mr-2 bg-white shadow-sm rounded-xl"
+            className="items-center p-4 mr-2 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
             onPress={() =>  navigation.navigate('AddTeamPage')}
           >
             <Ionicons name="add-circle" size={30} color="#0D9488" />
-            <Text className="mt-2 text-sm text-gray-600">Create Team</Text>
+            <Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">Create Team</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            className="items-center p-4 ml-2 bg-white shadow-sm rounded-xl"
+            className="items-center p-4 ml-2 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
             onPress={() => navigation.navigate('AddUserPage')}
           >
             <Ionicons name="add-circle" size={30} color="#0D9488" />
-            <Text className="mt-2 text-sm text-gray-600">Add New User</Text>
+            <Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">Add New User</Text>
           </TouchableOpacity>
           </ScrollView>
         </View>

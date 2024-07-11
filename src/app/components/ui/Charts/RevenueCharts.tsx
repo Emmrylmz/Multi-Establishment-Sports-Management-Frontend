@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text,useColorScheme } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 
 const RevenueChart = () => {
+  const isDark = useColorScheme() === 'dark';
   // Dummy data - replace with actual revenue data
   const currentMonthRevenue = 75000;
   const lastMonthRevenue = 65000;
@@ -12,21 +13,21 @@ const RevenueChart = () => {
       name: 'Current Month',
       revenue: currentMonthRevenue,
       color: '#0D9488',
-      legendFontColor: '#7F7F7F',
+      legendFontColor: isDark ? '#ccc' :  '#7F7F7F',
       legendFontSize: 12,
     },
     {
       name: 'Last Month',
       revenue: lastMonthRevenue,
       color: '#99F6E4',
-      legendFontColor: '#7F7F7F',
+      legendFontColor: isDark ? '#ccc' :  '#7F7F7F',
       legendFontSize: 12,
     },
   ];
 
   return (
-    <View className="bg-white rounded-xl p-4 mb-6 shadow-sm">
-      <Text className="text-xl font-bold text-gray-800 mb-4">Monthly Revenue</Text>
+    <View className="p-4 mb-6 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl">
+      <Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-100">Monthly Revenue</Text>
       <View className="items-center">
         <PieChart
           data={data}
@@ -42,10 +43,10 @@ const RevenueChart = () => {
         />
       </View>
       <View className="mt-4">
-        <Text className="text-2xl font-bold text-center text-gray-800">
+        <Text className="text-2xl font-bold text-center text-gray-800 dark:text-gray-100">
           ${currentMonthRevenue.toLocaleString()}
         </Text>
-        <Text className="text-sm text-center text-gray-600">
+        <Text className="text-sm text-center text-gray-600 dark:text-gray-100">
           This Month's Revenue
         </Text>
       </View>

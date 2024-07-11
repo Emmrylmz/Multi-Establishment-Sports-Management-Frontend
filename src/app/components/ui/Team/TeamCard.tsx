@@ -18,7 +18,7 @@ const TeamCard = ({
 	
 	return (
 		<TouchableOpacity
-			className="flex-row bg-white rounded-xl p-2 m-2 items-center shadow-md"
+			className="flex-row items-center p-2 m-2 bg-white shadow-md dark:bg-dacka-dark-gray rounded-xl"
 			key={teamId}
       onPress={navigation}
 		>
@@ -26,11 +26,11 @@ const TeamCard = ({
 				source={{
 					uri: 'https://upload.wikimedia.org/wikipedia/en/5/55/Darussafaka_basketball_logo.png',
 				}}
-				className="w-20 h-20 rounded-full mr-4"
+				className="w-20 h-20 mr-4 rounded-full"
 			/>
 			<View className="flex-1">
-				<Text className="text-lg font-bold text-teal-600">{teamName}</Text>
-				<Text className="text-sm text-gray-600 mt-1">U12</Text>
+				<Text className="text-lg font-bold text-teal-600 dark:text-teal-200">{teamName}</Text>
+				<Text className="mt-1 text-sm text-gray-600 dark:text-gray-200">U12</Text>
 			</View>
 		</TouchableOpacity>
 	);

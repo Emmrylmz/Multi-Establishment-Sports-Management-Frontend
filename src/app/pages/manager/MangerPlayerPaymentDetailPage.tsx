@@ -26,7 +26,6 @@ type FormState = {
 
 const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
   const { player_id, team_id } = route.params;
-  console.log(player_id, team_id)
   const { data, error, isLoading: isLoadingPayments, refetch } = useGetPaymentQuery(player_id);
   const [createPayment, { isLoading: isCreatingPayment, isError: isCreatePaymentError }] = useCreatePaymentMutation();
 
@@ -103,7 +102,6 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 
     const existingMonths = data.filter(payment => payment.paid).map(payment => payment.month);
     const uniqueMonths = Array.from(new Set([...existingMonths, ...selectedMonths]));
-    console.log('unique aylar: ',uniqueMonths)
 
     const newPayment: FormState = {
       user_id: player_id,

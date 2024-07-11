@@ -23,15 +23,15 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
   return (
     <TouchableOpacity 
       onPress={onPress} 
-      className="flex-row items-center bg-white p-4 rounded-lg mb-2 shadow-sm"
+      className="flex-row items-center p-4 mb-2 bg-white rounded-lg shadow-sm dark:bg-dacka-dark-gray"
     >
       <Image
         source={image}
-        className="w-12 h-12 rounded-full mr-4"
+        className="w-12 h-12 mr-4 rounded-full"
       />
       <View className="flex-1">
-        <Text className="text-lg font-semibold text-gray-800">{name}</Text>
-        <Text className="text-sm text-gray-500">{position}</Text>
+        <Text className="text-lg font-semibold text-gray-800 dark:text-gray-200">{name}</Text>
+        <Text className="text-sm text-gray-700 dark:text-gray-300">{position}</Text>
       </View>
       {attended !== undefined ? (
         <View className={`rounded-full p-2 ${attended ? 'bg-green-100' : 'bg-red-100'}`}>
@@ -42,7 +42,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
           />
         </View>
       ) : (
-        <TouchableOpacity className="bg-teal-100 rounded-full p-2">
+        <TouchableOpacity className="p-2 bg-teal-100 rounded-full">
           <Ionicons name="chevron-forward" size={24} color="#0D9488" />
         </TouchableOpacity>
       )}
