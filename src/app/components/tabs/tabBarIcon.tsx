@@ -1,4 +1,4 @@
-import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialIcons, FontAwesome6 } from '@expo/vector-icons';
 import React from 'react';
 
 
@@ -8,25 +8,25 @@ type TabBarIconProps = {
   size?: number;
 }
 
-const TabBarIcon = ({ routeName, color, size = 22 }: TabBarIconProps) => {
+const TabBarIcon = ({ routeName, color, size = 20 }: TabBarIconProps) => {
   let iconName: string;
-  let IconComponent: typeof FontAwesome5 | typeof MaterialIcons;
+  let IconComponent: typeof FontAwesome5 | typeof MaterialIcons | typeof FontAwesome6;
 
   switch (routeName) {
-    case 'CoachHomePageStack':
+    case 'CoachHomeStack' || 'PlayerHomeStack' || 'CoachHomeStack':
       iconName = 'home';
       IconComponent = FontAwesome5;
       break;
-    case 'CoachSchedulePage':
-      iconName = 'calendar';
-      IconComponent = FontAwesome5;
+    case 'CommonTeamStack':
+      iconName = 'people-group';
+      IconComponent = FontAwesome6;
       break;
     case 'AddUserPage':
       iconName = 'user-plus';
       IconComponent = FontAwesome5;
       break;
-    case 'CoachProfilePage':
-      iconName = 'user';
+    case 'CommonProfileStack':
+      iconName = 'user-alt';
       IconComponent = FontAwesome5;
       break;
     default:

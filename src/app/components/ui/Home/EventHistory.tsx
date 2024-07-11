@@ -3,7 +3,14 @@ import { View, Text, SafeAreaView } from 'react-native';
 import EventList from '../Event/EventList';
 import { useListEventsQuery } from '../../../../features/query/eventQueryService';
 
-const EventHistory = ({ navigation, user }) => {
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ParamListBase } from '@react-navigation/native';
+
+interface EventHistoryProps {
+  navigation: NativeStackNavigationProp<ParamListBase>;
+  user: any; // Define the appropriate type for user if possible
+}
+const EventHistory: React.FC<EventHistoryProps> = ({ navigation, user }) => {
 	const {
 		data: events = [],
 		isError,

@@ -56,7 +56,7 @@ const TeamListPage: React.FC<TeamListPageProps> = ({ navigation }) => {
 								teamId={team._id}
 								coachName="Ahmet Köksal"
 								navigation={() =>
-									navigation.navigate('TeamDetail', {
+									navigation.navigate('TeamDetailPage', {
 										team_id: team._id,
 										team_name: team.team_name,
 										team_players: team.team_players,

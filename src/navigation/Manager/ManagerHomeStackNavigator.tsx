@@ -1,0 +1,22 @@
+import React from 'react';
+import ManagerHomePage from '../../app/pages/manager/ManagerHomePage';
+
+import { ManagerHomeStack } from '../StackNavigators';
+import AddUserPage from '../../app/pages/coach/AddUserPage';
+
+const ManagerHomeStackNavigator = () => (
+	<ManagerHomeStack.Navigator screenOptions={{ headerShown: false }}>
+		<ManagerHomeStack.Screen
+			name="ManagerHomePage"
+			component={ManagerHomePage}
+		/>
+		<ManagerHomeStack.Screen
+			name="AddUserPage"
+			component={AddUserPage}
+		/>
+        
+		{/* Add manager-specific screens here */}
+	</ManagerHomeStack.Navigator>
+);
+
+export default ManagerHomeStackNavigator;
