@@ -43,7 +43,7 @@ const ProfilePage: React.FC = () => {
 				style={styles.menuButton}
 				onPress={() => setIsSidebarOpen(true)}
 			>
-				<Icon name="menu" size={24} color="#fff" />
+				{isSidebarOpen ? '' : <Icon name="menu" size={24} color="#fff" />}
 			</TouchableOpacity>
 			<ProfileSidebar
 				isOpen={isSidebarOpen}
