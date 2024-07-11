@@ -12,6 +12,8 @@ import EventDetailPage from '../app/pages/common/EventDetailPage';
 import MangerPlayerPaymentDetailPage from '../app/pages/manager/MangerPlayerPaymentDetailPage';
 import PlayerDetailPage from '../app/pages/common/PlayerDetailPage';
 import TeamDetailPage from '../app/pages/common/TeamDetailPage';
+import AddUserPage from '../app/pages/coach/AddUserPage';
+import AddTeamPage from '../app/pages/manager/AddTeamPage';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -31,12 +33,15 @@ function ManagerHomeStackScreen() {
         headerTitleStyle: {
           color: isDarkMode ? '#fff' : '#000',
         },
+        headerShown: false
       }}
     >
       <HomeStack.Screen name="ManagerHomePage" options={{ title: 'Home Page' }} component={ManagerHomePage} />
       <HomeStack.Screen name="EventDetailPage" options={{ title: 'Event Detail' }} component={EventDetailPage} />
       <HomeStack.Screen name='TeamDetailPage' options={{title: 'Team Details'}} component={TeamDetailPage} />
       <HomeStack.Screen name='PlayerDetailPage' options={{title: 'Player Details'}} component={PlayerDetailPage} />
+      <HomeStack.Screen name='AddTeamPage' options={{title: 'Add New Team'}} component={AddTeamPage} />
+      <HomeStack.Screen name='AddUserPage' options={{title: 'Add New User'}} component={AddUserPage} />
       <HomeStack.Screen name='ManagerPlayerPaymentDetailPage' options={{title: 'Player Payment Detail'}} component={MangerPlayerPaymentDetailPage}/>
     </HomeStack.Navigator>
   );
@@ -62,6 +67,7 @@ const ManagerNavigation = () => {
           elevation: 0,
           shadowOpacity: 0,
         },
+        headerShown: false,
         headerBackTitleVisible: true,
         headerBackTitle: 'Back',
         headerTintColor: isDarkMode ? '#fff' : '#000',

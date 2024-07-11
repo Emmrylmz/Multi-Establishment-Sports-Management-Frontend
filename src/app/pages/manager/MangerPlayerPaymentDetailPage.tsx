@@ -133,7 +133,7 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
   return (
     <AppLayout>
       <View className={`flex-1 bg-white dark:bg-dacka-black pt-${insets.top}`}>
-        <PaymentOverview totalPayment={totalPayment} totalPaid={totalPaid} />
+        <PaymentOverview  title='Payment Overview' leftSubtitle='Total Paid' rightSubtitle='Remaining' totalPayment={totalPayment} totalPaid={totalPaid} />
         <ScrollView 
           showsVerticalScrollIndicator={false} 
           className="flex-1 px-4 pt-6 bg-white dark:bg-dacka-black rounded-t-3xl"
