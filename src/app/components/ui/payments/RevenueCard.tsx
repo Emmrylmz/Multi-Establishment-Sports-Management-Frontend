@@ -36,7 +36,7 @@ const RevenueCard = ({ title, amount, icon, chartData, chartType,options,onChang
   if (isLoading) {
     return (
       <View className="items-center justify-center" style={{ height: 180 }}>
-        <ActivityIndicator size="large" color="#6200ee" />
+        <ActivityIndicator size="large" color="#3FA454" />
         <Text className="mt-2 text-dacka-black dark:text-white">Loading...</Text>
       </View>
     );
@@ -53,7 +53,7 @@ const RevenueCard = ({ title, amount, icon, chartData, chartType,options,onChang
           </View>
           <View className='flex-col w-1/2'>
             <View className='flex-row justify-end w-full'>
-              <IconButton icon={icon} color="#6200ee" size={24} />
+              <IconButton icon={icon} color="#3FA454" size={24} />
             </View>
             <Dropdown
               className={`w-full p-2 bg-gray-400 shadow-md dark:bg-gray-800 rounded-lg`}

@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import { Title } from 'react-native-paper';
+import { useSelector } from 'react-redux';
+import { getAuthUser } from '../../../features/auth/auth.slice';
+import { RootState } from '../../../../store';
 
 import RevenueCard from '../../components/ui/payments/RevenueCard';
 import {useGetMonthlyRevenueQuery, useGetYearlyRevenueQuery, useGetRevenueByMonthRangeQuery} from '../../../features/query/paymentQueryService';
+import Header from '../../components/ui/Home/Header';
 
 
 const ManagerHomePage = () => {
-
+  const user = useSelector((state: RootState) => getAuthUser(state));
   const [monthlyRevenueData, setMonthlyRevenueData] = useState({
     year: new Date().getFullYear(),
     month: new Date().getMonth()
@@ -114,11 +118,11 @@ const ManagerHomePage = () => {
   };
 
   return (
-      <ScrollView contentContainerStyle={{ paddingBottom: 16 }} className='bg-white dark:bg-dacka-black'>
+      <ScrollView contentContainerStyle={{ paddingBottom: 16 }} className='bg-white dark:bg-dacka-black' showsVerticalScrollIndicator={false}>
+        <Header user={user}/>
         <View className="flex-row items-center justify-between px-4 mb-4">
           <Title className="text-2xl font-bold text-dacka-black dark:text-white">Financial Dashboard</Title>
         </View>
-
         <RevenueCard
           title="Yearly Revenue"
           amount={yearlyRevenue}
