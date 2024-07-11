@@ -22,15 +22,7 @@ const ManagerTabNavigator = () => (
 				elevation: 0,
 				shadowOpacity: 0,
 			},
-			headerBackTitleVisible: true,
-			headerBackTitle: 'Back',
-			headerTintColor: '#fff',
-			headerStyle: {
-				backgroundColor: '#101010',
-			},
-			headerTitleStyle: {
-				color: '#fff',
-			},
+			headerShown: false,
 		})}
 	>
 		<Tab.Screen
@@ -45,7 +37,7 @@ const ManagerTabNavigator = () => (
 		/>
 
 		<Tab.Screen
-			name="ManagerPaymentPage"
+			name="ManagerPaymentStackNavigator"
 			options={{ title: 'See Payments' }}
 			component={ManagerPaymentStackNavigator}
 		/>

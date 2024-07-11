@@ -22,7 +22,6 @@ const TeamDetailPage = ({ route, navigation }) => {
 		isLoading,
 		isError,
 	} = useGetTeamUsersByIdQuery(team_id);
-	console.log(teamUsers);
 
 	const navigateToUserDetail = (user_id) => {
 		if(from ==='manager'){

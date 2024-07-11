@@ -6,7 +6,7 @@ import eventQueryService, {
 	useUpdateAttendancesMutation,
 } from '../../../../features/query/eventQueryService';
 import { RootState } from '../../../../../store';
-import PlayerCard from '../PlayerCard';
+import PlayerCard from '../Player/PlayerCard';
 import userInfoQueryService from '../../../../features/query/userInfoQueryService';
 
 const TakeAttendance = ({ route, navigation }) => {

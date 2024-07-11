@@ -1,6 +1,5 @@
 import React from 'react';
-import ManagerHomePage from '../../app/pages/manager/ManagerHomePage';
-
+import Home from '../../app/pages/manager/Home';	
 import { ManagerHomeStack } from '../StackNavigators';
 import AddUserPage from '../../app/pages/coach/AddUserPage';
 
@@ -8,7 +7,7 @@ const ManagerHomeStackNavigator = () => (
 	<ManagerHomeStack.Navigator screenOptions={{ headerShown: false }}>
 		<ManagerHomeStack.Screen
 			name="ManagerHomePage"
-			component={ManagerHomePage}
+			component={Home}
 		/>
 		<ManagerHomeStack.Screen
 			name="AddUserPage"

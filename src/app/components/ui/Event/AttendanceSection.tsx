@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import PlayerCard from '../PlayerCard';
+import PlayerCard from '../Player/PlayerCard';
 
 interface AttendanceSectionProps {
   hasEventPassed: boolean;
