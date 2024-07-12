@@ -7,15 +7,7 @@ function PlayerHomeStackNavigator() {
 		<PlayerHomeStack.Navigator
 			initialRouteName="PlayerHomePage"
 			screenOptions={{
-				headerBackTitleVisible: true,
-				headerBackTitle: 'Back',
-				headerTintColor: '#fff',
-				headerStyle: {
-					backgroundColor: '#101010',
-				},
-				headerTitleStyle: {
-					color: '#fff',
-				},
+				headerShown: false,
 			}}
 		>
 			<PlayerHomeStack.Screen
