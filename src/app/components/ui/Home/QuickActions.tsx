@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useGetTeamInfoQuery } from '../../../../features/query/teamQueryService';
@@ -24,36 +24,73 @@ const QuickActions = ({ user }) => {
 	};
 
 	return (
-		<View className=" mb-6">
-			<Text className="text-xl font-bold text-gray-800 mb-4">
+		<View className="mb-6 ">
+			<Text className="mb-4 text-xl font-bold text-gray-800">
 				Quick Actions
 			</Text>
 
-			<View className="flex-row justify-between">
-				<TouchableOpacity
-					className="bg-white rounded-xl p-4 items-center w-[30%] shadow-sm"
+			<ScrollView horizontal={true} className="flex-row">
+				{user.role ==='Manager' && 
+					<>
+						<TouchableOpacity
+							className="items-center p-4 mr-2 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
+							onPress={() => navigation.navigate('AddTeamPage')}
+						>
+							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">
+								Create Team
+							</Text>
+							<Ionicons name="add-circle" size={30} color="#0D9488" />
+						</TouchableOpacity>
+						<TouchableOpacity
+							className="items-center p-4 ml-2 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
+							onPress={() => navigation.navigate('AddUserPage')}
+						>
+							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">
+								Add New User
+							</Text>
+							<Ionicons name="add-circle" size={30} color="#0D9488" />
+						</TouchableOpacity>
+						<TouchableOpacity
+							className="items-center p-4 ml-2 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
+							onPress={() => navigation.navigate('SeeIncomesPage')}
+						>
+							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">
+								See Incomes
+							</Text>
+							<Ionicons name="stats-chart" size={30} color="#0D9488" />
+						</TouchableOpacity>
+					</>
+				}
+
+				{user.role === 'Coach' && (
+					<>
+						<TouchableOpacity
+					className="items-center p-4 bg-white shadow-sm rounded-xl"
 					onPress={handleNewPracticePress}
 				>
 					<Ionicons name="basketball" size={24} color="#0D9488" />
-					<Text className="text-sm text-center text-gray-600 mt-2">Create Event</Text>
+					<Text className="mt-2 text-sm text-center text-gray-600">Create Event</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
-					className="bg-white rounded-xl p-4 items-center w-[30%] shadow-sm"
+					className="items-center p-4 bg-white shadow-sm rounded-xl"
 					onPress={routeEventHistory}
 				>
 					<Ionicons name="calendar" size={24} color="#0D9488" />
-					<Text className="text-sm text-gray-600 mt-2">Event History</Text>
+					<Text className="mt-2 text-sm text-gray-600">Event History</Text>
 				</TouchableOpacity>
 
 				<TouchableOpacity
-					className="bg-white rounded-xl p-4 items-center w-[30%] shadow-sm"
+					className="items-center p-4 bg-white shadow-sm rounded-xl"
 					onPress={handleNewPracticePress}
 				>
 					<Ionicons name="add-circle" size={30} color="#0D9488" />
-					<Text className="text-sm text-gray-600 mt-2">Create Team</Text>
+					<Text className="mt-2 text-sm text-gray-600">Create Team</Text>
 				</TouchableOpacity>
-				{/* ... other quick action buttons ... */}
-			</View>
+					</>
+				)
+
+			}
+			</ScrollView>
 
 			<TeamSelectionModal
 				visible={isTeamSelectionModalVisible}

@@ -1,57 +1,88 @@
-import React from 'react';
-import { View, Text,useColorScheme } from 'react-native';
-import { PieChart } from 'react-native-chart-kit';
+import React from 'react'
+import { View, Dimensions, useColorScheme } from 'react-native'
+import { Card, Title } from 'react-native-paper';
+import { LineChart, BarChart } from 'react-native-chart-kit';
+import SelectBox from '../SelectBox';
 
-const RevenueChart = () => {
+type ChartData = {
+  labels: string[];
+  datasets: { data: number[] }[];
+};
+
+type RevenueChartsProps = {
+  isRangely?: boolean;
+  title: string;
+  chartData: ChartData;
+  chartType: 'line' | 'bar';
+};
+
+const { width } = Dimensions.get('window');
+const chartWidth = width - 64;
+
+const RevenueCharts: React.FC<RevenueChartsProps> = ({ title, chartData, chartType,isRangely }) => {
   const isDark = useColorScheme() === 'dark';
-  // Dummy data - replace with actual revenue data
-  const currentMonthRevenue = 75000;
-  const lastMonthRevenue = 65000;
+  const chartConfig = {
+    backgroundGradientFrom: isDark ? '#1E1E1E' : '#FFF',
+    backgroundGradientTo: isDark ? '#1E1E1E' : '#FFF',
+    color: (opacity = 1) => isDark ? `rgba(255, 255, 255, ${opacity})` : `rgba(0, 0, 0, ${opacity})`,
+    strokeWidth: 2,
+    useShadowColorFromDataset: false,
+    decimalPlaces: 0,
+  };
+
+  const ChartComponent = chartType === 'line' ? LineChart : BarChart;
+  const [selectedValue, setSelectedValue] = React.useState('');
 
   const data = [
-    {
-      name: 'Current Month',
-      revenue: currentMonthRevenue,
-      color: '#0D9488',
-      legendFontColor: isDark ? '#ccc' :  '#7F7F7F',
-      legendFontSize: 12,
-    },
-    {
-      name: 'Last Month',
-      revenue: lastMonthRevenue,
-      color: '#99F6E4',
-      legendFontColor: isDark ? '#ccc' :  '#7F7F7F',
-      legendFontSize: 12,
-    },
+    { label: 'Ocak', value: 0 },
+    { label: 'Şubat', value: 1 },
+    { label: 'Mart', value: 2 },
+    { label: 'Nisan', value: 3 },
+    { label: 'Mayıs', value: 4 },
+    { label: 'Haziran', value: 5 },
+    { label: 'Temmuz', value: 6 },
+    { label: 'Ağustos', value: 7 },
+    { label: 'Eylül', value: 8 },
+    { label: 'Ekim', value: 9 },
+    { label: 'Kasım', value: 10 },
+    { label: 'Aralık', value: 11 },
   ];
 
   return (
-    <View className="p-4 mb-6 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl">
-      <Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-100">Monthly Revenue</Text>
-      <View className="items-center">
-        <PieChart
-          data={data}
-          width={300}
-          height={200}
-          chartConfig={{
-            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-          }}
-          accessor="revenue"
-          backgroundColor="transparent"
-          paddingLeft="15"
-          absolute
-        />
-      </View>
-      <View className="mt-4">
-        <Text className="text-2xl font-bold text-center text-gray-800 dark:text-gray-100">
-          ${currentMonthRevenue.toLocaleString()}
-        </Text>
-        <Text className="text-sm text-center text-gray-600 dark:text-gray-100">
-          This Month's Revenue
-        </Text>
-      </View>
-    </View>
-  );
+    <Card className="mx-4 mb-4 bg-gray-300 rounded-lg dark:bg-gray-900 elevation-4">
+      <Card.Content className="px-4">
+        <Title className="mb-2 text-lg text-center text-dacka-black dark:text-white">{title}</Title>
+        <View className="items-center">
+          <ChartComponent
+            data={chartData}
+            width={chartWidth}
+            height={180}
+            chartConfig={chartConfig}
+            bezier={chartType === 'line'}
+            style={{ marginVertical: 8, borderRadius: 16 }}
+            yAxisLabel="$"
+            yAxisSuffix=""
+          />
+          {isRangely && (
+            <View className='flex-row w-full'>
+              <SelectBox
+                data={data}
+                placeholder="Select an item"
+                onSelect={(item) => setSelectedValue(item.value)}
+                value={selectedValue}
+              />
+              <SelectBox
+                data={data}
+                placeholder="Select an item"
+                onSelect={(item) => setSelectedValue(item.value)}
+                value={selectedValue}
+              />
+            </View>
+          )}
+        </View>
+      </Card.Content>
+    </Card>
+  )
 };
 
-export default RevenueChart;
+export default RevenueCharts

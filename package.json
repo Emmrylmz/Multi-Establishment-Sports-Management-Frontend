@@ -28,6 +28,7 @@
 		"date-fns": "^3.6.0",
 		"eas-cli": "^8.0.0",
 		"expo": "^51.0.11",
+		"expo-blur": "^13.0.2",
 		"expo-constants": "^16.0.2",
 		"expo-device": "~6.0.2",
 		"expo-linear-gradient": "~13.0.2",

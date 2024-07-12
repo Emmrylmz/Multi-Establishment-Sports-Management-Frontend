@@ -1,81 +1,34 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
-import { AppLayout } from '../../components';
+import { View, Text, ScrollView } from 'react-native'
+import React from 'react'
+import { AppLayout } from '../../components'
+import TeamCard from '../../components/ui/Team/TeamCard'
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
-import { useLazySearchUsersQuery } from '../../../features/query/userInfoQueryService';
-import { getAuthUser } from '../../../features/auth/auth.slice';
-import QueryInput from '../../components/ui/Input/QueryInput';
-import PlayerCard from '../../components/ui/Player/PlayerCard';
+import { useGetTeamInfoQuery } from '../../../features/query/teamQueryService'
+import { getAuthUser } from '../../../features/auth/auth.slice'
 
-const DEBOUNCE_TIME = 300; // 300ms for debounce
-
-const ManagerPaymentPage = ({ navigation }) => {
+const ManagerPaymentPage = ({navigation}) => {
   const user = useSelector((state: RootState) => getAuthUser(state));
-  const [searchTerm, setSearchTerm] = useState('');
-  const [page, setPage] = useState(1);
-  const [trigger, { data: usersData, isLoading, isError, isFetching }] = useLazySearchUsersQuery();
-
-  // Initial load
-  useEffect(() => {
-    trigger({ query: '', province: 'Izmir', page: 1 });
-  }, [trigger]);
-
-  const handleQueryChange = useCallback((query: string) => {
-    setSearchTerm(query);
-    setPage(1);
-    trigger({ query, province: 'Izmir', page: 1 });
-  }, [trigger]);
-
-  const handleLoadMore = useCallback(() => {
-    if (!isFetching) {
-      const nextPage = page + 1;
-      setPage(nextPage);
-      trigger({ query: searchTerm, province: 'Izmir', page: nextPage });
-    }
-  }, [isFetching, page, searchTerm, trigger]);
-
-  const renderItem = ({ item }) => (
-    <PlayerCard
-      id={item.id}
-      name={item.name}
-      image={{ uri: item.image }}
-      attended={item.attended}
-      position={item.position}
-      onPress={() => {/* Handle player card press */}}
-    />
-  );
-
-  const renderFooter = () => {
-    if (!isFetching) return null;
-    return <ActivityIndicator size="small" color="#0000ff" />;
-  };
-
-  if (isLoading && !usersData) {
-    return <ActivityIndicator size="large" color="#919191" />;
+  console.log(user)
+  const { data, isLoading, isError } = useGetTeamInfoQuery(user?.teams);
+  console.log(data)
+  if (isLoading) {
+    return <View><Text>Loading...</Text></View>;
   }
-
-  if (isError) {
-    return (
-      <View>
-        <Text>Error loading users.</Text>
-      </View>
-    );
+  if (isError || !data) {
+    return <View><Text>Error loading teams.</Text></View>;
   }
-
+  if(data.length === 0){
+    return <View><Text>No team found</Text></View>
+  }
   return (
     <AppLayout>
-      <QueryInput onQueryChange={handleQueryChange} debounceTime={DEBOUNCE_TIME} />
-      <FlatList
-        data={usersData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={renderFooter}
-        ListEmptyComponent={() => <Text>No users found</Text>}
-      />
+      <ScrollView className='w-full h-full' showsVerticalScrollIndicator={false}>
+        {data.map((team) => (
+          <TeamCard key={team._id} teamName={team.team_name} teamId={team._id} coachName={'Ahmet Köksal'}  navigation={() => navigation.navigate('TeamDetailPage',{team_id: team._id,from:'manager'})} />))}
+      </ScrollView>
     </AppLayout>
-  );
-};
+  )
+}
 
-export default ManagerPaymentPage;
+export default ManagerPaymentPage

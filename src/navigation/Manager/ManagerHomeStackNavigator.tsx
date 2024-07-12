@@ -8,9 +8,10 @@ import PlayerDetailPage from '../../app/pages/common/PlayerDetailPage';
 import ManagerPlayerPaymentDetailPage from '../../app/pages/manager/MangerPlayerPaymentDetailPage';
 import CreateTeamPage from '../../app/pages/manager/AddTeamPage';
 import UserProfile from '../../app/components/profile/UserProfile';
+import SeeIncomesPage from '../../app/pages/manager/SeeIncomesPage';
 
 const ManagerHomeStackNavigator = () => (
-	<ManagerHomeStack.Navigator screenOptions={{ headerShown: false }}>
+	<ManagerHomeStack.Navigator screenOptions={{headerShown:false}} >
 		<ManagerHomeStack.Screen
 			name="ManagerHomePage"
 			component={Home}
@@ -50,6 +51,11 @@ const ManagerHomeStackNavigator = () => (
 			name='UserProfile'
 			options={{title: 'User Profile'}}
 			component={UserProfile}
+		/>
+		<ManagerHomeStack.Screen
+			name='SeeIncomesPage'
+			options={{title: 'Incomes',headerShown:false}}
+			component={SeeIncomesPage}
 		/>
 		{/* Add manager-specific screens here */}
 	</ManagerHomeStack.Navigator>

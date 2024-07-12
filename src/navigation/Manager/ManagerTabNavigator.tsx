@@ -23,7 +23,6 @@ const ManagerTabNavigator = () => (
 				elevation: 0,
 				shadowOpacity: 0,
 			},
-			headerShown: false,
 		})}
 	>
 		<Tab.Screen

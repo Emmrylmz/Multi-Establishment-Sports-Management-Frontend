@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 
-const RevenueChart = () => {
+const RevenueCard = () => {
   // Dummy data - replace with actual revenue data
   const currentMonthRevenue = 75000;
   const lastMonthRevenue = 65000;
@@ -53,4 +53,4 @@ const RevenueChart = () => {
   );
 };
 
-export default RevenueChart;
+export default RevenueCard;

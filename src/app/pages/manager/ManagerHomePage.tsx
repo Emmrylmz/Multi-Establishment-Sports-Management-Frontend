@@ -12,6 +12,7 @@ import { getAuthUser } from '../../../features/auth/auth.slice';
 
 const ManagerHomePage = ({navigation}) => {
     const user = useSelector((state: RootState) => getAuthUser(state));
+    console.log(user?.role)
   return (
     <ScrollView className="bg-gray-100 dark:bg-dacka-black">
       <Header user={user} navigation={navigation} />
