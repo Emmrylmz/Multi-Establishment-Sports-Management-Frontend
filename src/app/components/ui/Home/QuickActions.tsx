@@ -96,8 +96,19 @@ const QuickActions = ({ user }) => {
 						</TouchableOpacity>
 					</>
 				)
-
 			}
+
+			{user.role === 'Player' && (
+				<>
+					<TouchableOpacity
+						className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+						onPress={() => navigation.navigate('PlayerPtPage')}
+					>
+						<Ionicons name="basketball" size={30} color="#0D9488" />
+						<Text className="mt-2 text-sm text-gray-600">PT Requests</Text>
+					</TouchableOpacity>
+				</>
+			)}
 			</ScrollView>
 
 			<TeamSelectionModal

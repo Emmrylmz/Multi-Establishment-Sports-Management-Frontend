@@ -10,10 +10,17 @@ const PersonalTrainingService = createApi({
         url: `/events/coach_private_lessons/${coach_id}`,
         method: 'GET',
       }),
+    }),
+    create_private_lesson: builder.mutation({
+      query: (data) => ({
+        url: '/events/create/private_lesson',
+        method: 'POST',
+        body: data,
+      }),
     })
   }),
 });
 
-export const { useCoach_private_lessonsQuery } = PersonalTrainingService;
+export const { useCoach_private_lessonsQuery,useCreate_private_lessonMutation } = PersonalTrainingService;
 
 export default PersonalTrainingService;

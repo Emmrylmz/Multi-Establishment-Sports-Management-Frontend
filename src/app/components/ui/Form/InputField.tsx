@@ -25,6 +25,8 @@ type InputFieldProps = {
   additionalStyles?: string;
   secureTextEntry?: boolean;
   icon?: React.ReactNode;
+  isLongText?: boolean;
+  additionalInputStyles?: string;
 };
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -37,6 +39,8 @@ const InputField: React.FC<InputFieldProps> = ({
   additionalStyles = '',
   secureTextEntry = false,
   icon,
+  isLongText = false,
+  additionalInputStyles
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const placeholderColor = placeholderTextColor === 'light' ? '#919191' : '#242424';
@@ -53,7 +57,8 @@ const InputField: React.FC<InputFieldProps> = ({
         secureTextEntry={secureTextEntry && !showPassword}
         placeholderTextColor={placeholderColor}
         onChangeText={(text) => handleInputChange(name, text)}
-        className=' flex-1 ml-3 bg-gray-100'
+        className={`flex-1 ml-3 bg-gray-200 dark:text-dacka-dark-gray ${additionalInputStyles}`}
+        multiline={isLongText}
       />
       {secureTextEntry && (
         <TouchableOpacity

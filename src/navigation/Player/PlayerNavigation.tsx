@@ -21,6 +21,7 @@ function PlayerHomeStackScreen() {
       screenOptions={{
         headerBackTitleVisible: true,
         headerBackTitle: 'Back',
+        headerShown: false,
         headerTintColor: '#fff',
         headerStyle: {
           backgroundColor: '#101010',
@@ -53,7 +54,7 @@ const PlayerNavigation = () => {
 	  <Tab.Screen
 	  	name="PlayerHomeStackScreen"
 		component={PlayerHomeStackScreen}
-		options={{title:"Home"}} />
+		options={{title:"Homez"}} />
       <Tab.Screen
         name="PlayerProgress"
         component={PlayerProgressPage}
