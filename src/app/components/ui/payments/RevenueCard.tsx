@@ -25,8 +25,8 @@ const RevenueCard = () => {
   ];
 
   return (
-    <View className="p-4 mb-6 bg-white shadow-sm rounded-xl">
-      <Text className="mb-4 text-xl font-bold text-gray-800">Monthly Revenue</Text>
+    <View className="p-4 mb-6 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl">
+      <Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-200">Monthly Revenue</Text>
       <View className="items-center">
         <PieChart
           data={data}
@@ -42,10 +42,10 @@ const RevenueCard = () => {
         />
       </View>
       <View className="mt-4">
-        <Text className="text-2xl font-bold text-center text-gray-800">
+        <Text className="text-2xl font-bold text-center text-gray-800 dark:text-gray-200">
           ${currentMonthRevenue.toLocaleString()}
         </Text>
-        <Text className="text-sm text-center text-gray-600">
+        <Text className="text-sm text-center text-gray-600 dark:text-gray-50">
           This Month's Revenue
         </Text>
       </View>

@@ -25,11 +25,11 @@ const QuickActions = ({ user }) => {
 
 	return (
 		<View className="mb-6 ">
-			<Text className="mb-4 text-xl font-bold text-gray-800">
+			<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-200">
 				Quick Actions
 			</Text>
 
-			<ScrollView horizontal={true} className="flex-row">
+			<ScrollView horizontal={true} className="flex-row" showsHorizontalScrollIndicator={false}>
 				{user.role ==='Manager' && 
 					<>
 						<TouchableOpacity
@@ -65,27 +65,35 @@ const QuickActions = ({ user }) => {
 				{user.role === 'Coach' && (
 					<>
 						<TouchableOpacity
-					className="items-center p-4 bg-white shadow-sm rounded-xl"
-					onPress={handleNewPracticePress}
-				>
-					<Ionicons name="basketball" size={24} color="#0D9488" />
-					<Text className="mt-2 text-sm text-center text-gray-600">Create Event</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
-					className="items-center p-4 bg-white shadow-sm rounded-xl"
-					onPress={routeEventHistory}
-				>
-					<Ionicons name="calendar" size={24} color="#0D9488" />
-					<Text className="mt-2 text-sm text-gray-600">Event History</Text>
-				</TouchableOpacity>
+							className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+							onPress={handleNewPracticePress}
+						>
+							<Ionicons name="basketball" size={30} color="#0D9488" />
+							<Text className="mt-2 text-sm text-center text-gray-600">Create Event</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+							onPress={routeEventHistory}
+						>
+							<Ionicons name="calendar" size={30} color="#0D9488" />
+							<Text className="mt-2 text-sm text-gray-600">Event History</Text>
+						</TouchableOpacity>
 
-				<TouchableOpacity
-					className="items-center p-4 bg-white shadow-sm rounded-xl"
-					onPress={handleNewPracticePress}
-				>
-					<Ionicons name="add-circle" size={30} color="#0D9488" />
-					<Text className="mt-2 text-sm text-gray-600">Create Team</Text>
-				</TouchableOpacity>
+						<TouchableOpacity
+							className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+							onPress={() => navigation.navigate('CoachPtPage')}
+						>
+							<Ionicons name="basketball" size={30} color="#0D9488" />
+							<Text className="mt-2 text-sm text-gray-600">PT Requests</Text>
+						</TouchableOpacity>
+
+						<TouchableOpacity
+							className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+							onPress={handleNewPracticePress}
+						>
+							<Ionicons name="add-circle" size={30} color="#0D9488" />
+							<Text className="mt-2 text-sm text-gray-600">Create Team</Text>
+						</TouchableOpacity>
 					</>
 				)
 

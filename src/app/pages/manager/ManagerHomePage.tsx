@@ -8,17 +8,18 @@ import QuickActions from '../../components/ui/Home/QuickActions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { getAuthUser } from '../../../features/auth/auth.slice';
+import RevenueCard from '../../components/ui/payments/RevenueCard';
 
 
 const ManagerHomePage = ({navigation}) => {
     const user = useSelector((state: RootState) => getAuthUser(state));
     console.log(user?.role)
   return (
-    <ScrollView className="bg-gray-100 dark:bg-dacka-black">
+    <ScrollView className="w-full h-full bg-gray-100 dark:bg-dacka-black">
       <Header user={user} navigation={navigation} />
       <View className="px-4 py-6">
-        <RevenueChart />
-        <View>
+        <RevenueCard />
+        <View className='bg-gray-100 dark:bg-black'>
           <Text className='text-2xl text-dacka-black dark:text-gray-100'>Quick Actions</Text>
           <ScrollView horizontal={true} className="flex-row mt-4">
             <TouchableOpacity

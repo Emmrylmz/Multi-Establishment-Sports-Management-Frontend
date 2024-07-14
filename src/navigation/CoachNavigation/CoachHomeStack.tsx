@@ -9,6 +9,12 @@ import TeamCreationPage from '../../app/pages/common/TeamCreationPage';
 import EventHistoryPage from '../../app/pages/common/EventHistoryPage';
 import TakeAttendance from '../../app/components/ui/attendance/TakeAttendance';
 import CoachNotesPage from '../../app/pages/common/CoachNotesPage';
+import ApprovePtRequestsPage from '../../app/pages/coach/ApprovePtRequestsPage';
+import CoachPtPage from '../../app/pages/coach/CoachPtPage';
+import PtHistoryPage from '../../app/pages/common/PtHistoryPage';
+import ApprovedPtRequestsPage from '../../app/pages/coach/ApprovedPtRequestsPage';
+import DeclinedPtRequestsPage from '../../app/pages/coach/DeclinedPtRequestsPage';
+import TodaysPtPage from '../../app/pages/coach/TodaysPtPage';
 const HomeStack = createNativeStackNavigator();
 
 const CoachHomeStack = () => (
@@ -63,6 +69,42 @@ const CoachHomeStack = () => (
 			name="CoachNotesPage"
 			options={{ title: 'Coach Notes Page' }}
 			component={CoachNotesPage}
+		/>
+		
+		<HomeStack.Screen
+			name='ApprovePtRequestsPage'
+			options={{ title: 'Approve PT Requests' }}
+			component={ApprovePtRequestsPage}
+		/>
+
+		<HomeStack.Screen
+			name='CoachPtPage'
+			options={{ title: 'Coach PT Page' }}
+			component={CoachPtPage}
+		/>
+
+		<HomeStack.Screen
+			name='CoachPtHistoryPage'
+			options={{ title: 'PT History' }}
+			component={PtHistoryPage}
+		/>
+
+		<HomeStack.Screen
+			name='ApprovedPtRequestsPage'
+			options={{ title: 'Approved Requests' }}
+			component={ApprovedPtRequestsPage}
+		/>
+
+		<HomeStack.Screen
+			name='DeclinedPtRequestsPage'
+			options={{ title: 'Declined Requests' }}
+			component={DeclinedPtRequestsPage}
+		/>
+		
+		<HomeStack.Screen
+			name='CoachTodaysPtPage'
+			options={{ title: 'Today\'s PT' }}
+			component={TodaysPtPage}
 		/>
 	</HomeStack.Navigator>
 );
