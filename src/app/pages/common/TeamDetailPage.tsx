@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import GoBackButton from '../../components/ui/GoBackButton';
 import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryService';
@@ -72,14 +72,20 @@ const TeamDetailPage = ({ route, navigation }) => {
 
 			<View className="px-4 mt-6 mb-6">
 				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">Players</Text>
-				{teamUsers &&
-				teamUsers.player_infos &&
-				teamUsers.player_infos.length > 0 ? (
-					teamUsers.player_infos.map((player) =>
-						renderMember(player, player.position || 'Player')
-					)
-				) : (
-					<Text className="italic text-gray-700 dark:text-gray-200">No players added yet.</Text>
+				{isLoading ? (
+					<View className='flex-row w-full'>
+						<Text className="text-lg text-gray-700 dark:text-gray-200">Loading players...</Text>
+						<ActivityIndicator size="large" color="#0000ff" />
+					</View>
+				): (
+						teamUsers.player_infos &&
+						teamUsers.player_infos.length > 0 ? (
+							teamUsers.player_infos.map((player) =>
+								renderMember(player, player.position || 'Player')
+							)
+						) : (
+							<Text className="italic text-gray-700 dark:text-gray-200">No players added yet.</Text>
+						)
 				)}
 			</View>
 
