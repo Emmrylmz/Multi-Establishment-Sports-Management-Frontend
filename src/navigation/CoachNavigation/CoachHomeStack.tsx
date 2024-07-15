@@ -10,11 +10,11 @@ import EventHistoryPage from '../../app/pages/common/EventHistoryPage';
 import TakeAttendance from '../../app/components/ui/attendance/TakeAttendance';
 import CoachNotesPage from '../../app/pages/common/CoachNotesPage';
 import ApprovePtRequestsPage from '../../app/pages/coach/ApprovePtRequestsPage';
-import CoachPtPage from '../../app/pages/coach/CoachPtPage';
 import PtHistoryPage from '../../app/pages/common/PtHistoryPage';
 import ApprovedPtRequestsPage from '../../app/pages/coach/ApprovedPtRequestsPage';
 import DeclinedPtRequestsPage from '../../app/pages/coach/DeclinedPtRequestsPage';
 import TodaysPtPage from '../../app/pages/coach/TodaysPtPage';
+import PersonalTrainingPage from '../../app/pages/common/PersonalTrainingPage';
 const HomeStack = createNativeStackNavigator();
 
 const CoachHomeStack = () => (
@@ -80,7 +80,7 @@ const CoachHomeStack = () => (
 		<HomeStack.Screen
 			name='CoachPtPage'
 			options={{ title: 'Coach PT Page' }}
-			component={CoachPtPage}
+			component={PersonalTrainingPage}
 		/>
 
 		<HomeStack.Screen

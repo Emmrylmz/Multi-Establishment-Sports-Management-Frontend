@@ -4,14 +4,13 @@ import { AppLayout, InputField } from '../../components';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
 import CalendarPicker from 'react-native-calendar-picker';
-import { useCreate_private_lessonMutation } from '../../../features/query/personalTrainingService';
+import { useCreate_private_lessonMutation,useAll_coachesQuery } from '../../../features/query/personalTrainingService';
 import { useAuthStatus } from '../../../hooks/useAuthStatus';
 
 const RequestPtPage = ({ navigation }) => {
   const { user } = useAuthStatus();
   const isDark = useColorScheme() === 'dark';
   const [selectedCoach, setSelectedCoach] = useState<string | null>(null);
-  const [showCalendar, setShowCalendar] = useState(false);
   const [availableTimes, setAvailableTimes] = useState([]);
   const [createPrivateLesson] = useCreate_private_lessonMutation();
 
@@ -87,22 +86,19 @@ const RequestPtPage = ({ navigation }) => {
     if (dayData?.available) {
       setFormData(prev => ({ ...prev, preferred_date: formattedDate }));
       setAvailableTimes(dayData.times);
-      setShowCalendar(false);
     } else {
       Alert.alert('No Availability', 'The selected coach is not available on this day. Please choose another date.');
     }
   };
+
   const handleTimeSelect = (time: string) => {
     setFormData(prev => ({ ...prev, preferred_time: time, start_datetime: time }));
   };
   
-
   const handleCoachSelect = coachId => {
     setSelectedCoach(coachId);
     setFormData(prev => ({ ...prev, coach_id: coachId, preferred_date: '', preferred_time: '', start_datetime: null }));
-    setShowCalendar(true);
   };
-
 
   const getCustomDatesStyles = () => {
     if (!selectedCoach) return [];
@@ -113,6 +109,7 @@ const RequestPtPage = ({ navigation }) => {
       textStyle: { color: 'white' }
     }));
   };
+
   const handleSubmitRequest = async () => {
     if (formData.coach_id && formData.start_datetime) {
       const updatedFormData = { ...formData };
@@ -154,7 +151,7 @@ const RequestPtPage = ({ navigation }) => {
           selectedTextStyle={{ color: isDark ? 'white' : 'black' }}
         />
 
-        {showCalendar && (
+        {selectedCoach && (
           <>
             <Text className="mt-6 mb-2 text-lg font-semibold text-black dark:text-white">Select Date</Text>
             <CalendarPicker
@@ -170,7 +167,7 @@ const RequestPtPage = ({ navigation }) => {
           </>
         )}
 
-        {!showCalendar && formData.preferred_date && (
+        {formData.preferred_date && formData.coach_id && (
           <>
             <Text className="mt-6 mb-2 text-lg font-semibold text-black dark:text-white">Available Times</Text>
             {availableTimes.map((time, index) => {

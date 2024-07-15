@@ -107,6 +107,14 @@ const QuickActions = ({ user }) => {
 						<Ionicons name="basketball" size={30} color="#0D9488" />
 						<Text className="mt-2 text-sm text-gray-600">PT Requests</Text>
 					</TouchableOpacity>
+
+					<TouchableOpacity
+						className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+						onPress={() => navigation.navigate('PlayerTeamPage')}
+					>
+						<Ionicons name="basketball" size={30} color="#0D9488" />
+						<Text className="mt-2 text-sm text-gray-600">See your teams</Text>
+					</TouchableOpacity>
 				</>
 			)}
 			</ScrollView>

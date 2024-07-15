@@ -1,7 +1,9 @@
 import AttendancePage from '../../app/pages/coach/AttendancePage';
 import EventDetailPage from '../../app/pages/common/EventDetailPage';
+import PersonalTrainingPage from '../../app/pages/common/PersonalTrainingPage';
+import TeamDetailPage from '../../app/pages/common/TeamDetailPage';
+import TeamListPage from '../../app/pages/common/TeamListPage';
 import PlayerHomePage from '../../app/pages/player/PlayerHomePage';
-import PlayerPtPage from '../../app/pages/player/PlayerPtPage';
 import RequestPtPage from '../../app/pages/player/RequestPtPage';
 import { PlayerHomeStack } from '../StackNavigators';
 function PlayerHomeStackNavigator() {
@@ -40,13 +42,25 @@ function PlayerHomeStackNavigator() {
 			<PlayerHomeStack.Screen
 				name='PlayerPtPage'
 				options={{ title: 'PT Settings' }}
-				component={PlayerPtPage}
+				component={PersonalTrainingPage}
 			/>
 
 			<PlayerHomeStack.Screen
 				name="RequestPtPage"
 				options={{ title: 'Request a PT' }}
 				component={RequestPtPage}
+			/>
+
+			<PlayerHomeStack.Screen
+				name='PlayerTeamPage'
+				options={{ title: 'Teams' }}
+				component={TeamListPage}
+			/>
+
+			<PlayerHomeStack.Screen
+				name='TeamDetailPage'
+				options={{ title: 'Team Detail' }}
+				component={TeamDetailPage}
 			/>
 		</PlayerHomeStack.Navigator>
 	);

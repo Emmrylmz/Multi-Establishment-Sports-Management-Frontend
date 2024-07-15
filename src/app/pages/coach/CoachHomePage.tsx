@@ -15,7 +15,7 @@ const CoachHomePage = ({ navigation }) => {
 	const user = useSelector((state: RootState) => getAuthUser(state));
 
 	return (
-		<ScrollView className="flex-1 bg-gray-100">
+		<ScrollView className="flex-1 bg-gray-100 dark:bg-dacka-black">
 			<Header user={user} navigation={navigation} />
 			<AppLayout>
 				<StatsOverview user={user} />

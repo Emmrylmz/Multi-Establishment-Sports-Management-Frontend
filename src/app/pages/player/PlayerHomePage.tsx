@@ -6,6 +6,7 @@ import eventQueryService from '../../../features/query/eventQueryService';
 import { useAuthStatus } from '../../../hooks/useAuthStatus';
 import UpcomingEvents from '../../components/ui/Home/UpcomingEvents';
 import QuickActions from '../../components/ui/Home/QuickActions';
+import Header from '../../components/ui/Home/Header';
 
 const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 	const { user } = useAuthStatus(); 
@@ -25,9 +26,9 @@ const PlayerHomePage: React.FC<{ navigation: any }> = ({ navigation }) => {
 
 	return (
 		<AppLayout>
-			<Text>Player Home Page</Text>
-			<QuickActions navigation={navigation} user={user} />
+			<Header user={user} navigation={navigation} />
 			<UpcomingEvents navigation={navigation} user={user} />
+			<QuickActions navigation={navigation} user={user} />
 		</AppLayout>
 	);
 };
