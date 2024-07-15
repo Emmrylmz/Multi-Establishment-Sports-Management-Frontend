@@ -25,6 +25,7 @@ type FormState = {
 };
 
 const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
+  const [paymentType, setPaymentType] = useState('dues');
   const { player_id, team_id } = route.params;
   const { data, error, isLoading: isLoadingPayments, refetch } = useGetPaymentQuery(player_id);
   const [createPayment, { isLoading: isCreatingPayment, isError: isCreatePaymentError }] = useCreatePaymentMutation();
@@ -131,22 +132,60 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
   return (
     <AppLayout>
       <View className={`flex-1 bg-white dark:bg-dacka-black pt-${insets.top}`}>
+        <View className='flex-row w-full px-4 py-2 bg-white dark:bg-dacka-black'>
+          <TouchableOpacity 
+            className={`flex-1 py-3 rounded-l-full ${
+              paymentType === 'dues' 
+                ? 'bg-green-500 dark:bg-green-700' 
+                : 'bg-gray-200 dark:bg-gray-700'
+            }`} 
+            onPress={() => setPaymentType('dues')}
+          >
+            <Text className={`font-semibold text-center ${
+              paymentType === 'dues'
+                ? 'text-white'
+                : 'text-gray-700 dark:text-gray-300'
+            }`}>
+              Dues Payment
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            className={`flex-1 py-3 rounded-r-full ${
+              paymentType === 'pt' 
+                ? 'bg-green-500 dark:bg-green-700' 
+                : 'bg-gray-200 dark:bg-gray-700'
+            }`} 
+            onPress={() => setPaymentType('pt')}
+          >
+            <Text className={`font-semibold text-center ${
+              paymentType === 'pt'
+                ? 'text-white'
+                : 'text-gray-700 dark:text-gray-300'
+            }`}>
+              Personal Training
+            </Text>
+          </TouchableOpacity>
+        </View>
         <PaymentOverview  title='Payment Overview' leftSubtitle='Total Paid' rightSubtitle='Remaining' totalPayment={totalPayment} totalPaid={totalPaid} />
         <ScrollView 
           showsVerticalScrollIndicator={false} 
           className="flex-1 px-4 pt-6 bg-white dark:bg-dacka-black rounded-t-3xl"
         >
-          {annualPayment.map((payment, index) => (
-            <PaymentItem
-              key={index}
-              month={monthNames[payment.month]}
-              amount={payment.amount}
-              paid={payment.paid}
-              isSelected={selectedMonths.includes(index)}
-              isSelectionMode={isSelectionMode}
-              onPress={isSelectionMode ? () => toggleMonthSelection(index) : null}
-            />
-          ))}
+          {paymentType === 'dues' ? (
+            annualPayment.map((payment, index) => (
+              <PaymentItem
+                key={index}
+                month={monthNames[payment.month]}
+                amount={payment.amount}
+                paid={payment.paid}
+                isSelected={selectedMonths.includes(index)}
+                isSelectionMode={isSelectionMode}
+                onPress={isSelectionMode ? () => toggleMonthSelection(index) : null}
+              />
+            ))
+          ) : (
+            <Text className="py-4 text-center">Personal Training Payment data will be displayed here.</Text>
+          )}
         </ScrollView>
         <View className="p-4 bg-white dark:bg-dacka-black">
           {isSelectionMode ? (
