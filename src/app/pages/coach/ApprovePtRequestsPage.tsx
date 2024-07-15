@@ -1,4 +1,4 @@
-import { View, Text, useColorScheme, ScrollView, TouchableOpacity, Modal, Platform } from 'react-native'
+import { View, Text, useColorScheme, ScrollView, TouchableOpacity, Modal, Platform, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { AppLayout } from '../../components'
 import { Ionicons } from '@expo/vector-icons'
@@ -11,35 +11,61 @@ import DateTimeSelection from '../../components/ui/Form/DateTimeSelection'
 
 const ApprovePtRequestsPage = ({navigation}) => {
   const user = useSelector((state: RootState) => getAuthUser(state));
-  const {data, isLoading, isError} = useCoach_private_lessonsQuery(user?._id);
+  const {data, isLoading, isError, isSuccess, refetch} = useCoach_private_lessonsQuery(user?._id);
   const isDark = useColorScheme() === 'dark'
   const [approveLesson] = useApprove_private_lessonMutation();
 
-  // Modal state
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [selectedTime, setSelectedTime] = useState(new Date());
 
+  console.log('selectedRequest: ', selectedRequest);
 
   const handleApprove = (request) => {
     setSelectedRequest(request);
     setModalVisible(true);
   }
 
-
   const confirmApprove = async () => {
     if (selectedRequest && user?._id) {
       try {
-        await approveLesson({
-          coach_id: user._id,
+        const approvalData = {
+          _id: selectedRequest._id,
+          start_datetime: selectedTime.toISOString(),
+          description: selectedRequest.description,
           player_id: selectedRequest.player_id,
-          lesson_id: selectedRequest._id,
-          approved_time: selectedTime.toISOString()
-        });
-        setModalVisible(false);
+          coach_id: selectedRequest.coach_id,
+          response_date: new Date().toISOString(),
+          lesson_fee: 20,
+          response_notes: "Approved by coach"
+        };
+  
+        console.log('Approval Data:', JSON.stringify(approvalData, null, 2));
+  
+        const result = await approveLesson(approvalData);
+        
+        console.log('API Response:', JSON.stringify(result, null, 2));
+  
+        if ('data' in result) {
+          setModalVisible(false);
+          Alert.alert(
+            "Lesson Approved",
+            "You have successfully approved this lesson.",
+            [
+              { text: "OK", onPress: () => refetch() }
+            ]
+          );
+        } else {
+          console.error('API Error:', JSON.stringify(result.error, null, 2));
+          Alert.alert("Error", "Failed to approve the lesson. Please try again.");
+        }
       } catch (error) {
-        console.log('error approving lesson: ', error);
+        console.error('Error approving lesson:', error);
+        console.error('Error details:', JSON.stringify(error, null, 2));
+        Alert.alert("Error", "An unexpected error occurred. Please try again.");
       }
+    } else {
+      console.error('Invalid state:', { selectedRequest, userId: user?._id });
     }
   }
 
@@ -56,17 +82,15 @@ const ApprovePtRequestsPage = ({navigation}) => {
           <ApproveRequestCard
             key={request._id}
             name={request.name}
-            location={request.location}
+            location={request.place}
             duration={request.duration}
-            startTime={request.startTime}
-            endTime={request.endTime}
+            startTime={request.start_datetime}
+            endTime={request.end_datetime}
             description={request.description}
             onApprove={() => handleApprove(request)}
           />
         ))}
       </ScrollView>
-
-
 
       <Modal
         animationType="slide"

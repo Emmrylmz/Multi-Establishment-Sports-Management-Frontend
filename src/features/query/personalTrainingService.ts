@@ -34,7 +34,7 @@ const PersonalTrainingService = createApi({
     }),
     approve_private_lesson: builder.mutation({
       query: (data) => ({
-        url: '/events/approve_private_lesson',
+        url: `/events/create/private_lesson_response/${data._id}`,
         method: 'POST',
         body: data,
         invalidatesTags: ['CoachLessons'],
