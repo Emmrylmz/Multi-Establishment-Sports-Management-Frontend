@@ -11,7 +11,7 @@ import { useAuthStatus } from '../../../hooks/useAuthStatus';
 const RequestPtPage = ({ navigation }) => {
   const { user } = useAuthStatus();
   const isDark = useColorScheme() === 'dark';
-  const { data: coachesData, } = useGetAllCoachesQuery('Izmir');
+  const { data: coachesData, } = useGetAllCoachesQuery(user?.province);
   const formattedCoaches = React.useMemo(() => {
     return coachesData?.map(coach => ({
       label: coach.name,

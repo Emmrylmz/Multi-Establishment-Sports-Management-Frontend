@@ -4,6 +4,7 @@ export type User = {
     role: string;
     email: string;
     teams:[string];
+    province: string;
   }
   
   export type AuthState = {
