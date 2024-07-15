@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Platform, useColorScheme } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const DateTimeSelection = ({ label, date, time, onDateChange, onTimeChange }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const isDark = useColorScheme() === 'dark';
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -27,24 +28,24 @@ const DateTimeSelection = ({ label, date, time, onDateChange, onTimeChange }) =>
   return (
     <View className="flex-row items-center justify-between h-auto p-3">
       <View>
-        <Text className="font-bold  text-md">{label}</Text>
+        <Text className="font-bold text-black text-md dark:text-white">{label}</Text>
       </View>
       <View className="flex-row gap-4">
         <TouchableOpacity
-          className="flex-row items-center px-2 py-1 bg-gray-200 shadow rounded-xl"
+          className="flex-row items-center px-2 py-1 bg-gray-200 shadow dark:bg-gray-700 rounded-xl"
           onPress={() => setShowDatePicker(true)}
         >
-          <Text className="mr-2">{formatDate(date)}</Text>
-          <Icon name="chevron-down" size={16} color="#000" />
+          <Text className="mr-2 text-black dark:text-white">{formatDate(date)}</Text>
+          <Icon name="chevron-down" size={16} color={isDark ? '#fff' : '#000'} />
         </TouchableOpacity>
         <TouchableOpacity
-          className="flex-row items-center px-2 py-1 bg-gray-200 shadow rounded-xl"
+          className="flex-row items-center px-2 py-1 bg-gray-200 shadow dark:bg-gray-700 rounded-xl"
           onPress={() => setShowTimePicker(true)}
         >
-          <Text className="mr-2">
+          <Text className="mr-2 text-black dark:text-white">
             {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </Text>
-          <Icon name="chevron-down" size={16} color="#000" />
+          <Icon name="chevron-down" size={16} color={isDark ? '#fff' : '#000'} />
         </TouchableOpacity>
       </View>
 
@@ -59,15 +60,15 @@ const DateTimeSelection = ({ label, date, time, onDateChange, onTimeChange }) =>
           }}
         >
           <View className="justify-end flex-1 bg-black bg-opacity-50">
-            <View className="p-5 bg-dacka-dark-gray rounded-t-2xl">
+            <View className="p-5 bg-white dark:bg-gray-800 rounded-t-2xl">
               {showDatePicker && (
                 <DateTimePicker
                   value={date}
                   mode="date"
                   display="default"
-                  style={{ backgroundColor: '#bbb', width: '30%', alignSelf: 'flex-end' }}
-                  accentColor='#fff'
-                  textColor='#fff'
+                  style={{ backgroundColor: isDark ? '#4B5563' : '#D1D5DB', width: '30%', alignSelf: 'flex-end' }}
+                  accentColor={isDark ? '#fff' : '#000'}
+                  textColor={isDark ? '#fff' : '#000'}
                   onChange={handleDateChange}
                 />
               )}
@@ -76,14 +77,14 @@ const DateTimeSelection = ({ label, date, time, onDateChange, onTimeChange }) =>
                   value={time}
                   mode="time"
                   display="default"
-                  style={{ backgroundColor: '#bbb', width: '20%', alignSelf: 'flex-end' }}
-                  accentColor='#fff'
-                  textColor='#fff'
+                  style={{ backgroundColor: isDark ? '#4B5563' : '#D1D5DB', width: '20%', alignSelf: 'flex-end' }}
+                  accentColor={isDark ? '#fff' : '#000'}
+                  textColor={isDark ? '#fff' : '#000'}
                   onChange={handleTimeChange}
                 />
               )}
               <TouchableOpacity
-                className="items-center p-3 mt-5 rounded-lg bg-dacka-black"
+                className="items-center p-3 mt-5 bg-blue-500 rounded-lg dark:bg-blue-700"
                 onPress={() => {
                   setShowDatePicker(false);
                   setShowTimePicker(false);
@@ -104,6 +105,7 @@ const DateTimeSelection = ({ label, date, time, onDateChange, onTimeChange }) =>
               mode="date"
               display="default"
               onChange={handleDateChange}
+              textColor={isDark ? '#fff' : '#000'}
             />
           )}
           {showTimePicker && (
@@ -112,6 +114,7 @@ const DateTimeSelection = ({ label, date, time, onDateChange, onTimeChange }) =>
               mode="time"
               display="spinner"
               onChange={handleTimeChange}
+              textColor={isDark ? '#fff' : '#000'}
             />
           )}
         </>

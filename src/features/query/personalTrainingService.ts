@@ -20,12 +20,6 @@ const PersonalTrainingService = createApi({
         invalidatesTags: ['CoachLessons'],
       }),
     }),
-    all_coaches: builder.query({
-      query: () => ({
-        url: '/events/all_coaches',
-        method: 'GET',
-      }),
-    }),
     private_lessons_history: builder.query({
       query: (user_id) => ({
         url: `/events/private_lessons_history/${user_id}`,
@@ -36,6 +30,14 @@ const PersonalTrainingService = createApi({
       query: (user_id) => ({
         url: `/events/approved_private_lessons/${user_id}`,
         method: 'GET',
+      }),
+    }),
+    approve_private_lesson: builder.mutation({
+      query: (data) => ({
+        url: '/events/approve_private_lesson',
+        method: 'POST',
+        body: data,
+        invalidatesTags: ['CoachLessons'],
       }),
     }),
     declined_private_lessons: builder.query({
@@ -50,10 +52,10 @@ const PersonalTrainingService = createApi({
 export const { 
   useCoach_private_lessonsQuery,
   useCreate_private_lessonMutation,
-  useAll_coachesQuery,
   usePrivate_lessons_historyQuery,
   useApproved_private_lessonsQuery,
-  useDeclined_private_lessonsQuery 
+  useDeclined_private_lessonsQuery,
+  useApprove_private_lessonMutation,
 } = PersonalTrainingService;
 
 export default PersonalTrainingService;

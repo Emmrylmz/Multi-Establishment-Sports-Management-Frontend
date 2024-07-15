@@ -37,8 +37,14 @@ const teamQueryService = createApi({
         body: { team_id: team_id },
       }),
     }),
+    getAllCoaches: builder.query({
+      query: (province) => ({
+        url: `/teams/get_all_coaches_by_province/${province}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useCreateTeamMutation, useGetTeamInfoQuery, useInsertUsersToTeamsMutation, useGetTeamUsersByIdQuery } = teamQueryService;
+export const { useCreateTeamMutation, useGetTeamInfoQuery, useInsertUsersToTeamsMutation, useGetTeamUsersByIdQuery,useGetAllCoachesQuery } = teamQueryService;
 export default teamQueryService;

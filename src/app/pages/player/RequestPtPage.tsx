@@ -4,12 +4,21 @@ import { AppLayout, InputField } from '../../components';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
 import CalendarPicker from 'react-native-calendar-picker';
-import { useCreate_private_lessonMutation,useAll_coachesQuery } from '../../../features/query/personalTrainingService';
+import { useCreate_private_lessonMutation } from '../../../features/query/personalTrainingService';
+import { useGetAllCoachesQuery } from '../../../features/query/teamQueryService';
 import { useAuthStatus } from '../../../hooks/useAuthStatus';
 
 const RequestPtPage = ({ navigation }) => {
   const { user } = useAuthStatus();
   const isDark = useColorScheme() === 'dark';
+  const { data: coachesData, } = useGetAllCoachesQuery('Izmir');
+  const formattedCoaches = React.useMemo(() => {
+    return coachesData?.map(coach => ({
+      label: coach.name,
+      value: coach._id
+    })) || [];
+  }, [coachesData]);
+  console.log('formated coaches', formattedCoaches);
   const [selectedCoach, setSelectedCoach] = useState<string | null>(null);
   const [availableTimes, setAvailableTimes] = useState([]);
   const [createPrivateLesson] = useCreate_private_lessonMutation();
@@ -33,7 +42,7 @@ const RequestPtPage = ({ navigation }) => {
   };
 
   const [formData, setFormData] = useState<FormData>({
-    coach_id: '667885399e20386c38d7d03e',
+    coach_id: '',
     start_datetime: null,
     description: '',
     player_id: user?._id,
@@ -49,12 +58,6 @@ const RequestPtPage = ({ navigation }) => {
     response_date: '2024-07-14T19:42:34.425Z',
     response_notes: 'string'
   });
-
-  const coaches = [
-    { label: 'John Doe', value: '667885399e20386c38d7d03e' },
-    { label: 'Jane Smith', value: '667885399e20386c38d7d03e' },
-    { label: 'Mike Johnson', value: '667885399e20386c38d7d03e' }
-  ];
 
   const dummyAvailableTimes = {
     '667885399e20386c38d7d03e': {
@@ -129,7 +132,7 @@ const RequestPtPage = ({ navigation }) => {
 
   return (
     <AppLayout>
-      <ScrollView className="flex-1 px-4">
+      <ScrollView className="flex-1">
         <View className="flex-row items-center justify-between w-full mb-6">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={24} color={isDark ? 'white' : 'black'} />
@@ -140,7 +143,7 @@ const RequestPtPage = ({ navigation }) => {
 
         <Text className="mb-2 text-lg font-semibold text-black dark:text-white">Select Coach</Text>
         <Dropdown
-          data={coaches}
+          data={formattedCoaches}
           labelField="label"
           valueField="value"
           value={selectedCoach}
