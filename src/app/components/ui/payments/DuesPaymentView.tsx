@@ -7,20 +7,44 @@ const monthNames = [
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
-const DuesPaymentView = ({ annualPayment, isSelectionMode, selectedMonths, toggleMonthSelection }) => (
-  <View>
-    {annualPayment.map((payment, index) => (
-      <PaymentItem
-        key={index}
-        month={monthNames[payment.month]}
-        amount={payment.amount}
-        paid={payment.paid}
-        isSelected={selectedMonths.includes(index)}
-        isSelectionMode={isSelectionMode}
-        onPress={isSelectionMode ? () => toggleMonthSelection(index) : null}
-      />
-    ))}
-  </View>
-);
+type DuesPaymentViewProps = {
+  annualPayment: Array<{ month: number; amount: number; paid: boolean }>;
+  isSelectionMode: boolean;
+  selectedMonths: number[];
+  toggleMonthSelection: (index: number) => void;
+  updateMonthAmount: (index: number, newAmount: number) => void;
+};
+
+const DuesPaymentView: React.FC<DuesPaymentViewProps> = ({
+  annualPayment,
+  isSelectionMode,
+  selectedMonths,
+  toggleMonthSelection,
+  updateMonthAmount
+}) => {
+  const handleForceSelect = (index: number) => {
+    if (!selectedMonths.includes(index)) {
+      toggleMonthSelection(index);
+    }
+  };
+
+  return (
+    <View className="py-4">
+      {annualPayment.map((payment, index) => (
+        <PaymentItem
+          key={index}
+          month={monthNames[payment.month]}
+          amount={payment.amount}
+          status={payment.status}
+          isSelected={selectedMonths.includes(index)}
+          isSelectionMode={isSelectionMode}
+          onPress={() => isSelectionMode && toggleMonthSelection(index)}
+          onAmountChange={(newAmount) => updateMonthAmount(index, newAmount)}
+          onForceSelect={() => handleForceSelect(index)}
+        />
+      ))}
+    </View>
+  );
+};
 
 export default DuesPaymentView;

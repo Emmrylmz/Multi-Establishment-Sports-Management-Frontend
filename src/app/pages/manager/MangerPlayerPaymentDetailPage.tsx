@@ -27,6 +27,9 @@ const ManagerPlayerPaymentDetailPage = ({ route }) => {
     paymentData,
   } = usePaymentLogic(player_id, team_id, paymentType);
 
+
+  console.log('managerpayemntdetailpage', paymentData);
+
   return (
     <AppLayout>
       <View className={`flex-1 bg-white dark:bg-dacka-black pt-${insets.top}`}>
@@ -43,12 +46,13 @@ const ManagerPlayerPaymentDetailPage = ({ route }) => {
           className="flex-1 px-4 pt-6 bg-white dark:bg-dacka-black rounded-t-3xl"
         >
           {paymentType === 'dues' && (
-            <DuesPaymentView
-              annualPayment={paymentData.annualPayment}
-              isSelectionMode={isSelectionMode}
-              selectedMonths={paymentData.selectedMonths}
-              toggleMonthSelection={paymentData.toggleMonthSelection}
-            />
+             <DuesPaymentView
+             annualPayment={paymentData.annualPayment}
+             isSelectionMode={isSelectionMode}
+             selectedMonths={paymentData.selectedMonths}
+             toggleMonthSelection={paymentData.toggleMonthSelection}
+             updateMonthAmount={paymentData.updateMonthAmount}
+           />
           )}
          {paymentType === 'pt' && (
           <>
@@ -58,6 +62,7 @@ const ManagerPlayerPaymentDetailPage = ({ route }) => {
               isSelectionMode={isSelectionMode}
               selectedSessions={paymentData.selectedSessions}
               toggleSessionSelection={paymentData.toggleSessionSelection}
+              player_id={player_id}
             />
           </>
 )}

@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Animated } from 'react-native';
 import { useGetPaymentQuery, useCreatePaymentMutation } from '../features/query/paymentQueryService';
+import { usePlayer_private_lessonsQuery } from '../features/query/personalTrainingService';
+import { useAuthStatus } from './useAuthStatus';
 
 const usePaymentLogic = (player_id, team_id, paymentType) => {
+	const { user } = useAuthStatus(); 
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedMonths, setSelectedMonths] = useState([]);
   const [selectedSessions, setSelectedSessions] = useState([]);
@@ -10,12 +13,16 @@ const usePaymentLogic = (player_id, team_id, paymentType) => {
   const [discountReason, setDiscountReason] = useState('');
   const [ptTotalPayment, setPtTotalPayment] = useState(0);
   const [ptTotalPaid, setPtTotalPaid] = useState(0);
+  const [annualPayment, setAnnualPayment] = useState([]);
 
   const [fadeAnim] = useState(new Animated.Value(0));
   const [scaleAnim] = useState(new Animated.Value(0.5));
 
   const { data, error, isLoading: isLoadingPayments, refetch } = useGetPaymentQuery(player_id);
   const [createPayment, { isLoading: isCreatingPayment, isError: isCreatePaymentError }] = useCreatePaymentMutation();
+
+  const {data: paymentData} = usePlayer_private_lessonsQuery(player_id)
+  console.log('Data:',paymentData)
 
   const [ptSessions, setPtSessions] = useState([
     { id: 1, date: '2024-07-10', duration: 60, paid: true, amount: 50 },
@@ -66,10 +73,24 @@ const usePaymentLogic = (player_id, team_id, paymentType) => {
       return paymentMap.get(month) || { month, amount: 2000, paid: false };
     });
 
+    setAnnualPayment(fullAnnualPayment);
     return fullAnnualPayment;
   };
 
-  const annualPayment = data ? generateAnnualPayment(data) : [];
+  useEffect(() => {
+    if (data) {
+      generateAnnualPayment(data);
+    }
+  }, [data]);
+
+  const updateMonthAmount = (monthIndex, newAmount) => {
+    setAnnualPayment(prev => {
+      const newPayment = [...prev];
+      newPayment[monthIndex] = { ...newPayment[monthIndex], amount: parseInt(newAmount) || 0 };
+      return newPayment;
+    });
+  };
+
   const totalPaid = annualPayment.reduce((acc, payment) => payment.paid ? acc + payment.amount : acc, 0);
   const totalPayment = annualPayment.reduce((acc, payment) => acc + payment.amount, 0);
 
@@ -114,20 +135,31 @@ const usePaymentLogic = (player_id, team_id, paymentType) => {
 
   const markAsPaid = async () => {
     setIsSelectionMode(false);
-  
-    let newPayment;
-  
-    if (paymentType === 'dues') {
-      newPayment = {
-        user_id: player_id,
-        team_id: team_id,
-        amount: selectedMonths.length * 2000,
-        months: selectedMonths,
-        year: new Date().getFullYear(),
-        paid: true,
-        paid_date: new Date().toISOString(),
-        discount_reason: discountReason
+
+  let newPayment;
+
+  if (paymentType === 'dues') {
+    const totalAmount = selectedMonths.reduce((sum, monthIndex) => sum + annualPayment[monthIndex].amount, 0);
+    const months_and_amounts = {};
+    
+    selectedMonths.forEach(monthIndex => {
+      months_and_amounts[monthIndex] = {
+        month: monthIndex,
+        amount: annualPayment[monthIndex].amount
       };
+    });
+
+    newPayment = {
+      user_id: player_id,
+      amount: totalAmount,
+      months_and_amounts: months_and_amounts,
+      year: new Date().getFullYear(),
+      status: 'pending',
+      paid_date: new Date().toISOString(),
+      province: user?.province || '' // Provide a default value if province is missing
+    };
+    
+      console.log('New Payment Object:', JSON.stringify(newPayment, null, 2));
     } else if (paymentType === 'pt') {
       const selectedPTSessions = ptSessions.filter(session => selectedSessions.includes(session.id));
       const totalAmount = selectedPTSessions.reduce((sum, session) => sum + session.amount, 0);
@@ -143,7 +175,6 @@ const usePaymentLogic = (player_id, team_id, paymentType) => {
         discount_reason: discountReason
       };
 
-      // Update local PT sessions state
       setPtSessions(prevSessions => 
         prevSessions.map(session => 
           selectedSessions.includes(session.id) ? {...session, paid: true} : session
@@ -160,17 +191,22 @@ const usePaymentLogic = (player_id, team_id, paymentType) => {
         paid_date: new Date().toISOString(),
         discount_reason: discountReason
       };
+
+      
     }
   
     try {
-      await createPayment(newPayment).unwrap();
+      const response = await createPayment(newPayment).unwrap();
+      console.log('Payment creation successful:', response);
       refetch();
       setSelectedMonths([]);
       setSelectedSessions([]);
       setSelectedStoreItems([]);
-    } catch (error) {
-      // Handle error
+    }catch (error) {
       console.error('Payment creation failed:', error);
+      if (error.data && error.data.detail) {
+        console.error('Error details:', JSON.stringify(error.data.detail, null, 2));
+      }
     }
   };
 
@@ -195,6 +231,7 @@ const usePaymentLogic = (player_id, team_id, paymentType) => {
       toggleSessionSelection,
       toggleStoreItemSelection,
       setDiscountReason,
+      updateMonthAmount,
     },
   };
 };

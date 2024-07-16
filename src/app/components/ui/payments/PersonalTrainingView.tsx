@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 
-const PersonalTrainingView = ({ ptSessions, isSelectionMode, selectedSessions, toggleSessionSelection }) => {
+const PersonalTrainingView = ({ ptSessions, isSelectionMode, selectedSessions, toggleSessionSelection,player_id }) => {
   console.log('PT Sessions:', ptSessions);
+
   
   if (!ptSessions || ptSessions.length === 0) {
     return <Text className="mt-6 text-center text-gray-600">No personal training sessions available.</Text>;

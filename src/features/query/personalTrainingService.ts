@@ -46,6 +46,12 @@ const PersonalTrainingService = createApi({
         method: 'GET',
       }),
     }),
+    player_private_lessons: builder.query({
+      query: (player_id) => ({
+        url: `/events/player_private_lessons/${player_id}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -56,6 +62,7 @@ export const {
   useApproved_private_lessonsQuery,
   useDeclined_private_lessonsQuery,
   useApprove_private_lessonMutation,
+  usePlayer_private_lessonsQuery
 } = PersonalTrainingService;
 
 export default PersonalTrainingService;
