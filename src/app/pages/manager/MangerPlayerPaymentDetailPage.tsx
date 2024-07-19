@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Animated,SafeAreaView, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, Modal, TouchableOpacity, Animated,SafeAreaView, ActivityIndicator } from 'react-native';
 import { AppLayout } from '../../components';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,6 +8,65 @@ import ConfirmOrCancelView from '../../components/ui/payments/ConfirmOrCancelVie
 import PaymentItem from '../../components/ui/payments/PaymentItem';
 import { useGetPaymentQuery, useCreatePaymentMutation } from '../../../features/query/paymentQueryService';
 import PaymentAnimation from '../../components/ui/payments/PaymentAnimation';
+
+const ConfirmationModal = ({ visible, onClose, selectedMonths, totalAmount, onConfirm, monthNames, annualPayment }) => {
+  return (
+    <Modal visible={visible} transparent animationType="slide">
+      <View className="justify-end flex-1 bg-black bg-opacity-50">
+        <View className="p-6 bg-white dark:bg-gray-900 rounded-t-3xl">
+          <View className="flex-row items-center justify-between mb-6">
+            <Text className="text-2xl font-bold text-gray-800 dark:text-gray-100">Payment Confirmation</Text>
+            <TouchableOpacity onPress={onClose}>
+              <Ionicons name="close-circle-outline" size={28} color="#4A5568" />
+            </TouchableOpacity>
+          </View>
+          
+          <ScrollView className="mb-4 max-h-80">
+            {selectedMonths.length > 0 ? (
+              selectedMonths.map((monthIndex) => {
+                const payment = annualPayment[monthIndex];
+                return (
+                  <View key={monthIndex} className="flex-row items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700">
+                    <Text className="text-lg text-gray-700 dark:text-gray-300">{monthNames[monthIndex]}</Text>
+                    <View>
+                      <Text className="text-lg font-semibold text-right text-emerald-600 dark:text-emerald-400">
+                        ${payment?.amount?.toFixed(2) || 'N/A'}
+                      </Text>
+                      <Text className={`text-right text-sm ${payment?.status === 'paid' ? 'text-blue-500' : 'text-amber-500'}`}>
+                        {payment?.status || 'N/A'}
+                      </Text>
+                    </View>
+                  </View>
+                );
+              })
+            ) : (
+              <Text className="text-lg text-gray-600 dark:text-gray-400">No months selected</Text>
+            )}
+          </ScrollView>
+          
+          <View className="pt-4 mb-6 border-t border-gray-200 dark:border-gray-700">
+            <Text className="text-xl font-bold text-gray-800 dark:text-gray-100">Total Amount</Text>
+            <Text className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">${totalAmount.toFixed(2)}</Text>
+          </View>
+          
+          <TouchableOpacity 
+            onPress={onConfirm}
+            className="py-4 mb-3 rounded-full shadow-lg bg-emerald-600"
+          >
+            <Text className="text-lg font-semibold text-center text-white">Confirm Payment</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            onPress={onClose}
+            className="py-4 bg-gray-200 rounded-full dark:bg-gray-700"
+          >
+            <Text className="text-lg font-semibold text-center text-gray-800 dark:text-gray-200">Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
+};
 
 type Payment = {
   _id: string;
@@ -41,6 +100,13 @@ type FormState = {
 
 const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
   const [paymentType, setPaymentType] = useState('dues');
+  const [modalVisible, setModalVisible] = useState(false);
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  const [totalAmountToPay, setTotalAmountToPay] = useState(0);
   const { player_id,dues } = route.params;
   const { data, error:errorLoadingPayments, isLoading: isLoadingPayments, refetch } = useGetPaymentQuery(player_id);
   const [createPayment, { isLoading: isCreatingPayment, isError: isCreatePaymentError }] = useCreatePaymentMutation();
@@ -49,7 +115,6 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedMonths, setSelectedMonths] = useState<number[]>([]);
   
-  data?.forEach((item) => console.log(item._id))
   const [fadeAnim] = useState(new Animated.Value(0));
   const [scaleAnim] = useState(new Animated.Value(0.5));
 
@@ -75,7 +140,6 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
       }).start();
     }
   }, [isCreatingPayment, isCreatePaymentError]);
-
 
 
   const [annualPayment, setAnnualPayment] = useState<Payment[]>([]);
@@ -111,10 +175,6 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 
   const totalPaid = annualPayment.reduce((acc, payment) => (payment.status === 'paid' ? acc + payment.amount : acc), 0);
   const totalPayment = annualPayment.reduce((acc, payment) => acc + payment.amount, 0);
-  const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
 
   const toggleSelectionMode = () => {
     setIsSelectionMode(!isSelectionMode);
@@ -134,16 +194,16 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
   };
 
 
-  const markAsPaid = async () => {
-    setSelectedMonths([]);
+  const processPayment = async () => {
+    setModalVisible(false);
     setIsSelectionMode(false);
-  
+
     const months_and_amounts: { [key: number]: number } = {};
     selectedMonths.forEach(monthIndex => {
       const payment = annualPayment[monthIndex];
       months_and_amounts[payment.month] = payment.amount;
     });
-  
+
     const newPayment: FormState = {
       user_id: player_id,
       months_and_amounts: months_and_amounts,
@@ -153,12 +213,11 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
       paid_date: new Date().toISOString(),
       province: "Izmir"
     };
-  
+
     try {
-      console.log('Sending payment data:', JSON.stringify(newPayment, null, 2));
       const response = await createPayment(newPayment).unwrap();
-      console.log('Payment created successfully:', response);
       if(response.status === 'success'){
+        setSelectedMonths([]);
         return refetch();
       }
     } catch (error: any) {
@@ -171,6 +230,27 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
       // Consider adding a state to show this error message in the UI
       // setErrorMessage(errorMessage);
     }
+  };
+
+  const handleModalOnClose = () => {
+    setModalVisible(false)
+    setIsSelectionMode(false)
+    setSelectedMonths([])
+  }
+
+  const showConfirmationModal = () => {
+    const totalAmount = selectedMonths.reduce((acc, monthIndex) => {
+      const payment = annualPayment[monthIndex];
+      const amount = payment?.amount || 0;
+      return acc + amount;
+    }, 0);
+    
+    setTotalAmountToPay(totalAmount);
+    setModalVisible(true);
+  };
+
+  const markAsPaid = () => {
+    showConfirmationModal();
   };
 
   if (isLoadingPayments) {
@@ -273,6 +353,15 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
           />
         )}
       </View>
+      <ConfirmationModal 
+        visible={modalVisible}
+        onClose={handleModalOnClose}
+        selectedMonths={selectedMonths}
+        totalAmount={totalAmountToPay}
+        onConfirm={processPayment}
+        monthNames={monthNames}
+        annualPayment={annualPayment}
+      />
     </SafeAreaView>
   );
 };
