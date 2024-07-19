@@ -11,7 +11,7 @@ import { useAuthStatus } from '../../../hooks/useAuthStatus';
 const RequestPtPage = ({ navigation }) => {
   const { user } = useAuthStatus();
   const isDark = useColorScheme() === 'dark';
-  const { data: coachesData, } = useGetAllCoachesQuery(user?.province);
+  const { data: coachesData, } = useGetAllCoachesQuery(user?.province || 'Izmir');
   const formattedCoaches = React.useMemo(() => {
     return coachesData?.map(coach => ({
       label: coach.name,
@@ -61,10 +61,10 @@ const RequestPtPage = ({ navigation }) => {
 
   const dummyAvailableTimes = {
     '667885399e20386c38d7d03e': {
-      '2024-07-15T00:00:00.000Z': { available: true, times: ['2024-07-15T09:00:00.000Z', '2024-07-15T14:00:00.000Z'] },
-      '2024-07-16T00:00:00.000Z': { available: true, times: ['2024-07-16T10:00:00.000Z'] },
-      '2024-07-17T00:00:00.000Z': { available: true, times: ['2024-07-17T11:00:00.000Z', '2024-07-17T15:00:00.000Z'] },
-      '2024-07-18T00:00:00.000Z': { available: false, times: [] }
+      '2024-07-19T00:00:00.000Z': { available: true, times: ['2024-07-19T09:00:00.000Z', '2024-07-19T16:00:00.000Z'] },
+      '2024-07-23T00:00:00.000Z': { available: true, times: ['2024-07-23T10:00:00.000Z'] },
+      '2024-07-24T00:00:00.000Z': { available: true, times: ['2024-07-24T11:00:00.000Z', '2024-07-24T15:00:00.000Z'] },
+      '2024-07-25T00:00:00.000Z': { available: false, times: [] }
     },
     '2': {
       '2024-07-15T00:00:00.000Z': { available: true, times: ['2024-07-15T11:00:00.000Z'] },
@@ -170,29 +170,46 @@ const RequestPtPage = ({ navigation }) => {
           </>
         )}
 
-        {formData.preferred_date && formData.coach_id && (
-          <>
-            <Text className="mt-6 mb-2 text-lg font-semibold text-black dark:text-white">Available Times</Text>
-            {availableTimes.map((time, index) => {
-              const timeObj = new Date(time);
-              const formattedTime = timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-              return (
-                <TouchableOpacity
-                  key={index}
-                  className={`flex-row items-center justify-between p-2 mb-2 rounded ${
-                    formData.preferred_time === time ? 'bg-black dark:bg-white' : 'bg-gray-100 dark:bg-gray-800'
-                  }`}
-                  onPress={() => handleTimeSelect(time)}
-                >
-                  <Text className={`${formData.preferred_time === time ? 'text-white dark:text-black' : 'text-black dark:text-white'}`}>
-                    {formattedTime}
-                  </Text>
-                  {formData.preferred_time === time && <Ionicons name="checkmark-circle" size={24} color={isDark ? 'black' : 'white'} />}
-                </TouchableOpacity>
-              );
-            })}
-          </>
-        )}
+{formData.preferred_date && formData.coach_id && (
+  <>
+    <Text className="mt-6 mb-2 text-lg font-semibold text-black dark:text-white">Available Times</Text>
+    <View className="flex flex-row flex-wrap mt-2 mb-4">
+      {availableTimes.map((time, index) => {
+        const timeObj = new Date(time);
+        const formattedTime = timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return (
+          <TouchableOpacity
+            key={index}
+            className={`flex flex-row items-center justify-center p-2 m-1 rounded-full w-20 h-10 ${
+              formData.preferred_time === time 
+                ? 'bg-black dark:bg-white' 
+                : 'bg-gray-100 dark:bg-gray-800'
+            }`}
+            onPress={() => handleTimeSelect(time)}
+          >
+            <Text 
+              className={`text-xs ${
+                formData.preferred_time === time 
+                  ? 'text-white dark:text-black' 
+                  : 'text-black dark:text-white'
+              }`}
+            >
+              {formattedTime}
+            </Text>
+            {formData.preferred_time === time && (
+              <Ionicons 
+                name="checkmark-circle" 
+                size={16} 
+                color={isDark ? 'black' : 'white'} 
+                className="ml-1"
+              />
+            )}
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  </>
+)}
 
         {formData.preferred_time && formData.preferred_date && formData.coach_id && (
           <InputField
@@ -203,7 +220,7 @@ const RequestPtPage = ({ navigation }) => {
             keyboardType="default"
             autoCapitalize="sentences"
             isLongText={true}
-            additionalInputStyles="px-4 py-2 rounded-xl"
+            additionalInputStyles="p-4 rounded-xl"
           />
         )}
 

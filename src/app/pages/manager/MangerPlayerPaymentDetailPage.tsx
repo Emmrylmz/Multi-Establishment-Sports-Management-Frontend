@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Animated,SafeAreaView, ActivityIndicator } from 'react-native';
 import { AppLayout } from '../../components';
+import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PaymentOverview from '../../components/ui/payments/PaymentOverview';
 import ConfirmOrCancelView from '../../components/ui/payments/ConfirmOrCancelView';
@@ -9,31 +10,46 @@ import { useGetPaymentQuery, useCreatePaymentMutation } from '../../../features/
 import PaymentAnimation from '../../components/ui/payments/PaymentAnimation';
 
 type Payment = {
-  month: number;
+  _id: string;
   amount: number;
-  paid: boolean;
+  created_at: Date;
+  description: string | null;
+  due_date: Date;
+  month: number;
+  paid_date: Date;
+  payment_type: 'monthly' | 'annual';
+  payment_with: 'credit_card' | 'cash' | 'bank_transfer' | 'mobile_payment' | 'other';
+  province: string;
+  status: 'paid' | 'pending' | 'overdue';
+  user_id: string;
+  year: number;
+};
+
+type MonthsAndAmounts = {
+  [key: number]: number;
 };
 
 type FormState = {
   user_id: string;
-  team_id: string;
-  amount: number;
-  months: number[];
+  months_and_amounts: MonthsAndAmounts;
+  payment_with: 'credit_card' | 'cash' | 'bank_transfer' | 'mobile_payment' | 'other';
   year: number;
-  paid: boolean;
+  status: 'paid' | 'pending' | 'overdue';
   paid_date: string;
+  province: string;
 };
 
 const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
   const [paymentType, setPaymentType] = useState('dues');
-  const { player_id, team_id } = route.params;
-  const { data, error, isLoading: isLoadingPayments, refetch } = useGetPaymentQuery(player_id);
+  const { player_id,dues } = route.params;
+  const { data, error:errorLoadingPayments, isLoading: isLoadingPayments, refetch } = useGetPaymentQuery(player_id);
   const [createPayment, { isLoading: isCreatingPayment, isError: isCreatePaymentError }] = useCreatePaymentMutation();
 
   const insets = useSafeAreaInsets();
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const [selectedMonths, setSelectedMonths] = useState<number[]>([]);
-
+  
+  data?.forEach((item) => console.log(item._id))
   const [fadeAnim] = useState(new Animated.Value(0));
   const [scaleAnim] = useState(new Animated.Value(0.5));
 
@@ -60,19 +76,40 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
     }
   }, [isCreatingPayment, isCreatePaymentError]);
 
-  const generateAnnualPayment = (data: Payment[]) => {
+
+
+  const [annualPayment, setAnnualPayment] = useState<Payment[]>([]);
+  
+  useEffect(() => {
+    // if data statement removed
+    setAnnualPayment(generateAnnualPayment(data));
+  }, [data]);
+  
+
+  // added undefined to data to prevent error
+  const generateAnnualPayment = (data: Payment[] | undefined) => {
     const monthsInYear = 12;
-    const paymentMap = new Map(data.map((payment) => [payment.month, payment]));
-
-    const fullAnnualPayment = Array.from({ length: monthsInYear }, (_, month) => {
-      return paymentMap.get(month) || { month, amount: 2000, paid: false };
+    const paymentMap = new Map(data?.map((payment) => [payment.month, payment]) || []);
+  
+    return Array.from({ length: monthsInYear }, (_, month) => {
+      return paymentMap.get(month) || { 
+        month, 
+        amount: 2000, // Default amount
+        status: 'pending', // Default status
+        paid: false 
+      };
     });
-
-    return fullAnnualPayment;
+  };
+  const handleAmountChange = (index: number, newAmount: number) => {
+    setAnnualPayment(prevPayments => {
+      const newPayments = [...prevPayments];
+      newPayments[index] = { ...newPayments[index], amount: newAmount };
+      return newPayments;
+    });
   };
 
-  const annualPayment = data ? generateAnnualPayment(data) : [];
-  const totalPaid = annualPayment.reduce((acc, payment) => payment.paid ? acc + payment.amount : acc, 0);
+
+  const totalPaid = annualPayment.reduce((acc, payment) => (payment.status === 'paid' ? acc + payment.amount : acc), 0);
   const totalPayment = annualPayment.reduce((acc, payment) => acc + payment.amount, 0);
   const monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -100,38 +137,62 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
   const markAsPaid = async () => {
     setSelectedMonths([]);
     setIsSelectionMode(false);
-
-    const existingMonths = data.filter(payment => payment.paid).map(payment => payment.month);
-    const uniqueMonths = Array.from(new Set([...existingMonths, ...selectedMonths]));
-
+  
+    const months_and_amounts: { [key: number]: number } = {};
+    selectedMonths.forEach(monthIndex => {
+      const payment = annualPayment[monthIndex];
+      months_and_amounts[payment.month] = payment.amount;
+    });
+  
     const newPayment: FormState = {
       user_id: player_id,
-      team_id: team_id,
-      amount: 2000,
-      months: selectedMonths,
+      months_and_amounts: months_and_amounts,
+      payment_with: "credit_card",
       year: new Date().getFullYear(),
-      paid: true,
-      paid_date: new Date().toISOString()
+      status: "paid",
+      paid_date: new Date().toISOString(),
+      province: "Izmir"
     };
-
+  
     try {
-      await createPayment(newPayment).unwrap();
-      refetch();
-    } catch (error) {
+      console.log('Sending payment data:', JSON.stringify(newPayment, null, 2));
+      const response = await createPayment(newPayment).unwrap();
+      console.log('Payment created successfully:', response);
+      if(response.status === 'success'){
+        return refetch();
+      }
+    } catch (error: any) {
+      console.error('Error creating payment:', error);
+      let errorMessage = 'An unexpected error occurred';
+      if (error.data) {
+        errorMessage = typeof error.data === 'string' ? error.data : JSON.stringify(error.data);
+      }
+      console.error('Error message to show user:', errorMessage);
+      // Consider adding a state to show this error message in the UI
+      // setErrorMessage(errorMessage);
     }
   };
 
   if (isLoadingPayments) {
-    return <Text>Loading...</Text>;
+    return <SafeAreaView>
+      <ActivityIndicator size="large" color="#ccc" />
+      <Text className='text-xl text-center'>Loading payment data...</Text>
+    </SafeAreaView>;
   }
 
-  if (error) {
-    return <Text>Error loading payment data.</Text>;
-  }
+  // removed to load monthly payments
+  // if (errorLoadingPayments) {
+  //   return <Text>Error loading payment data.</Text>
+  // }
 
   return (
-    <AppLayout>
-      <View className={`flex-1 bg-white dark:bg-dacka-black pt-${insets.top}`}>
+    <SafeAreaView>
+      <View className={`w-full h-full bg-white dark:bg-dacka-black pt-${insets.top}`}>
+        <View className='px-4'>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back-outline" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
         <View className='flex-row w-full px-4 py-2 bg-white dark:bg-dacka-black'>
           <TouchableOpacity 
             className={`flex-1 py-3 rounded-l-full ${
@@ -167,21 +228,24 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
         <PaymentOverview  title='Payment Overview' leftSubtitle='Total Paid' rightSubtitle='Remaining' totalPayment={totalPayment} totalPaid={totalPaid} />
+        <Text className={`text-xl text-center ${dues ? 'text-red-400' : 'text-green-400'}`}>{dues ? `you have overdued ${dues}₺` : 'You dont haave overdued payments'}</Text>
         <ScrollView 
           showsVerticalScrollIndicator={false} 
           className="flex-1 px-4 pt-6 bg-white dark:bg-dacka-black rounded-t-3xl"
         >
           {paymentType === 'dues' ? (
-            annualPayment.map((payment, index) => (
+            annualPayment.map((payment:Payment, index:number) => (
               <PaymentItem
                 key={index}
                 month={monthNames[payment.month]}
                 amount={payment.amount}
-                paid={payment.paid}
+                status={payment.status || 'pending'}
                 isSelected={selectedMonths.includes(index)}
                 isSelectionMode={isSelectionMode}
                 onPress={isSelectionMode ? () => toggleMonthSelection(index) : null}
-              />
+                onAmountChange={(newAmount) => handleAmountChange(index, newAmount)}
+            />
+      
             ))
           ) : (
             <Text className="py-4 text-center">Personal Training Payment data will be displayed here.</Text>
@@ -209,7 +273,7 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
           />
         )}
       </View>
-    </AppLayout>
+    </SafeAreaView>
   );
 };
 

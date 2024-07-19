@@ -1,13 +1,12 @@
 import React, { memo } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import GoBackButton from '../../components/ui/GoBackButton';
 import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryService';
 import { PlayerCard } from '../../components';
 
 const TeamDetailPage = ({ route, navigation }) => {
-	// Assuming we receive the team data through route params
-	const {from} =route.params;
+	const { from } = route.params;
 	const {
 		team_id,
 		team_name,
@@ -23,11 +22,15 @@ const TeamDetailPage = ({ route, navigation }) => {
 		isError,
 	} = useGetTeamUsersByIdQuery(team_id);
 
-	const navigateToUserDetail = (user_id) => {
-		if(from ==='manager'){
-			return navigation.navigate('ManagerPlayerPaymentDetailPage', { player_id: user_id,team_id: team_id })
+	const navigateToUserDetail = (user) => {
+		if(from === 'manager'){
+			return navigation.navigate('ManagerPlayerPaymentDetailPage', { 
+				player_id: user._id,
+				team_id: team_id,
+				dues: user.dues
+			})
 		}
-		navigation.navigate('UserProfile', { user_id: user_id });
+		navigation.navigate('UserProfile', { user_id: user._id });
 	};
 
 	const renderMember = (member, role) => (
@@ -39,7 +42,7 @@ const TeamDetailPage = ({ route, navigation }) => {
 				uri: member.avatarUrl || 'https://avatar.iran.liara.run/public/boy',
 			}}
 			position={role}
-			onPress={() => navigateToUserDetail(member._id)}
+			onPress={() => navigateToUserDetail(member)}
 			attended={member.attended}
 		/>
 	);
@@ -61,9 +64,12 @@ const TeamDetailPage = ({ route, navigation }) => {
 
 			<View className="px-4 mt-6">
 				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">Coaches</Text>
-				{teamUsers &&
-				teamUsers.coach_infos &&
-				teamUsers.coach_infos.length > 0 ? (
+				{isLoading ? (
+					<View className="flex items-center justify-center">
+						<ActivityIndicator size="large" color="#4CAF50" />
+						<Text className="mt-2 text-gray-700 dark:text-gray-200">Loading coaches...</Text>
+					</View>
+				) : teamUsers && teamUsers.coach_infos && teamUsers.coach_infos.length > 0 ? (
 					teamUsers.coach_infos.map((coach) => renderMember(coach, 'Coach'))
 				) : (
 					<Text className="italic text-gray-700 dark:text-gray-200">No coaches added yet.</Text>
@@ -72,9 +78,12 @@ const TeamDetailPage = ({ route, navigation }) => {
 
 			<View className="px-4 mt-6 mb-6">
 				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">Players</Text>
-				{teamUsers &&
-				teamUsers.player_infos &&
-				teamUsers.player_infos.length > 0 ? (
+				{isLoading ? (
+					<View className="flex items-center justify-center">
+						<ActivityIndicator size="large" color="#4CAF50" />
+						<Text className="mt-2 text-gray-700 dark:text-gray-200">Loading players...</Text>
+					</View>
+				) : teamUsers && teamUsers.player_infos && teamUsers.player_infos.length > 0 ? (
 					teamUsers.player_infos.map((player) =>
 						renderMember(player, player.position || 'Player')
 					)

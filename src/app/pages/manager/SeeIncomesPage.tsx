@@ -72,7 +72,6 @@ const SeeIncomesPage = () => {
           style={{ opacity: fadeAnim }}
         >
           <RevenueCharts title="Monthly Income" chartData={monthlyData} chartType="line" />
-          <RevenueCharts title="Yearly Income" chartData={yearlyData} chartType="bar" />
           {isLoading ? (
             <Text>Loading Quarterly Income...</Text>
           ) : isError ? (
