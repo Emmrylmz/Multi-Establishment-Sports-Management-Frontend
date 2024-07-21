@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 type PaymentItemProps = {
   month: string;
-  amount: number;
+  amount: number | { _id: string; dues: number };
   status: 'paid' | 'pending' | 'overdue' | undefined;
   isSelected: boolean;
   isSelectionMode: boolean;
@@ -21,15 +22,17 @@ const PaymentItem: React.FC<PaymentItemProps> = ({
   onPress,
   onAmountChange,
 }) => {
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
-  const [editedAmount, setEditedAmount] = useState(amount.toString());
+  const [editedAmount, setEditedAmount] = useState(
+    (typeof amount === 'object' ? amount.dues : amount).toString()
+  );
 
   const handleAmountPress = () => {
     if (status !== 'paid') {
       setIsEditing(true);
     }
   };
-
 
   const handleAmountChange = (text: string) => {
     setEditedAmount(text);
@@ -38,10 +41,11 @@ const PaymentItem: React.FC<PaymentItemProps> = ({
   const handleAmountBlur = () => {
     setIsEditing(false);
     const newAmount = parseFloat(editedAmount);
-    if (!isNaN(newAmount) && newAmount !== amount) {
+    const currentAmount = typeof amount === 'object' ? amount.dues : amount;
+    if (!isNaN(newAmount) && newAmount !== currentAmount) {
       onAmountChange(newAmount);
     } else {
-      setEditedAmount(amount.toString());
+      setEditedAmount(currentAmount.toString());
     }
   };
 
@@ -81,12 +85,14 @@ const PaymentItem: React.FC<PaymentItemProps> = ({
 
   const getStatusText = () => {
     switch (status) {
-      case 'paid': return 'Paid';
-      case 'pending': return 'Payment Due';
-      case 'overdue': return 'Overdue';
-      default: return 'Unpaid';
+      case 'paid': return t('paymentStatus.paid');
+      case 'pending': return t('paymentStatus.pending');
+      case 'overdue': return t('paymentStatus.unpaid');
+      default: return t('paymentStatus.unpaid');
     }
   };
+
+  const displayAmount = typeof amount === 'object' ? amount.dues : amount;
 
   return (
     <TouchableOpacity
@@ -124,7 +130,7 @@ const PaymentItem: React.FC<PaymentItemProps> = ({
         ) : (
           <TouchableOpacity onPress={handleAmountPress}>
             <Text className={`text-xl font-bold mr-2 ${getTextColor()}`}>
-              {amount}₺
+              {displayAmount}₺
             </Text>
           </TouchableOpacity>
         )}

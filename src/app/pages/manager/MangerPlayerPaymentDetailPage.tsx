@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, Modal, TouchableOpacity, Animated,SafeAreaView, ActivityIndicator } from 'react-native';
-import { AppLayout } from '../../components';
+import { View, Text, ScrollView, TouchableOpacity, Animated, SafeAreaView, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PaymentOverview from '../../components/ui/payments/PaymentOverview';
@@ -8,65 +7,11 @@ import ConfirmOrCancelView from '../../components/ui/payments/ConfirmOrCancelVie
 import PaymentItem from '../../components/ui/payments/PaymentItem';
 import { useGetPaymentQuery, useCreatePaymentMutation } from '../../../features/query/paymentQueryService';
 import PaymentAnimation from '../../components/ui/payments/PaymentAnimation';
-
-const ConfirmationModal = ({ visible, onClose, selectedMonths, totalAmount, onConfirm, monthNames, annualPayment }) => {
-  return (
-    <Modal visible={visible} transparent animationType="slide">
-      <View className="justify-end flex-1 bg-black bg-opacity-50">
-        <View className="p-6 bg-white dark:bg-gray-900 rounded-t-3xl">
-          <View className="flex-row items-center justify-between mb-6">
-            <Text className="text-2xl font-bold text-gray-800 dark:text-gray-100">Payment Confirmation</Text>
-            <TouchableOpacity onPress={onClose}>
-              <Ionicons name="close-circle-outline" size={28} color="#4A5568" />
-            </TouchableOpacity>
-          </View>
-          
-          <ScrollView className="mb-4 max-h-80">
-            {selectedMonths.length > 0 ? (
-              selectedMonths.map((monthIndex) => {
-                const payment = annualPayment[monthIndex];
-                return (
-                  <View key={monthIndex} className="flex-row items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700">
-                    <Text className="text-lg text-gray-700 dark:text-gray-300">{monthNames[monthIndex]}</Text>
-                    <View>
-                      <Text className="text-lg font-semibold text-right text-emerald-600 dark:text-emerald-400">
-                        ${payment?.amount?.toFixed(2) || 'N/A'}
-                      </Text>
-                      <Text className={`text-right text-sm ${payment?.status === 'paid' ? 'text-blue-500' : 'text-amber-500'}`}>
-                        {payment?.status || 'N/A'}
-                      </Text>
-                    </View>
-                  </View>
-                );
-              })
-            ) : (
-              <Text className="text-lg text-gray-600 dark:text-gray-400">No months selected</Text>
-            )}
-          </ScrollView>
-          
-          <View className="pt-4 mb-6 border-t border-gray-200 dark:border-gray-700">
-            <Text className="text-xl font-bold text-gray-800 dark:text-gray-100">Total Amount</Text>
-            <Text className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">${totalAmount.toFixed(2)}</Text>
-          </View>
-          
-          <TouchableOpacity 
-            onPress={onConfirm}
-            className="py-4 mb-3 rounded-full shadow-lg bg-emerald-600"
-          >
-            <Text className="text-lg font-semibold text-center text-white">Confirm Payment</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            onPress={onClose}
-            className="py-4 bg-gray-200 rounded-full dark:bg-gray-700"
-          >
-            <Text className="text-lg font-semibold text-center text-gray-800 dark:text-gray-200">Cancel</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modal>
-  );
-};
+import { useTranslation } from 'react-i18next';
+import ConfirmationModal from '../../components/ui/Modals/ConfirmationModal';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../../store';
+import { getAuthUser } from '../../../features/auth/auth.slice';
 
 type Payment = {
   _id: string;
@@ -99,16 +44,16 @@ type FormState = {
 };
 
 const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
+  const user = useSelector((state: RootState) => getAuthUser(state));
+  const isManager = user?.role === 'Manager';
+  const { t } = useTranslation();
   const [paymentType, setPaymentType] = useState('dues');
   const [modalVisible, setModalVisible] = useState(false);
-  const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
-
+  const monthNames = [t("months.january"), t("months.february"), t("months.march"), t("months.april"), t("months.may"), t("months.june"), t("months.july"), t("months.august"), t("months.september"), t("months.october"), t("months.november"), t("months.december")];
   const [totalAmountToPay, setTotalAmountToPay] = useState(0);
-  const { player_id,dues } = route.params;
-  const { data, error:errorLoadingPayments, isLoading: isLoadingPayments, refetch } = useGetPaymentQuery(player_id);
+  const { player_id, dues } = route.params;
+  const { data, error: errorLoadingPayments, isLoading: isLoadingPayments, refetch } = useGetPaymentQuery(player_id);
+  console.log('player payment data:', data);
   const [createPayment, { isLoading: isCreatingPayment, isError: isCreatePaymentError }] = useCreatePaymentMutation();
 
   const insets = useSafeAreaInsets();
@@ -141,16 +86,12 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
     }
   }, [isCreatingPayment, isCreatePaymentError]);
 
-
   const [annualPayment, setAnnualPayment] = useState<Payment[]>([]);
   
   useEffect(() => {
-    // if data statement removed
     setAnnualPayment(generateAnnualPayment(data));
   }, [data]);
-  
 
-  // added undefined to data to prevent error
   const generateAnnualPayment = (data: Payment[] | undefined) => {
     const monthsInYear = 12;
     const paymentMap = new Map(data?.map((payment) => [payment.month, payment]) || []);
@@ -158,31 +99,48 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
     return Array.from({ length: monthsInYear }, (_, month) => {
       return paymentMap.get(month) || { 
         month, 
-        amount: 2000, // Default amount
-        status: 'pending', // Default status
+        amount: 2000,
+        status: 'pending',
         paid: false 
       };
     });
   };
+
   const handleAmountChange = (index: number, newAmount: number) => {
+    if (!isManager) return;
     setAnnualPayment(prevPayments => {
       const newPayments = [...prevPayments];
-      newPayments[index] = { ...newPayments[index], amount: newAmount };
+      if (newPayments[index]) {
+        newPayments[index] = { ...newPayments[index], amount: newAmount };
+      }
       return newPayments;
     });
   };
 
-
-  const totalPaid = annualPayment.reduce((acc, payment) => (payment.status === 'paid' ? acc + payment.amount : acc), 0);
-  const totalPayment = annualPayment.reduce((acc, payment) => acc + payment.amount, 0);
+  const totalPaid = annualPayment.reduce((acc, payment) => {
+    if (!payment) return acc;
+    const amount = payment.amount && typeof payment.amount === 'object' 
+      ? (payment.amount.dues || 0) 
+      : (payment.amount || 0);
+    return payment.status === 'paid' ? acc + Number(amount) : acc;
+  }, 0);
+  
+  const totalPayment = annualPayment.reduce((acc, payment) => {
+    if (!payment) return acc;
+    const amount = payment.amount && typeof payment.amount === 'object'
+      ? (payment.amount.dues || 0)
+      : (payment.amount || 0);
+    return acc + Number(amount);
+  }, 0);
 
   const toggleSelectionMode = () => {
+    if (!isManager) return;
     setIsSelectionMode(!isSelectionMode);
     setSelectedMonths([]);
   };
 
   const toggleMonthSelection = (index: number) => {
-    if (annualPayment[index].paid || !isSelectionMode) return;
+    if (!isManager || annualPayment[index].paid || !isSelectionMode) return;
 
     setSelectedMonths(prev => {
       if (prev.includes(index)) {
@@ -193,8 +151,8 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
     });
   };
 
-
   const processPayment = async () => {
+    if (!isManager) return;
     setModalVisible(false);
     setIsSelectionMode(false);
 
@@ -227,8 +185,6 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
         errorMessage = typeof error.data === 'string' ? error.data : JSON.stringify(error.data);
       }
       console.error('Error message to show user:', errorMessage);
-      // Consider adding a state to show this error message in the UI
-      // setErrorMessage(errorMessage);
     }
   };
 
@@ -242,7 +198,7 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
     const totalAmount = selectedMonths.reduce((acc, monthIndex) => {
       const payment = annualPayment[monthIndex];
       const amount = payment?.amount || 0;
-      return acc + amount;
+      return acc + (typeof amount === 'number' ? amount : 0);
     }, 0);
     
     setTotalAmountToPay(totalAmount);
@@ -254,23 +210,20 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
   };
 
   if (isLoadingPayments) {
-    return <SafeAreaView>
-      <ActivityIndicator size="large" color="#ccc" />
-      <Text className='text-xl text-center'>Loading payment data...</Text>
-    </SafeAreaView>;
+    return (
+      <SafeAreaView>
+        <ActivityIndicator size="large" color="#ccc" />
+        <Text className='text-xl text-center'>{t("fetchMessages.loading")}</Text>
+      </SafeAreaView>
+    );
   }
-
-  // removed to load monthly payments
-  // if (errorLoadingPayments) {
-  //   return <Text>Error loading payment data.</Text>
-  // }
 
   return (
     <SafeAreaView>
       <View className={`w-full h-full bg-white dark:bg-dacka-black pt-${insets.top}`}>
         <View className='px-4'>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back-outline" size={24} color="black" />
+            <Ionicons name="arrow-back-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
         <View className='flex-row w-full px-4 py-2 bg-white dark:bg-dacka-black'>
@@ -287,7 +240,7 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
                 ? 'text-white'
                 : 'text-gray-700 dark:text-gray-300'
             }`}>
-              Dues Payment
+              {t("playerPaymentDetail.duesPayment")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity 
@@ -303,46 +256,56 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
                 ? 'text-white'
                 : 'text-gray-700 dark:text-gray-300'
             }`}>
-              Personal Training
+              {t("playerPaymentDetail.ptPayment")}
             </Text>
           </TouchableOpacity>
         </View>
-        <PaymentOverview  title='Payment Overview' leftSubtitle='Total Paid' rightSubtitle='Remaining' totalPayment={totalPayment} totalPaid={totalPaid} />
-        <Text className={`text-xl text-center ${dues ? 'text-red-400' : 'text-green-400'}`}>{dues ? `you have overdued ${dues}₺` : 'You dont haave overdued payments'}</Text>
+        <PaymentOverview 
+          title={t("paymentOverview.title")} 
+          leftSubtitle={t("paymentOverview.leftSubtitle")} 
+          rightSubtitle={t("paymentOverview.rightSubtitle")} 
+          totalPayment={totalPayment} 
+          totalPaid={totalPaid} 
+        />
+        <Text className={`text-xl text-center ${dues ? 'text-red-400' : 'text-green-400'}`}>
+          {dues ? `You have overdue ${typeof dues === 'number' ? dues : dues.amount}₺` : 'You don\'t have overdue payments'}
+        </Text>
         <ScrollView 
           showsVerticalScrollIndicator={false} 
           className="flex-1 px-4 pt-6 bg-white dark:bg-dacka-black rounded-t-3xl"
         >
           {paymentType === 'dues' ? (
-            annualPayment.map((payment:Payment, index:number) => (
+            annualPayment.map((payment, index) => (
               <PaymentItem
                 key={index}
-                month={monthNames[payment.month]}
-                amount={payment.amount}
-                status={payment.status || 'pending'}
+                month={monthNames[payment?.month] || ''}
+                amount={payment?.amount || 0}
+                status={payment?.status || 'pending'}
                 isSelected={selectedMonths.includes(index)}
-                isSelectionMode={isSelectionMode}
-                onPress={isSelectionMode ? () => toggleMonthSelection(index) : null}
-                onAmountChange={(newAmount) => handleAmountChange(index, newAmount)}
-            />
-      
+                isSelectionMode={isSelectionMode && isManager}
+                onPress={isManager && isSelectionMode ? () => toggleMonthSelection(index) : null}
+                onAmountChange={isManager ? (newAmount) => handleAmountChange(index, newAmount) : undefined}
+                editable={isManager}
+              />
             ))
           ) : (
             <Text className="py-4 text-center">Personal Training Payment data will be displayed here.</Text>
           )}
         </ScrollView>
-        <View className="p-4 bg-white dark:bg-dacka-black">
-          {isSelectionMode ? (
-            <ConfirmOrCancelView toggleSelectionMode={toggleSelectionMode} markAsPaid={markAsPaid} />
-          ) : (
-            <TouchableOpacity 
-              onPress={toggleSelectionMode}
-              className="py-4 bg-green-200 rounded-full dark:bg-green-800"
-            >
-              <Text className="font-semibold text-center text-black dark:text-white">Click to Select Months to Mark as Paid</Text>
-            </TouchableOpacity>
-          )}
-        </View>
+        {isManager && (
+          <View className="p-4 bg-white dark:bg-dacka-black">
+            {isSelectionMode ? (
+              <ConfirmOrCancelView toggleSelectionMode={toggleSelectionMode} markAsPaid={markAsPaid} />
+            ) : (
+              <TouchableOpacity 
+                onPress={toggleSelectionMode}
+                className="py-4 bg-green-200 rounded-full dark:bg-green-800"
+              >
+                <Text className="font-semibold text-center text-black dark:text-white">{t("playerPaymentDetail.markAsPaidButton")}</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
         {(isCreatingPayment || isCreatePaymentError) && (
           <PaymentAnimation
             truthyState={isCreatingPayment}
@@ -353,15 +316,17 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
           />
         )}
       </View>
-      <ConfirmationModal 
-        visible={modalVisible}
-        onClose={handleModalOnClose}
-        selectedMonths={selectedMonths}
-        totalAmount={totalAmountToPay}
-        onConfirm={processPayment}
-        monthNames={monthNames}
-        annualPayment={annualPayment}
-      />
+      {isManager && (
+        <ConfirmationModal 
+          visible={modalVisible}
+          onClose={handleModalOnClose}
+          selectedMonths={selectedMonths}
+          totalAmount={totalAmountToPay}
+          onConfirm={processPayment}
+          monthNames={monthNames}
+          annualPayment={annualPayment}
+        />
+      )}
     </SafeAreaView>
   );
 };

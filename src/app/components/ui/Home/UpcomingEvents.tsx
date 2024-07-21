@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import EventList from '../../../components/ui/Event/EventList';
 import { useListUpcomingEventsQuery } from '../../../../features/query/eventQueryService';
+import { useTranslation } from 'react-i18next';
 
 const UpcomingEvents = ({ navigation, user }) => {
 	const {
@@ -10,12 +11,12 @@ const UpcomingEvents = ({ navigation, user }) => {
 		isLoading,
 	} = useListUpcomingEventsQuery(user.teams);
 
-	// console.log(events[0]);
+	const { t } = useTranslation();
 
 	return (
 		<View className="mb-6">
-			<Text className="text-xl font-bold text-gray-800 mb-4">
-				Upcoming Events
+			<Text className="mb-4 text-xl font-bold text-gray-800">
+				{t("upcomingEvents.title")}
 			</Text>
 			{events &&
 				<EventList

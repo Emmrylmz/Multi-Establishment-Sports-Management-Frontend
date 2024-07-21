@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Dimensions, useColorScheme } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { PieChart, BarChart, LineChart } from 'react-native-chart-kit';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useGetMonthlyRevenueQuery } from '../../../../features/query/paymentQueryService';
@@ -8,6 +9,7 @@ const { width } = Dimensions.get('window');
 const chartWidth = width - 40;
 
 const RevenueCard = () => {
+  const { t } = useTranslation();
   const [chartType, setChartType] = useState('pie');
   const { data: monthlyRevenue } = useGetMonthlyRevenueQuery({
     month: new Date().getMonth(),
@@ -30,14 +32,14 @@ const RevenueCard = () => {
 
   const pieData = [
     {
-      name: 'This Week',
+      name: 't("revenueCard.thisWeek")',
       revenue: lastWeekRevenue,
       color: '#4F46E5',
       legendFontColor: '#64748B',
       legendFontSize: 12,
     },
     {
-      name: 'Previous Weeks',
+      name: 't("revenueCard.lastMonth")',
       revenue: totalRevenue - lastWeekRevenue,
       color: '#A5B4FC',
       legendFontColor: '#64748B',
@@ -120,7 +122,7 @@ const RevenueCard = () => {
 
   return (
     <View className="p-6 mb-6 bg-white shadow-lg dark:bg-gray-800 rounded-2xl">
-      <Text className="mb-6 text-2xl font-semibold text-gray-800 dark:text-gray-200">This Month's Revenue</Text>
+      <Text className="mb-6 text-2xl font-semibold text-gray-800 dark:text-gray-200">{t("revenueCard.title")}</Text>
       <View className="mb-6">
       <Dropdown
         data={chartTypes}
@@ -159,7 +161,7 @@ const RevenueCard = () => {
           ${totalRevenue.toLocaleString()}
         </Text>
         <Text className="mt-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-          Total Revenue This Month
+          { t("revenueCard.totalRevenue")}
         </Text>
       </View>
     </View>

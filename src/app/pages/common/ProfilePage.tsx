@@ -26,6 +26,7 @@ const LoadingSpinner = () => {
 
 const ProfilePage: React.FC = () => {
 	const user = useSelector((state: RootState) => getAuthUser(state));
+	console.log(user)
 	const { data: UserInfo, isLoading } = useGetUserInfoQuery(user?._id);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 

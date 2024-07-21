@@ -1,10 +1,12 @@
 import React from 'react'
-import { View, Text, useColorScheme, ScrollView, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, useColorScheme, TouchableOpacity, FlatList } from 'react-native'
+import { useTranslation } from 'react-i18next'
 import { AppLayout } from '../../components'
 import { Ionicons } from '@expo/vector-icons'
 
 const PtHistoryPage = ({navigation}) => {
   const isDark = useColorScheme() === 'dark'
+  const { t } = useTranslation()
 
   const ptSessions = [
     { id: '1', date: '2024-07-15', time: '14:00-15:00', coach: 'John Doe', player: 'Alice Smith', location: 'Court A' },
@@ -23,10 +25,10 @@ const PtHistoryPage = ({navigation}) => {
         <Text className="text-sm text-gray-600 dark:text-gray-300">{item.time}</Text>
       </View>
       <View className="flex-row items-center justify-between">
-        <Text className="text-base text-gray-800 dark:text-gray-200">Coach: {item.coach}</Text>
-        <Text className="text-base text-gray-800 dark:text-gray-200">Player: {item.player}</Text>
+        <Text className="text-base text-gray-800 dark:text-gray-200">{t("ptHistoryPage.coach")}: {item.coach}</Text>
+        <Text className="text-base text-gray-800 dark:text-gray-200">{t("ptHistoryPage.player")}: {item.player}</Text>
       </View>
-      <Text className="mt-2 text-sm text-gray-600 dark:text-gray-400">Location: {item.location}</Text>
+      <Text className="mt-2 text-sm text-gray-600 dark:text-gray-400">{t("ptHistoryPage.location")}: {item.location}</Text>
     </TouchableOpacity>
   )
 
@@ -36,7 +38,7 @@ const PtHistoryPage = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color={isDark ? 'white' : 'black'} />
         </TouchableOpacity>
-        <Text className="text-2xl font-bold text-black dark:text-white">PT History</Text>
+        <Text className="text-2xl font-bold text-black dark:text-white">{t("ptHistoryPage.title")}</Text>
         <TouchableOpacity>
           <Ionicons name="filter" size={24} color={isDark ? 'white' : 'black'} />
         </TouchableOpacity>

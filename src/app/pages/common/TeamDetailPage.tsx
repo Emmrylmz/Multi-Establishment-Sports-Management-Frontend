@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import GoBackButton from '../../components/ui/GoBackButton';
+import { View, Text, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryService';
 import { PlayerCard } from '../../components';
 
 const TeamDetailPage = ({ route, navigation }) => {
+	const { t } = useTranslation();
 	const { from } = route.params;
 	const {
 		team_id,
@@ -63,32 +63,32 @@ const TeamDetailPage = ({ route, navigation }) => {
 			</View>
 
 			<View className="px-4 mt-6">
-				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">Coaches</Text>
+				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">{t("teamDetailPage.coaches")}</Text>
 				{isLoading ? (
 					<View className="flex items-center justify-center">
 						<ActivityIndicator size="large" color="#4CAF50" />
-						<Text className="mt-2 text-gray-700 dark:text-gray-200">Loading coaches...</Text>
+						<Text className="mt-2 text-gray-700 dark:text-gray-200">{t("fetchMessages.loading")}</Text>
 					</View>
 				) : teamUsers && teamUsers.coach_infos && teamUsers.coach_infos.length > 0 ? (
 					teamUsers.coach_infos.map((coach) => renderMember(coach, 'Coach'))
 				) : (
-					<Text className="italic text-gray-700 dark:text-gray-200">No coaches added yet.</Text>
+					<Text className="italic text-gray-700 dark:text-gray-200">{t("fetchMessages.noCoaches")}</Text>
 				)}
 			</View>
 
 			<View className="px-4 mt-6 mb-6">
-				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">Players</Text>
+				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">{t("teamDetailPage.players")}</Text>
 				{isLoading ? (
 					<View className="flex items-center justify-center">
 						<ActivityIndicator size="large" color="#4CAF50" />
-						<Text className="mt-2 text-gray-700 dark:text-gray-200">Loading players...</Text>
+						<Text className="mt-2 text-gray-700 dark:text-gray-200">{t("fetchMessages.loading")}</Text>
 					</View>
 				) : teamUsers && teamUsers.player_infos && teamUsers.player_infos.length > 0 ? (
 					teamUsers.player_infos.map((player) =>
 						renderMember(player, player.position || 'Player')
 					)
 				) : (
-					<Text className="italic text-gray-700 dark:text-gray-200">No players added yet.</Text>
+					<Text className="italic text-gray-700 dark:text-gray-200">{t("fetchMessages.noPlayers")}</Text>
 				)}
 			</View>
 

@@ -11,7 +11,27 @@ const SeeIncomesPage = () => {
     start_month: 0,
     end_month: 11
   });
-  const { data, isLoading, isError } = useGetRevenueByMonthRangeQuery(rangelyRevenueState);
+  // const { data, isLoading, isError } = useGetRevenueByMonthRangeQuery(rangelyRevenueState);
+  // console.log('ranglelyRevenueData:', data);
+
+  // Dummy data for rangely (quarterly) revenue
+  const dummyRangelyData = {
+    months: [
+      { month: 0, revenue: 5000 },
+      { month: 1, revenue: 6000 },
+      { month: 2, revenue: 4500 },
+      { month: 3, revenue: 7000 },
+      { month: 4, revenue: 8000 },
+      { month: 5, revenue: 7500 },
+      { month: 6, revenue: 9000 },
+      { month: 7, revenue: 10000 },
+      { month: 8, revenue: 9500 },
+      { month: 9, revenue: 11000 },
+      { month: 10, revenue: 12000 },
+      { month: 11, revenue: 13000 }
+    ]
+  };
+
   const isDark = useColorScheme() === 'dark';
   const scrollY = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -46,8 +66,8 @@ const SeeIncomesPage = () => {
   };
 
   const quarterlyData = {
-    labels: data?.months ? data.months.map(item => getMonthName(item.month)) : [],
-    datasets: [{ data: data?.months ? data.months.map(item => item.revenue) : [] }]
+    labels: dummyRangelyData.months.map(item => getMonthName(item.month)),
+    datasets: [{ data: dummyRangelyData.months.map(item => item.revenue) }]
   };
 
   return (
@@ -72,19 +92,13 @@ const SeeIncomesPage = () => {
           style={{ opacity: fadeAnim }}
         >
           <RevenueCharts title="Monthly Income" chartData={monthlyData} chartType="line" />
-          {isLoading ? (
-            <Text>Loading Quarterly Income...</Text>
-          ) : isError ? (
-            <Text>Error loading Quarterly Income data</Text>
-          ) : (
-            <RevenueCharts 
-              title="Quarterly Income" 
-              chartData={quarterlyData} 
-              chartType="line" 
-              isRangely={true} 
-              allMonthsData={data?.months || []}
-            />
-          )}
+          <RevenueCharts 
+            title="Quarterly Income" 
+            chartData={quarterlyData} 
+            chartType="line" 
+            isRangely={true} 
+            allMonthsData={dummyRangelyData.months}
+          />
         </Animated.View>
       </ScrollView>
     </SafeAreaView>

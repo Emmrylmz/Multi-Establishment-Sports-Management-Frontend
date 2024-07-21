@@ -2,10 +2,11 @@ import React, { useMemo } from 'react';
 import { Text, FlatList, ActivityIndicator } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { parseISO, isValid } from 'date-fns';
 import EventCard from './EventCard';
 
-export type Event = {
+type Event = {
 	description: string;
 	end_datetime: string;
 	event_id: string;
@@ -21,7 +22,7 @@ type TeamEvents = {
 	team_name: string;
 };
 
-interface EventListProps {
+type EventListProps = {
 	navigation: NativeStackNavigationProp<ParamListBase>;
 	orientation: 'vertical' | 'horizontal';
 	teamEvents: TeamEvents[];
@@ -36,6 +37,7 @@ const EventList: React.FC<EventListProps> = ({
 	isLoading,
 	error,
 }) => {
+	const { t } = useTranslation();
 	const flattenedEvents = useMemo(() => {
 		return teamEvents?.flatMap((team) =>
 			team.events.map((event) => ({
@@ -66,7 +68,7 @@ const EventList: React.FC<EventListProps> = ({
 	}
 
 	if (error) {
-		return <Text className="text-red-500">Error loading events</Text>;
+		return <Text className="text-red-500">{t("fetchMessages.error")}</Text>;
 	}
 
 	const handleEventPress = (event: Event & { team_name: string }) => {

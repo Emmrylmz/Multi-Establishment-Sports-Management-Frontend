@@ -1,6 +1,6 @@
 import React from 'react';
 import CoachHomeStack from './CoachHomeStack';
-import CoachSchedulePage from '../../app/pages/common/TeamListPage';
+import {useTranslation} from 'react-i18next';
 import AddUserPage from '../../app/pages/coach/AddUserPage';
 import { TabBarIcon } from '../../app/components';
 import {  Tab } from '../StackNavigators';
@@ -8,6 +8,7 @@ import { CommonProfileStackNavigator } from '../Common/CommonProfileStack';
 import { CommonTeamStackNavigator } from '../Common/CommonTeamStack';
 
 const CoachTabNavigator = () => {
+  const { t } = useTranslation();
   return (
     <Tab.Navigator
       initialRouteName="CoachHomeStack"
@@ -26,10 +27,27 @@ const CoachTabNavigator = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="CoachHomeStack" component={CoachHomeStack} options={{ title: 'Home' }} />
-      <Tab.Screen name="CommonTeamStack" component={CommonTeamStackNavigator} options={{ title: 'Teams' }} />
-      <Tab.Screen name="AddUserPage" component={AddUserPage} options={{ title: 'Add User' }} />
-      <Tab.Screen name="CommonProfileStack" component={CommonProfileStackNavigator} options={{ title: 'Profile' }} />
+      <Tab.Screen 
+        name="CoachHomeStack" 
+        component={CoachHomeStack} 
+        options={{ title: t("tabNavigator.home") }} 
+      />
+      <Tab.Screen 
+        name="CommonTeamStack" 
+        component={CommonTeamStackNavigator} 
+        options={{ title: t("tabNavigator.teams") }} 
+      />
+      <Tab.Screen 
+        name="AddUserPage" 
+        component={AddUserPage} 
+        options={{ title: t("tabNavigator.addUser") 
+
+      }} />
+      <Tab.Screen 
+        name="CommonProfileStack" 
+        component={CommonProfileStackNavigator} 
+        options={{ title: t("tabNavigator.profile") }} 
+      />
     </Tab.Navigator>
   );
 };

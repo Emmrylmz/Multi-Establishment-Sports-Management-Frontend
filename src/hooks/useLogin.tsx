@@ -3,26 +3,39 @@ import { useLoginMutation } from '../features/query/authQueryService';
 import type { AuthPayload } from '../features/auth/auth.interface';
 
 const useLogin = () => {
-	// Destructure properties from the useLoginMutation hook
-	const [loginMutation, { isLoading, isError, isSuccess, data }] =
-		useLoginMutation();
+  const [loginMutation, { isLoading, isError, isSuccess, data }] = useLoginMutation();
 
-	// Function to handle submission of login data
-	const handleSubmit = async (payload: AuthPayload) => {
-		try {
-			// AsyncStorage.clear()
-			const response = await loginMutation(payload).unwrap();
-			return response;
-		} catch (error) {
-			// Log the error; in a real app, consider handling this more robustly
-			// console.error("Login failed:", error);
-			// Return null or error as needed for UI feedback
-			return null;
-		}
-	};
+  const handleSubmit = async (payload: AuthPayload) => {
+    try {
+      // AsyncStorage.clear()
+      const response = await loginMutation(payload).unwrap();
+      return { success: true, data: response };
+    } catch (error) {
+      console.error("Login failed:", error);
+      
+      // Determine the error type and return a structured error object
+      if ('status' in error) {
+        return {
+          success: false,
+          error: {
+            type: error.data?.type || 'UNKNOWN_ERROR',
+            message: error.data?.message || 'An unknown error occurred',
+            status: error.status
+          }
+        };
+      } else {
+        return {
+          success: false,
+          error: {
+            type: 'NETWORK_ERROR',
+            message: 'Unable to connect to the server',
+          }
+        };
+      }
+    }
+  };
 
-	// Return the mutation's properties and the handleSubmit function
-	return { handleSubmit, isLoading, isError, isSuccess, data };
+  return { handleSubmit, isLoading, isError, isSuccess, data };
 };
 
 export default useLogin;
