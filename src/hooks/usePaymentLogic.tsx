@@ -23,6 +23,7 @@ type Payment = {
 	status: 'paid' | 'pending' | 'overdue';
 	user_id: string;
 	year: number;
+	isManuallySet?: boolean;
 };
 
 type FormState = {
@@ -38,7 +39,7 @@ type FormState = {
 	status: 'paid' | 'pending' | 'overdue';
 	paid_date: string;
 	province: string;
-	default_amount:number
+	default_amount: number;
 };
 
 export const usePaymentLogic = (
@@ -97,15 +98,18 @@ export const usePaymentLogic = (
 	}, [data, generateAnnualPayment]);
 
 	const handleAmountChange = useCallback(
-		(index: number, newAmount: number) => {
+		(index: number, newAmount: number, isManualChange: boolean = false) => {
 			if (!isManager) return;
 			setAnnualPayment((prevPayments) => {
 				const newPayments = [...prevPayments];
 				if (newPayments[index]) {
-					const discountedAmount = calculateDiscountedAmount(newAmount);
+					const finalAmount = isManualChange
+						? newAmount
+						: calculateDiscountedAmount(newAmount);
 					newPayments[index] = {
 						...newPayments[index],
-						amount: discountedAmount,
+						amount: finalAmount,
+						isManuallySet: isManualChange, // Add this flag to track manual changes
 					};
 				}
 				return newPayments;
