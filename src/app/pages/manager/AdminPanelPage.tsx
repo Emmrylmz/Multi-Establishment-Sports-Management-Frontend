@@ -41,6 +41,7 @@ const AdminPanelPage: React.FC = () => {
 
   if (error) {
     Alert.alert('Error', 'Failed to fetch constants');
+    
   }
   const inputFields = [
     {
