@@ -6,14 +6,15 @@ import { PlayerCard } from '../../components';
 
 const TeamDetailPage = ({ route, navigation }) => {
 	const { t } = useTranslation();
-	const { from } = route.params;
 	const {
+		from,
 		team_id,
 		team_name,
 		team_players,
 		team_coaches,
 		created_at,
 		province,
+		monthlyPaymentAmount
 	} = route.params;
 
 	const {
@@ -27,7 +28,8 @@ const TeamDetailPage = ({ route, navigation }) => {
 			return navigation.navigate('ManagerPlayerPaymentDetailPage', { 
 				player_id: user._id,
 				team_id: team_id,
-				dues: user.dues
+				discount: user.discount,
+				monthlyPaymentAmount: monthlyPaymentAmount
 			})
 		}
 		navigation.navigate('UserProfile', { user_id: user._id });

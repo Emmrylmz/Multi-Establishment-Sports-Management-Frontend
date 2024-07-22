@@ -38,42 +38,63 @@ type FormState = {
 	status: 'paid' | 'pending' | 'overdue';
 	paid_date: string;
 	province: string;
+	default_amount:number
 };
 
-export const usePaymentLogic = (player_id: string, isManager: boolean) => {
+export const usePaymentLogic = (
+	player_id: string,
+	isManager: boolean,
+	monthlyPaymentAmount: number,
+	discount: number
+) => {
 	const [paymentType, setPaymentType] = useState('dues');
 	const [modalVisible, setModalVisible] = useState(false);
 	const [totalAmountToPay, setTotalAmountToPay] = useState(0);
+	const [paidAmountToPay, setPaidAmountToPay] = useState(0);
+	const [pendingAmountToPay, setPendingAmountToPay] = useState(0);
 	const [isSelectionMode, setIsSelectionMode] = useState(false);
 	const [selectedMonths, setSelectedMonths] = useState<number[]>([]);
 	const [annualPayment, setAnnualPayment] = useState<Payment[]>([]);
-	const [paidAmountToPay, setPaidAmountToPay] = useState(0);
-	const [pendingAmountToPay, setPendingAmountToPay] = useState(0);
 
 	const { data, refetch } = useGetPaymentQuery(player_id);
 	const [createPayment] = useCreatePaymentMutation();
 
+	const calculateDiscountedAmount = useCallback(
+		(amount: number) => {
+			return amount - (amount * discount) / 100;
+		},
+		[discount]
+	);
+
+	const generateAnnualPayment = useCallback(
+		(data: Payment[] | undefined) => {
+			const monthsInYear = 12;
+			const paymentMap = new Map(
+				data?.map((payment) => [payment.month, payment]) || []
+			);
+
+			return Array.from({ length: monthsInYear }, (_, month) => {
+				const existingPayment = paymentMap.get(month);
+				if (existingPayment) {
+					return existingPayment;
+				} else {
+					const discountedAmount =
+						calculateDiscountedAmount(monthlyPaymentAmount);
+					return {
+						month,
+						amount: discountedAmount,
+						status: 'pending' as const,
+						paid: false,
+					};
+				}
+			});
+		},
+		[calculateDiscountedAmount, monthlyPaymentAmount]
+	);
+
 	useEffect(() => {
 		setAnnualPayment(generateAnnualPayment(data));
-	}, [data]);
-
-	const generateAnnualPayment = (data: Payment[] | undefined) => {
-		const monthsInYear = 12;
-		const paymentMap = new Map(
-			data?.map((payment) => [payment.month, payment]) || []
-		);
-
-		return Array.from({ length: monthsInYear }, (_, month) => {
-			return (
-				paymentMap.get(month) || {
-					month,
-					amount: 2000,
-					status: 'pending',
-					paid: false,
-				}
-			);
-		});
-	};
+	}, [data, generateAnnualPayment]);
 
 	const handleAmountChange = useCallback(
 		(index: number, newAmount: number) => {
@@ -81,12 +102,16 @@ export const usePaymentLogic = (player_id: string, isManager: boolean) => {
 			setAnnualPayment((prevPayments) => {
 				const newPayments = [...prevPayments];
 				if (newPayments[index]) {
-					newPayments[index] = { ...newPayments[index], amount: newAmount };
+					const discountedAmount = calculateDiscountedAmount(newAmount);
+					newPayments[index] = {
+						...newPayments[index],
+						amount: discountedAmount,
+					};
 				}
 				return newPayments;
 			});
 		},
-		[isManager]
+		[isManager, calculateDiscountedAmount]
 	);
 
 	const toggleSelectionMode = useCallback(() => {
@@ -116,45 +141,28 @@ export const usePaymentLogic = (player_id: string, isManager: boolean) => {
 		setIsSelectionMode(false);
 
 		const months_and_amounts: { [key: number]: number } = {};
-		const paidMonths: number[] = [];
-		const pendingMonths: number[] = [];
-
 		selectedMonths.forEach((monthIndex) => {
 			const payment = annualPayment[monthIndex];
 			months_and_amounts[payment.month] = payment.amount;
-			if (payment.status === 'paid') {
-				paidMonths.push(payment.month);
-			} else {
-				pendingMonths.push(payment.month);
-			}
 		});
 
-		const createPaymentPayload = (
-			status: 'paid' | 'pending',
-			months: number[]
-		) => ({
+		const newPayment: FormState = {
 			user_id: player_id,
-			months_and_amounts: Object.fromEntries(
-				months.map((month) => [month, months_and_amounts[month]])
-			),
+			months_and_amounts: months_and_amounts,
 			payment_with: 'credit_card',
 			year: new Date().getFullYear(),
-			status: status,
-			paid_date: status === 'paid' ? new Date().toISOString() : null,
+			status: 'paid',
+			paid_date: new Date().toISOString(),
 			province: 'Izmir',
-		});
+			default_amount: calculateDiscountedAmount(monthlyPaymentAmount),
+		};
 
 		try {
-			if (paidMonths.length > 0) {
-				await createPayment(createPaymentPayload('pending', paidMonths)).unwrap();
+			const response = await createPayment(newPayment).unwrap();
+			if (response.status === 'success') {
+				setSelectedMonths([]);
+				return refetch();
 			}
-			if (pendingMonths.length > 0) {
-				await createPayment(
-					createPaymentPayload('paid', pendingMonths)
-				).unwrap();
-			}
-			setSelectedMonths([]);
-			return refetch();
 		} catch (error: any) {
 			console.error('Error creating payment:', error);
 			let errorMessage = 'An unexpected error occurred';
@@ -182,20 +190,20 @@ export const usePaymentLogic = (player_id: string, isManager: boolean) => {
 	}, []);
 
 	const showConfirmationModal = useCallback(() => {
-		const { totalAmount, paidAmount, pendingAmount } = selectedMonths.reduce(
-			(acc, monthIndex) => {
-				const payment = annualPayment[monthIndex];
-				const amount = payment?.amount || 0;
-				acc.totalAmount += amount;
-				if (payment.status === 'paid') {
-					acc.paidAmount += amount;
-				} else {
-					acc.pendingAmount += amount;
-				}
-				return acc;
-			},
-			{ totalAmount: 0, paidAmount: 0, pendingAmount: 0 }
-		);
+		let totalAmount = 0;
+		let paidAmount = 0;
+		let pendingAmount = 0;
+
+		selectedMonths.forEach((monthIndex) => {
+			const payment = annualPayment[monthIndex];
+			const amount = payment?.amount || 0;
+			totalAmount += amount;
+			if (payment?.status === 'paid') {
+				paidAmount += amount;
+			} else {
+				pendingAmount += amount;
+			}
+		});
 
 		setTotalAmountToPay(totalAmount);
 		setPaidAmountToPay(paidAmount);
@@ -216,6 +224,8 @@ export const usePaymentLogic = (player_id: string, isManager: boolean) => {
 		isSelectionMode,
 		selectedMonths,
 		totalAmountToPay,
+		paidAmountToPay,
+		pendingAmountToPay,
 		handleAmountChange,
 		toggleSelectionMode,
 		toggleMonthSelection,
@@ -223,7 +233,5 @@ export const usePaymentLogic = (player_id: string, isManager: boolean) => {
 		handleModalOnClose,
 		showConfirmationModal,
 		markAsPaid,
-		paidAmountToPay,
-		pendingAmountToPay,
 	};
 };
