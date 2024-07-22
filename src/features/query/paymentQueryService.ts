@@ -40,10 +40,16 @@ const PaymnentQueryService = createApi({
         body: body,
       }),
     }),
+    getUserPaymentYears: builder.query({
+      query: (data) => ({
+        url: `/payments/${data.user_id}/${data.year}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
 
-export const { useGetPaymentQuery, useCreatePaymentMutation, useGetMonthlyRevenueQuery, useGetYearlyRevenueQuery,useGetRevenueByMonthRangeQuery } = PaymnentQueryService;
+export const { useGetPaymentQuery, useCreatePaymentMutation, useGetMonthlyRevenueQuery, useGetYearlyRevenueQuery,useGetRevenueByMonthRangeQuery, useGetUserPaymentYearsQuery } = PaymnentQueryService;
 
 export default PaymnentQueryService;

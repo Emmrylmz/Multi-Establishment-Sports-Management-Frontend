@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Dropdown } from 'react-native-element-dropdown';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PaymentOverview from '../../components/ui/payments/PaymentOverview';
 import ConfirmOrCancelView from '../../components/ui/payments/ConfirmOrCancelView';
@@ -16,6 +17,7 @@ import PaymentItem from '../../components/ui/payments/PaymentItem';
 import {
   useGetPaymentQuery,
   useCreatePaymentMutation,
+  useGetUserPaymentYearsQuery,
 } from '../../../features/query/paymentQueryService';
 import PaymentAnimation from '../../components/ui/payments/PaymentAnimation';
 import { useTranslation } from 'react-i18next';
@@ -46,10 +48,15 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
     processPayment,
     handleModalOnClose,
     showConfirmationModal,
+    selectedYear,
+    handleYearChange,
+    years,
+    isLoadingYears,
     markAsPaid,
     paidAmountToPay,
     pendingAmountToPay,
   } = usePaymentLogic(player_id, isManager, monthlyPaymentAmount, discount);
+  console.log('years:', years);
 
   const {
     data,
@@ -62,6 +69,8 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
     createPayment,
     { isLoading: isCreatingPayment, isError: isCreatePaymentError },
   ] = useCreatePaymentMutation();
+
+  const { data: yearsData, isLoading: isLoadingYearsData } = useGetUserPaymentYearsQuery({ user_id: player_id, year: selectedYear });
 
   const [fadeAnim] = useState(new Animated.Value(0));
   const [scaleAnim] = useState(new Animated.Value(0.5));
@@ -121,9 +130,9 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 
   const renderPaymentItems = useCallback(() => {
     if (paymentType === 'dues') {
-      return annualPayment.map((payment, index) => (
+      return years?.map((payment, index) => (
         <PaymentItem
-          key={index}
+          key={payment._id}  // Use a unique identifier like _id instead of index
           month={monthNames[payment?.month] || ''}
           amount={payment?.amount || 0}
           originalAmount={monthlyPaymentAmount}
@@ -148,7 +157,7 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
     );
   }, [
     paymentType,
-    annualPayment,
+    years,
     monthNames,
     selectedMonths,
     isSelectionMode,
@@ -159,7 +168,7 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
     discount,
   ]);
 
-  if (isLoadingPayments) {
+  if (isLoadingPayments || isLoadingYearsData) {
     return (
       <SafeAreaView>
         <ActivityIndicator size="large" color="#ccc" />
@@ -262,18 +271,16 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
           />
         )}
       </View>
-      {isManager && (
+      {showConfirmationModal && (
         <ConfirmationModal
-          visible={modalVisible}
-          onClose={handleModalOnClose}
-          selectedMonths={selectedMonths}
-          totalAmount={totalAmountToPay}
-          paidAmount={paidAmountToPay}
-          pendingAmount={pendingAmountToPay}
-          onConfirm={processPayment}
-          monthNames={monthNames}
-          annualPayment={annualPayment}
-        />
+        visible={modalVisible}
+        onClose={handleModalOnClose}
+        selectedMonths={selectedMonths}
+        totalAmount={totalAmountToPay}
+        onConfirm={processPayment}
+        monthNames={monthNames}
+        annualPayment={years}  // Use years instead of annualPayment
+      />
       )}
     </SafeAreaView>
   );

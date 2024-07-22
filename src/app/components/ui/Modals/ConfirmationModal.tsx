@@ -41,7 +41,9 @@ const ConfirmationModal = ({ visible, onClose, selectedMonths, totalAmount, onCo
           
           <View className="pt-4 mb-6 border-t border-gray-200 dark:border-gray-700">
             <Text className="text-xl font-bold text-gray-800 dark:text-gray-100">{t("confirmationModal.totalAmount")}</Text>
-            <Text className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">${totalAmount.toFixed(2)}</Text>
+            <Text className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+          ${totalAmount?.toFixed(2) || '0.00'}
+        </Text>
           </View>
           
           <TouchableOpacity 
