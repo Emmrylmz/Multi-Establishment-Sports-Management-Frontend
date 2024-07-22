@@ -6,6 +6,7 @@ import ManagerHomeStackNavigator from './ManagerHomeStackNavigator';
 import { CommonTeamStackNavigator } from '../Common/CommonTeamStack';
 import { CommonProfileStackNavigator } from '../Common/CommonProfileStack';
 import ManagerPaymentStackNavigator from './ManagerPaymentStackNavigator';
+import AdminPanelPage from '../../app/pages/manager/AdminPanelPage';
 
 const ManagerTabNavigator = () => {
 	const { t } = useTranslation();
@@ -48,6 +49,12 @@ const ManagerTabNavigator = () => {
 			name="CommonProfileStack"
 			component={CommonProfileStackNavigator}
 			options={{ title: t("tabNavigator.profile") }}
+		/>
+
+		<Tab.Screen
+			name="AdminPanelPage"
+			component={AdminPanelPage}
+			options={{ title: "admin Panel" }}
 		/>
 	</Tab.Navigator>
 	)
