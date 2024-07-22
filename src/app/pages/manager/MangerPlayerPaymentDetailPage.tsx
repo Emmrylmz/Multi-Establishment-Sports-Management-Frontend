@@ -134,7 +134,7 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
           onPress={() => toggleMonthSelection(index)}
           onAmountChange={
             isManager
-              ? (newAmount) => handleAmountChange(index, newAmount)
+              ? (newAmount) => handleAmountChange(index, newAmount, true)
               : undefined
           }
           editable={isManager && !isSelectionMode}
