@@ -11,6 +11,7 @@ type PaymentItemProps = {
   isSelectionMode: boolean;
   onPress: () => void;
   onAmountChange: (newAmount: number) => void;
+  editable: boolean;
 };
 
 const PaymentItem: React.FC<PaymentItemProps> = ({
@@ -21,6 +22,7 @@ const PaymentItem: React.FC<PaymentItemProps> = ({
   isSelectionMode,
   onPress,
   onAmountChange,
+  editable,
 }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
@@ -29,7 +31,7 @@ const PaymentItem: React.FC<PaymentItemProps> = ({
   );
 
   const handleAmountPress = () => {
-    if (status !== 'paid') {
+    if (editable) {
       setIsEditing(true);
     }
   };
@@ -98,7 +100,6 @@ const PaymentItem: React.FC<PaymentItemProps> = ({
     <TouchableOpacity
       onPress={onPress}
       className={`flex-row justify-between items-center p-4 mb-3 rounded-xl shadow-sm ${getBackgroundColor()}`}
-      disabled={isSelectionMode && status === 'paid'}
     >
       <View className="flex-row items-center">
         <View className={`w-12 h-12 rounded-full ${
@@ -128,13 +129,13 @@ const PaymentItem: React.FC<PaymentItemProps> = ({
             className={`text-xl font-bold mr-2 ${getTextColor()}`}
           />
         ) : (
-          <TouchableOpacity onPress={handleAmountPress}>
+          <TouchableOpacity onPress={handleAmountPress} disabled={!editable}>
             <Text className={`text-xl font-bold mr-2 ${getTextColor()}`}>
               {displayAmount}₺
             </Text>
           </TouchableOpacity>
         )}
-        {isSelectionMode && status !== 'paid' ? (
+        {isSelectionMode ? (
           <Ionicons
             name={isSelected ? "checkmark-circle" : "ellipse-outline"}
             size={24}

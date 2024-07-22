@@ -88,6 +88,8 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 		handleModalOnClose,
 		showConfirmationModal,
 		markAsPaid,
+		paidAmountToPay,
+		pendingAmountToPay,
 	} = usePaymentLogic(player_id, isManager);
 
 	const {
@@ -170,17 +172,13 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 					status={payment?.status || 'pending'}
 					isSelected={selectedMonths.includes(index)}
 					isSelectionMode={isSelectionMode && isManager}
-					onPress={
-						isManager && isSelectionMode
-							? () => toggleMonthSelection(index)
-							: null
-					}
+					onPress={() => toggleMonthSelection(index)}
 					onAmountChange={
 						isManager
 							? (newAmount) => handleAmountChange(index, newAmount)
 							: undefined
 					}
-					editable={isManager}
+					editable={isManager && !isSelectionMode}
 				/>
 			));
 		}
@@ -342,6 +340,8 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 					onClose={handleModalOnClose}
 					selectedMonths={selectedMonths}
 					totalAmount={totalAmountToPay}
+					paidAmount={paidAmountToPay}
+					pendingAmount={pendingAmountToPay}
 					onConfirm={processPayment}
 					monthNames={monthNames}
 					annualPayment={annualPayment}
