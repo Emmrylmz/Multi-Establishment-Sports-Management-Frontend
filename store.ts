@@ -10,44 +10,44 @@ import teamQueryService from './src/features/query/teamQueryService';
 import userInfoQueryService from './src/features/query/userInfoQueryService'; // Import the userInfoQueryService
 import paymentQueryService from './src/features/query/paymentQueryService'; // Import the paymentQueryService
 import PersonalTrainingService from './src/features/query/personalTrainingService';
-import ConstantsQueryService from './src/features/query/constantsQueryService';
+import constantsQueryService from './src/features/query/constantsQueryService';
 
 const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
-  whitelist: ['auth'], // Only auth slice will be persisted
+	key: 'root',
+	storage: AsyncStorage,
+	whitelist: ['auth'], // Only auth slice will be persisted
 };
 
 const rootReducer = combineReducers({
-  auth: authSlice,
-  [authQueryService.reducerPath]: authQueryService.reducer,
-  [eventQueryService.reducerPath]: eventQueryService.reducer,
-  [teamQueryService.reducerPath]: teamQueryService.reducer,
-  [userInfoQueryService.reducerPath]: userInfoQueryService.reducer, // Add the userInfoQueryService reducer
-  [paymentQueryService.reducerPath]: paymentQueryService.reducer, // Add the paymentQueryService reducer
-  [PersonalTrainingService.reducerPath]: PersonalTrainingService.reducer,
-  [ConstantsQueryService.reducerPath]: ConstantsQueryService.reducer,
-  // other reducers can be added here
+	auth: authSlice,
+	[authQueryService.reducerPath]: authQueryService.reducer,
+	[eventQueryService.reducerPath]: eventQueryService.reducer,
+	[teamQueryService.reducerPath]: teamQueryService.reducer,
+	[userInfoQueryService.reducerPath]: userInfoQueryService.reducer, // Add the userInfoQueryService reducer
+	[paymentQueryService.reducerPath]: paymentQueryService.reducer, // Add the paymentQueryService reducer
+	[PersonalTrainingService.reducerPath]: PersonalTrainingService.reducer,
+	[constantsQueryService.reducerPath]: constantsQueryService.reducer,
+	// other reducers can be added here
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'], // Ignore these actions for the serializable check
-      },
-    }).concat(
-      authQueryService.middleware,
-      eventQueryService.middleware,
-      teamQueryService.middleware,
-      userInfoQueryService.middleware, // Add the userInfoQueryService middleware
-      paymentQueryService.middleware,
-      PersonalTrainingService.middleware,
-      ConstantsQueryService.middleware,
-    ),
+	reducer: persistedReducer,
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			serializableCheck: {
+				ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'], // Ignore these actions for the serializable check
+			},
+		}).concat(
+			authQueryService.middleware,
+			eventQueryService.middleware,
+			teamQueryService.middleware,
+			userInfoQueryService.middleware, // Add the userInfoQueryService middleware
+			paymentQueryService.middleware,
+			PersonalTrainingService.middleware,
+			constantsQueryService.middleware
+		),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
