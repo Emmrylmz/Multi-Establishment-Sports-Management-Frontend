@@ -7,6 +7,7 @@ import { CommonTeamStackNavigator } from '../Common/CommonTeamStack';
 import { CommonProfileStackNavigator } from '../Common/CommonProfileStack';
 import ManagerPaymentStackNavigator from './ManagerPaymentStackNavigator';
 import AdminPanelPage from '../../app/pages/manager/AdminPanelPage';
+import ManagerPaymentTabNavigator from './ManagerPaymentTabNavigator';
 
 const ManagerTabNavigator = () => {
 	const { t } = useTranslation();
@@ -42,7 +43,8 @@ const ManagerTabNavigator = () => {
 		<Tab.Screen
 			name="ManagerPaymentStackNavigator"
 			options={{ title: t("tabNavigator.payments") }}
-			component={ManagerPaymentStackNavigator}
+			initialParams={{ player_id: '123' }}
+			component={ManagerPaymentTabNavigator}
 		/>
 
 		<Tab.Screen
