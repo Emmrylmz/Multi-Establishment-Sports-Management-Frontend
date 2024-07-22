@@ -75,6 +75,13 @@ const QuickActions = ({ user }) => {
 						</TouchableOpacity>
 						<TouchableOpacity
 							className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+							onPress={() => navigation.navigate('EventsPage')}
+						>
+							<Ionicons name="calendar" size={30} color="#0D9488" />
+							<Text className="mt-2 text-sm text-gray-600">All Events</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
 							onPress={routeEventHistory}
 						>
 							<Ionicons name="calendar" size={30} color="#0D9488" />
