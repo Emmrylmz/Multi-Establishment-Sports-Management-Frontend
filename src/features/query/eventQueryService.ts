@@ -102,7 +102,12 @@ const eventQueryService = createApi({
 				})),
 			],
 		}),
-		// Define other endpoints here
+		getPersonalTrainingByPlayerId: builder.query({
+			query: (player_id) => ({
+				url: `/events/player_private_lessons/${player_id}`,
+				method: 'GET',
+			}),
+		}),
 	}),
 });
 
@@ -116,6 +121,7 @@ export const {
 	useFetchAttendancesByEventIdQuery,
 	useListUpcomingEventsQuery,
 	useUpdateAttendancesMutation,
+	useGetPersonalTrainingByPlayerIdQuery,
 } = eventQueryService;
 
 export const selectListEventsResult =

@@ -53,6 +53,7 @@ export default function TopTabs({ route }) {
           <Tab.Screen
             name="OtherPayments"
             component={ManagerOthersPayment}
+            initialParams={{ player_id, team_id, discount, monthlyPaymentAmount }}
             options={{ title: 'Other Payments' }}
           />
         </Tab.Navigator>

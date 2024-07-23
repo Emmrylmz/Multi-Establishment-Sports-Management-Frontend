@@ -48,6 +48,13 @@ const PaymnentQueryService = createApi({
         url:`/payments/${userId}/${year}`,
       })
 		}),
+		personalTrainingResponse: builder.mutation({
+			query: (pt_data) => ({
+				url: `/payments/private-lessons/${pt_data.lesson_id}/pay`,
+				method: 'POST',
+				body: pt_data
+			}),
+		}),
 	}),
 });
 
@@ -58,6 +65,7 @@ export const {
 	useGetYearlyRevenueQuery,
 	useGetRevenueByMonthRangeQuery,
 	useGetPaymentByYearQueryQuery,
+	usePersonalTrainingResponseMutation
 } = PaymnentQueryService;
 
 export default PaymnentQueryService;
