@@ -43,6 +43,18 @@ const QuickActions = ({ user }) => {
 							</Text>
 							<Ionicons name="add-circle" size={30} color="#0D9488" />
 						</TouchableOpacity>
+
+						<TouchableOpacity
+							className="items-center p-4 mr-2 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
+							onPress={() => navigation.navigate('CreateComponentPage')}
+						>
+							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">
+								Create Component
+							</Text>
+							<Ionicons name="add-circle" size={30} color="#0D9488" />
+						</TouchableOpacity>
+
+
 						<TouchableOpacity
 							className="items-center p-4 ml-2 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
 							onPress={() => navigation.navigate('AddUserPage')}
