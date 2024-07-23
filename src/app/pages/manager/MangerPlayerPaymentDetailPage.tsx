@@ -188,29 +188,12 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 			<View
 				className={`w-full h-full bg-white dark:bg-dacka-black pt-${insets.top}`}
 			>
-				<View className="px-4">
-					<TouchableOpacity onPress={() => navigation.goBack()}>
-						<Ionicons name="arrow-back-outline" size={24} color="black" />
-					</TouchableOpacity>
-				</View>
-				<View className="flex-row w-full px-4 py-2 bg-white dark:bg-dacka-black">
-					<TouchableOpacity
-						className={`flex-1 py-3 rounded-r-full ${
-							paymentType === 'pt'
-								? 'bg-green-500 dark:bg-green-700'
-								: 'bg-gray-200 dark:bg-gray-700'
-						}`}
-						onPress={() => setPaymentType('pt')}
+				<View className="flex-row items-center px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+					<TouchableOpacity 
+						onPress={() => navigation.goBack()}
+						className="p-2 bg-gray-100 rounded-full dark:bg-gray-800"
 					>
-						<Text
-							className={`font-semibold text-center ${
-								paymentType === 'pt'
-									? 'text-white'
-									: 'text-gray-700 dark:text-gray-300'
-							}`}
-						>
-							{t('playerPaymentDetail.ptPayment')}
-						</Text>
+						<Ionicons name="arrow-back-outline" size={24} color="black" className="dark:text-white" />
 					</TouchableOpacity>
 				</View>
 				<PaymentOverview

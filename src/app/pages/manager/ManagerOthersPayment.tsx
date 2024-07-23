@@ -29,7 +29,7 @@ const PaymentItem = ({ item, onPress }) => (
   </TouchableOpacity>
 )
 
-const ManagerOThersPayment = () => {
+const ManagerOthersPayment = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState('Personal Training')
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedItem, setSelectedItem] = useState(null)
@@ -100,8 +100,16 @@ const ManagerOThersPayment = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
-      <StatusBar barStyle="dark-content" />
+      <View className="flex-row items-center px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+					<TouchableOpacity 
+						onPress={() => navigation.goBack()}
+						className="p-2 bg-gray-100 rounded-full dark:bg-gray-800"
+					>
+						<Ionicons name="arrow-back-outline" size={24} color="black" className="dark:text-white" />
+					</TouchableOpacity>
+				</View>
       <View className="px-6 pt-12 pb-6 bg-white shadow-sm">
+      
         <Text className="mb-4 text-3xl font-bold text-gray-800">Payment Management</Text>
         <View className="overflow-hidden bg-gray-100 rounded-xl">
           <Dropdown
@@ -197,4 +205,4 @@ const ManagerOThersPayment = () => {
   )
 }
 
-export default ManagerOThersPayment
+export default ManagerOthersPayment
