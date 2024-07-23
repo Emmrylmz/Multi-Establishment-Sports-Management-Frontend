@@ -2,45 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import {
 	useGetPaymentQuery,
 	useCreatePaymentMutation,
+	useGetPaymentByYearQueryQuery,
 } from '../features/query/paymentQueryService';
-
-type Payment = {
-	_id: string;
-	amount: number;
-	created_at: Date;
-	description: string | null;
-	due_date: Date;
-	month: number;
-	paid_date: Date;
-	payment_type: 'monthly' | 'annual';
-	payment_with:
-		| 'credit_card'
-		| 'cash'
-		| 'bank_transfer'
-		| 'mobile_payment'
-		| 'other';
-	province: string;
-	status: 'paid' | 'pending' | 'overdue';
-	user_id: string;
-	year: number;
-	isManuallySet?: boolean;
-};
-
-type FormState = {
-	user_id: string;
-	months_and_amounts: { [key: number]: number };
-	payment_with:
-		| 'credit_card'
-		| 'cash'
-		| 'bank_transfer'
-		| 'mobile_payment'
-		| 'other';
-	year: number;
-	status: 'paid' | 'pending' | 'overdue';
-	paid_date: string;
-	province: string;
-	default_amount: number;
-};
 
 export const usePaymentLogic = (
 	player_id: string,
@@ -56,8 +19,12 @@ export const usePaymentLogic = (
 	const [isSelectionMode, setIsSelectionMode] = useState(false);
 	const [selectedMonths, setSelectedMonths] = useState<number[]>([]);
 	const [annualPayment, setAnnualPayment] = useState<Payment[]>([]);
+	const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-	const { data, refetch } = useGetPaymentQuery(player_id);
+	const { data, refetch } = useGetPaymentByYearQueryQuery({
+		userId: player_id,
+		year: selectedYear,
+	});
 	const [createPayment] = useCreatePaymentMutation();
 
 	const calculateDiscountedAmount = useCallback(
@@ -109,7 +76,7 @@ export const usePaymentLogic = (
 					newPayments[index] = {
 						...newPayments[index],
 						amount: finalAmount,
-						isManuallySet: isManualChange, // Add this flag to track manual changes
+						isManuallySet: isManualChange,
 					};
 				}
 				return newPayments;
@@ -123,6 +90,8 @@ export const usePaymentLogic = (
 		setIsSelectionMode((prev) => !prev);
 		setSelectedMonths([]);
 	}, [isManager]);
+
+	
 
 	const toggleMonthSelection = useCallback(
 		(index: number) => {
@@ -139,23 +108,43 @@ export const usePaymentLogic = (
 		[isManager, isSelectionMode]
 	);
 
+	const togglePaymentStatus = useCallback(
+		(index: number) => {
+			if (!isManager || isSelectionMode) return;
+			toggleMonthSelection(index);
+		},
+		[isManager, isSelectionMode, toggleMonthSelection]
+	);
+
 	const processPayment = useCallback(async () => {
 		if (!isManager) return;
 		setModalVisible(false);
 		setIsSelectionMode(false);
 
 		const months_and_amounts: { [key: number]: number } = {};
+		const statusUpdates: { [key: number]: 'paid' | 'pending' } = {};
+
 		selectedMonths.forEach((monthIndex) => {
 			const payment = annualPayment[monthIndex];
 			months_and_amounts[payment.month] = payment.amount;
+			statusUpdates[payment.month] =
+				payment.status === 'paid' ? 'pending' : 'paid';
 		});
+
+		// Determine the overall status based on the updates
+		const overallStatus = Object.values(statusUpdates).every(
+			(status) => status === 'paid'
+		)
+			? 'paid'
+			: 'pending';
 
 		const newPayment: FormState = {
 			user_id: player_id,
 			months_and_amounts: months_and_amounts,
+			status_updates: statusUpdates,
+			status: overallStatus, // This will now be either 'paid' or 'pending'
 			payment_with: 'credit_card',
-			year: new Date().getFullYear(),
-			status: 'paid',
+			year: selectedYear,
 			paid_date: new Date().toISOString(),
 			province: 'Izmir',
 			default_amount: calculateDiscountedAmount(monthlyPaymentAmount),
@@ -164,8 +153,23 @@ export const usePaymentLogic = (
 		try {
 			const response = await createPayment(newPayment).unwrap();
 			if (response.status === 'success') {
+				// Update local state
+				setAnnualPayment((prevPayments) => {
+					return prevPayments.map((payment) => {
+						if (statusUpdates.hasOwnProperty(payment.month)) {
+							return {
+								...payment,
+								status: statusUpdates[payment.month],
+								paid: statusUpdates[payment.month] === 'paid',
+							};
+						}
+						return payment;
+					});
+				});
+
 				setSelectedMonths([]);
-				return refetch();
+				// Refetch data to ensure consistency with backend
+				await refetch();
 			}
 		} catch (error: any) {
 			console.error('Error creating payment:', error);
@@ -177,6 +181,7 @@ export const usePaymentLogic = (
 						: JSON.stringify(error.data);
 			}
 			console.error('Error message to show user:', errorMessage);
+			// Optionally, show an error message to the user here
 		}
 	}, [
 		isManager,
@@ -185,6 +190,9 @@ export const usePaymentLogic = (
 		player_id,
 		createPayment,
 		refetch,
+		selectedYear,
+		calculateDiscountedAmount,
+		monthlyPaymentAmount,
 	]);
 
 	const handleModalOnClose = useCallback(() => {
@@ -219,6 +227,10 @@ export const usePaymentLogic = (
 		showConfirmationModal();
 	}, [showConfirmationModal]);
 
+	const changeYear = useCallback((year: number) => {
+		setSelectedYear(year);
+	}, []);
+
 	return {
 		paymentType,
 		setPaymentType,
@@ -237,5 +249,8 @@ export const usePaymentLogic = (
 		handleModalOnClose,
 		showConfirmationModal,
 		markAsPaid,
+		selectedYear,
+		changeYear,
+		togglePaymentStatus,
 	};
 };
