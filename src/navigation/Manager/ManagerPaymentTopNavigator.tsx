@@ -2,17 +2,10 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ManagerPlayerPaymentDetailPage from '../../app/pages/manager/MangerPlayerPaymentDetailPage';
+import ManagerOthersPayment from '../../app/pages/manager/ManagerOthersPayment';
 import { SafeAreaView, Text, View } from 'react-native';
 
 const Tab = createMaterialTopTabNavigator();
-
-function Tab2Screen() {
-	return (
-		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-			<Text>Other Payments</Text>
-		</View>
-	);
-}
 
 export default function TopTabs({ route }) {
 	const { player_id, team_id, discount, monthlyPaymentAmount } = route.params;
@@ -27,7 +20,7 @@ export default function TopTabs({ route }) {
 				/>
 				<Tab.Screen
 					name="OtherPayments"
-					component={Tab2Screen}
+					component={ManagerOthersPayment}
 					options={{ title: 'Other Payments' }}
 				/>
 			</Tab.Navigator>
