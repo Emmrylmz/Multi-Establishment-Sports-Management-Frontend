@@ -19,6 +19,8 @@ const ManagerPaymentPage = ({ navigation }) => {
     skip: !constantKey
   });
 
+  
+
   useEffect(() => {
     if (user?.province) {
       setConstantKey(`monthly_payment_${user.province}`);
@@ -26,7 +28,6 @@ const ManagerPaymentPage = ({ navigation }) => {
   }, [user?.province]);
 
   const monthlyPaymentAmount = constantData?.value;
-  console.log(user)
 
   const filteredData = data?.filter((team) =>
     team.team_name.toLowerCase().includes(filterText.toLowerCase())
