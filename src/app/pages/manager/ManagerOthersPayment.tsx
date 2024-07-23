@@ -3,7 +3,7 @@ import { View, Text, SafeAreaView, TouchableOpacity, FlatList, Modal, StatusBar 
 import { Dropdown } from 'react-native-element-dropdown';
 import { Ionicons } from '@expo/vector-icons';
 import { useGetPersonalTrainingByPlayerIdQuery } from '../../../features/query/eventQueryService';
-import { usePersonalTrainingResponseMutation } from '../../../features/query/paymentQueryService';
+import { usePersonalTrainingResponseMutation,useGetUserPaymentsByYearQuery } from '../../../features/query/paymentQueryService';
 
 const PaymentItem = ({ item, onPress }) => (
   <TouchableOpacity onPress={onPress} className="p-4 mb-4 bg-white shadow-md rounded-xl">
@@ -33,7 +33,14 @@ const ManagerOthersPayment = ({navigation, route}) => {
   const [selectedItem, setSelectedItem] = useState(null)
   const { player_id, team_id, discount, monthlyPaymentAmount } = route.params;
 
-  const { data: personalTrainingData, isLoading, isError } = useGetPersonalTrainingByPlayerIdQuery(player_id);
+  const [getYearData, setGetYearData] = useState({
+    user_id: player_id,
+    year: new Date().getFullYear()
+  });
+
+  console.log(getYearData)
+  const { data: personalTrainingData, isLoading, isError } = useGetUserPaymentsByYearQuery(getYearData);
+  console.log(personalTrainingData);
   const [personalTrainingResponse] = usePersonalTrainingResponseMutation();
 
   const categoryData = [
