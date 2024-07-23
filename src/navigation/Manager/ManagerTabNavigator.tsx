@@ -51,11 +51,11 @@ const ManagerTabNavigator = () => {
 			options={{ title: t("tabNavigator.profile") }}
 		/>
 
-		<Tab.Screen
+		{/* <Tab.Screen
 			name="AdminPanelPage"
 			component={AdminPanelPage}
 			options={{ title: "adminPanel" }}	
-		/>
+		/> */}
 	</Tab.Navigator>
 	)
 };

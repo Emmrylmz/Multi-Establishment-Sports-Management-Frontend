@@ -63,6 +63,8 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 		refetch,
 	} = useGetPaymentByYearQueryQuery({ userId: player_id, year: selectedYear });
 
+	console.log(player_id)
+
 	const [
 		createPayment,
 		{ isLoading: isCreatingPayment, isError: isCreatePaymentError },
