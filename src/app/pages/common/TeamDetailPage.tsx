@@ -14,7 +14,7 @@ const TeamDetailPage = ({ route, navigation }) => {
 		team_coaches,
 		created_at,
 		province,
-		monthlyPaymentAmount
+		monthlyPaymentAmount,
 	} = route.params;
 
 	const {
@@ -24,13 +24,16 @@ const TeamDetailPage = ({ route, navigation }) => {
 	} = useGetTeamUsersByIdQuery(team_id);
 
 	const navigateToUserDetail = (user) => {
-		if(from === 'manager'){
-			return navigation.navigate('ManagerPlayerPaymentDetailPage', { 
-				player_id: user._id,
-				team_id: team_id,
-				discount: user.discount,
-				monthlyPaymentAmount: monthlyPaymentAmount
-			})
+		if (from === 'manager') {
+			return navigation.navigate('ManagerPaymentStackNavigator', {
+				screen: 'PlayerPayments',
+				params: {
+					player_id: user._id,
+					team_id: team_id,
+					discount: user.discount,
+					monthlyPaymentAmount: monthlyPaymentAmount,
+				},
+			});
 		}
 		navigation.navigate('UserProfile', { user_id: user._id });
 	};
@@ -59,38 +62,58 @@ const TeamDetailPage = ({ route, navigation }) => {
 						}}
 						className="mb-4 rounded-full w-44 h-44"
 					/>
-					<Text className="text-3xl font-bold text-gray-800 dark:text-gray-200">{team_name}</Text>
-					<Text className="text-lg text-gray-700 dark:text-gray-100">{province}</Text>
+					<Text className="text-3xl font-bold text-gray-800 dark:text-gray-200">
+						{team_name}
+					</Text>
+					<Text className="text-lg text-gray-700 dark:text-gray-100">
+						{province}
+					</Text>
 				</View>
 			</View>
 
 			<View className="px-4 mt-6">
-				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">{t("teamDetailPage.coaches")}</Text>
+				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">
+					{t('teamDetailPage.coaches')}
+				</Text>
 				{isLoading ? (
 					<View className="flex items-center justify-center">
 						<ActivityIndicator size="large" color="#4CAF50" />
-						<Text className="mt-2 text-gray-700 dark:text-gray-200">{t("fetchMessages.loading")}</Text>
+						<Text className="mt-2 text-gray-700 dark:text-gray-200">
+							{t('fetchMessages.loading')}
+						</Text>
 					</View>
-				) : teamUsers && teamUsers.coach_infos && teamUsers.coach_infos.length > 0 ? (
+				) : teamUsers &&
+				  teamUsers.coach_infos &&
+				  teamUsers.coach_infos.length > 0 ? (
 					teamUsers.coach_infos.map((coach) => renderMember(coach, 'Coach'))
 				) : (
-					<Text className="italic text-gray-700 dark:text-gray-200">{t("fetchMessages.noCoaches")}</Text>
+					<Text className="italic text-gray-700 dark:text-gray-200">
+						{t('fetchMessages.noCoaches')}
+					</Text>
 				)}
 			</View>
 
 			<View className="px-4 mt-6 mb-6">
-				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">{t("teamDetailPage.players")}</Text>
+				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">
+					{t('teamDetailPage.players')}
+				</Text>
 				{isLoading ? (
 					<View className="flex items-center justify-center">
 						<ActivityIndicator size="large" color="#4CAF50" />
-						<Text className="mt-2 text-gray-700 dark:text-gray-200">{t("fetchMessages.loading")}</Text>
+						<Text className="mt-2 text-gray-700 dark:text-gray-200">
+							{t('fetchMessages.loading')}
+						</Text>
 					</View>
-				) : teamUsers && teamUsers.player_infos && teamUsers.player_infos.length > 0 ? (
+				) : teamUsers &&
+				  teamUsers.player_infos &&
+				  teamUsers.player_infos.length > 0 ? (
 					teamUsers.player_infos.map((player) =>
 						renderMember(player, player.position || 'Player')
 					)
 				) : (
-					<Text className="italic text-gray-700 dark:text-gray-200">{t("fetchMessages.noPlayers")}</Text>
+					<Text className="italic text-gray-700 dark:text-gray-200">
+						{t('fetchMessages.noPlayers')}
+					</Text>
 				)}
 			</View>
 
