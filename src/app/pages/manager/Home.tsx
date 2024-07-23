@@ -11,25 +11,27 @@ import RevenueCharts from '../../components/ui/Charts/RevenueCharts';
 import RevenueCard from '../../components/ui/payments/RevenueCard';
 
 const ManagerHomePage = () => {
-  const navigation = useNavigation();
-    const user = useSelector((state: RootState) => getAuthUser(state));
-    const chartData = {
-      labels: ["January", "February", "March", "April", "May", "June"],
-      datasets: [
-        {
-          data: [20, 45, 28, 80, 99, 43]
-        }
-      ]
-    };
-  return (
-    <ScrollView className="bg-gray-100 dark:bg-dacka-black">
-      <Header user={user} navigation={navigation} />
-      <RevenueCard />
-      <View className="px-4 py-6 bg-gray-100 dark:bg-dacka-black">
-        <QuickActions user={user} />
-      </View>
-    </ScrollView>
-  );
+	const navigation = useNavigation();
+	const user = useSelector((state: RootState) => getAuthUser(state));
+	const chartData = {
+		labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+		datasets: [
+			{
+				data: [20, 45, 28, 80, 99, 43],
+			},
+		],
+	};
+	return (
+		<ScrollView className="bg-gray-100 dark:bg-dacka-black">
+			<Header user={user} navigation={navigation} />
+			<View className="mt-10">
+				<RevenueCard />
+			</View>
+			<View className="px-4 py-6 bg-gray-100 dark:bg-dacka-black">
+				<QuickActions user={user} />
+			</View>
+		</ScrollView>
+	);
 };
 
 export default ManagerHomePage;

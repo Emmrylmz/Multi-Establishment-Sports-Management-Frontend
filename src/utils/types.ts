@@ -35,3 +35,6 @@ export type FormState = {
 	province: string;
 	default_amount: number;
 };
+
+
+export type PaymentStatus = 'pending' | 'paid' | 'overdue'; // adjust these values as needed

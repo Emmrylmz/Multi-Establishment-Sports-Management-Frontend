@@ -44,21 +44,36 @@ const PaymnentQueryService = createApi({
 			{ userId: string; year: number }
 		>({
 			query: ({ userId, year }) => ({
-        method:'GET',
-        url:`/payments/${userId}/${year}`,
-      })
+				method: 'GET',
+				url: `/payments/${userId}/${year}`,
+			}),
 		}),
 		personalTrainingResponse: builder.mutation({
 			query: (pt_data) => ({
 				url: `/payments/private-lessons/${pt_data.lesson_id}/pay`,
 				method: 'POST',
-				body: pt_data
+				body: pt_data,
 			}),
 		}),
 		getUserPaymentsByYear: builder.query({
 			query: (data) => ({
 				url: `/payments/${data.user_id}/${data.year}`,
 				method: 'GET',
+				keepUnusedDataFor: 300,
+			}),
+		}),
+		makeSinglePayment: builder.mutation<Payment, Partial<Payment>>({
+			query: (payment) => ({
+				url: '/payments/make_single_payment',
+				method: 'POST',
+				body: payment,
+			}),
+		}),
+		updatePayment: builder.mutation({
+			query: (payment) => ({
+				url: `/payments/update/${payment._id}`,
+				method: 'PUT',
+				body: payment,
 			}),
 		}),
 	}),
@@ -72,7 +87,9 @@ export const {
 	useGetRevenueByMonthRangeQuery,
 	useGetPaymentByYearQueryQuery,
 	usePersonalTrainingResponseMutation,
-	useGetUserPaymentsByYearQuery
+	useGetUserPaymentsByYearQuery,
+	useMakeSinglePaymentMutation,
+	useUpdatePaymentMutation
 } = PaymnentQueryService;
 
 export default PaymnentQueryService;

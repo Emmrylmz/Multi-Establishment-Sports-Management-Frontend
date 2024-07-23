@@ -15,7 +15,7 @@ const ManagerHomePage = ({navigation}) => {
     const user = useSelector((state: RootState) => getAuthUser(state));
     console.log(user?.role)
   return (
-    <ScrollView className="w-full h-full bg-gray-100 dark:bg-dacka-black">
+    <ScrollView className="w-full h-full bg-gray-100 dark:bg-dacka-black gap-y-2">
       <Header user={user} navigation={navigation} />
       <View className="px-4 py-6">
         <RevenueCard />

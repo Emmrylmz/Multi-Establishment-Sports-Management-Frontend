@@ -1,293 +1,323 @@
-import React, { useState } from 'react'
-import { View, Text, SafeAreaView, TouchableOpacity, FlatList, Modal, StatusBar } from 'react-native'
+import React, { useState, useCallback, useMemo } from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  FlatList,
+  Modal,
+  StatusBar,
+  TextInput,
+  Alert,
+} from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Ionicons } from '@expo/vector-icons';
-import { useGetPersonalTrainingByPlayerIdQuery } from '../../../features/query/eventQueryService';
-import { usePersonalTrainingResponseMutation,useGetUserPaymentsByYearQuery } from '../../../features/query/paymentQueryService';
+import {
+  useGetPaymentByYearQueryQuery,
+  useMakeSinglePaymentMutation,
+  useUpdatePaymentMutation,
+} from '../../../features/query/paymentQueryService';
 
 const PaymentItem = ({ item, onPress }) => (
-  <TouchableOpacity onPress={onPress} className="p-4 mb-4 bg-white shadow-md rounded-xl">
+  <TouchableOpacity
+    onPress={onPress}
+    className="p-4 mb-4 bg-white shadow-md rounded-xl"
+  >
     <View className="flex-row items-center justify-between">
       <View>
-        <Text className="text-lg font-bold text-gray-800">{item.description || 'Personal Training'}</Text>
-        <Text className="text-sm text-gray-600">Coach ID: {item.coach_id}</Text>
+        <Text className="text-lg font-bold text-gray-800">
+          {item.description || 'Payment'}
+        </Text>
+        <Text className="text-sm text-gray-600">
+          Due: {new Date(item.due_date).toLocaleDateString()}
+        </Text>
       </View>
       <View className="items-end">
-        <Text className="text-xl font-semibold text-green-600">{item.lesson_fee.toFixed(2)}₺</Text>
-        <Text className="text-sm text-gray-500">{item.paid ? 'Paid' : 'Not Paid'}</Text>
+        <Text className="text-xl font-semibold text-green-600">
+          {item.amount.toFixed(2)}₺
+        </Text>
+        <Text
+          className={`text-sm ${item.status === 'paid' ? 'text-green-500' : 'text-red-500'}`}
+        >
+          {item.status}
+        </Text>
       </View>
     </View>
-    <View className={`mt-2 px-2 py-1 rounded-full self-start ${
-      item.request_status === 'pending' ? 'bg-yellow-100' : 'bg-green-100'
-    }`}>
-      <Text className={`text-xs font-semibold ${
-        item.request_status === 'pending' ? 'text-yellow-700' : 'text-green-700'
-      }`}>{item.request_status}</Text>
-    </View>
   </TouchableOpacity>
-)
+);
 
-const ManagerOthersPayment = ({navigation, route}) => {
-  const [selectedCategory, setSelectedCategory] = useState('Personal Training')
-  const [modalVisible, setModalVisible] = useState(false)
-  const [selectedItem, setSelectedItem] = useState(null)
-  const { player_id, team_id, discount, monthlyPaymentAmount } = route.params;
-
-  const [getYearData, setGetYearData] = useState({
-    user_id: player_id,
-    year: new Date().getFullYear()
+const ManagerOthersPayment = ({ navigation, route }) => {
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPaymentType, setSelectedPaymentType] = useState('private_lesson');
+  const [paymentData, setPaymentData] = useState({
+    user_id: route.params.player_id,
+    payment_type: 'private_lesson',
+    payment_with: 'cash',
+    due_date: new Date().toISOString(),
+    amount: 0,
+    status: 'pending',
+    month: new Date().getMonth() + 1,
+    year: selectedYear,
+    province: 'Izmir',
+    description: '',
   });
 
-  console.log(getYearData)
-  const { data: personalTrainingData, isLoading, isError } = useGetUserPaymentsByYearQuery(getYearData);
-  console.log(personalTrainingData);
-  const [personalTrainingResponse] = usePersonalTrainingResponseMutation();
+  const {
+    data: payments,
+    error: paymentError,
+    isLoading: isLoadingPayments,
+    refetch,
+  } = useGetPaymentByYearQueryQuery({
+    userId: route.params.player_id,
+    year: selectedYear,
+  });
 
-  const categoryData = [
-    { label: 'Personal Training', value: 'Personal Training' },
-    { label: 'Store', value: 'Store' },
-    { label: 'Other', value: 'Other' },
-  ]
+  const [makeSinglePayment, { isLoading: isCreating }] = useMakeSinglePaymentMutation();
+  const [updatePayment, { isLoading: isUpdating }] = useUpdatePaymentMutation();
 
-  const [paymentData, setPaymentData] = useState({
-    'Store': [
-      { id: '1', name: 'Team Jersey', amount: 799.99, paymentMethod: 'Credit Card' },
-      { id: '2', name: 'Basketball Shoes', amount: 1299.99, paymentMethod: 'Cash' },
-      { id: '3', name: 'Gym Bag', amount: 399.99, paymentMethod: 'Bank Transfer' },
-      { id: '4', name: 'Water Bottle', amount: 149.99, paymentMethod: 'Mobile Payment' },
-    ],
-    'Other': [
-      { id: '1', name: 'Court Rental', amount: 1000.00, paymentMethod: 'Credit Card' },
-      { id: '2', name: 'Equipment Maintenance', amount: 1500.00, paymentMethod: 'Bank Transfer' },
-      { id: '3', name: 'Team Transportation', amount: 2000.00, paymentMethod: 'Cash' },
-      { id: '4', name: 'First Aid Supplies', amount: 500.00, paymentMethod: 'Mobile Payment' },
-    ],
-  })
+  const filteredPayments = useMemo(
+    () =>
+      payments?.filter(
+        (payment) =>
+          payment.payment_type !== 'monthly' &&
+          payment.payment_type === selectedPaymentType
+      ) || [],
+    [payments, selectedPaymentType]
+  );
 
-  const statusData = [
-    { label: 'Paid', value: 'Paid' },
-    { label: 'Pending', value: 'Pending' },
-    { label: 'Overdue', value: 'Overdue' },
+  const paymentTypes = [
+    { label: 'Private Lessons', value: 'private_lesson' },
+    { label: 'Store Purchases', value: 'store_purchase' },
+    { label: 'Other', value: 'other' },
   ];
 
-  const paymentMethodData = [
-    { label: 'Credit Card', value: 'Credit Card' },
-    { label: 'Cash', value: 'Cash' },
-    { label: 'Bank Transfer', value: 'Bank Transfer' },
-    { label: 'Mobile Payment', value: 'Mobile Payment' },
-  ];
+  const handleItemPress = useCallback((item) => {
+    setPaymentData({
+      ...item,
+      amount: parseFloat(item.amount),
+    });
+    setModalVisible(true);
+  }, []);
 
-  const paidStatusData = [
-    { label: 'Paid', value: true },
-    { label: 'Not Paid', value: false },
-  ];
+  const handleCreatePayment = useCallback(() => {
+    setPaymentData({
+      user_id: route.params.player_id,
+      payment_type: selectedPaymentType,
+      payment_with: 'cash',
+      due_date: new Date().toISOString(),
+      amount: 0,
+      status: 'pending',
+      month: new Date().getMonth() + 1,
+      year: selectedYear,
+      province: 'Izmir',
+      description: '',
+    });
+    setModalVisible(true);
+  }, [route.params.player_id, selectedPaymentType, selectedYear]);
 
-  const handleItemPress = (item) => {
-    setSelectedItem(item)
-    setModalVisible(true)
-  }
-
-  const handleStatusChange = (newStatus) => {
-    updateItem('status', newStatus)
-  }
-
-  const handlePaymentMethodChange = (newMethod) => {
-    updateItem('paymentMethod', newMethod)
-  }
-
-  const handlePaidStatusChange = (newPaidStatus) => {
-    setSelectedItem(prevItem => ({
-      ...prevItem,
-      paid: newPaidStatus
-    }));
-  }
-
-  const updateItem = (field, value) => {
-    if (selectedCategory === 'Personal Training') {
-      setSelectedItem({ ...selectedItem, [field]: value })
-    } else {
-      const updatedData = paymentData[selectedCategory].map(item => 
-        item.id === selectedItem.id ? { ...item, [field]: value } : item
-      )
-      setPaymentData(prevData => ({
-        ...prevData,
-        [selectedCategory]: updatedData
-      }))
-      setSelectedItem({ ...selectedItem, [field]: value })
-    }
-  }
-
-  const handleSave = async () => {
-    if (selectedCategory === 'Personal Training') {
-      try {
-        const updateData = {
-          lesson_id: selectedItem._id,
-          status: selectedItem.paid ? 'paid' : 'unpaid'
+  const handleSave = useCallback(async () => {
+    try {
+      let result;
+      if (paymentData._id) {
+        // Update existing payment
+        const updatePayload = {
+          _id: paymentData._id,
+          amount: paymentData.amount,
+          due_date: paymentData.due_date,
+          status: paymentData.status,
+          province: paymentData.province,
         };
-  
-        console.log('Sending data:', updateData);
-  
-        const response = await personalTrainingResponse(updateData).unwrap();
-        
-        console.log('Personal training updated:', response);
-        // You might want to update the local state or refetch the data here
-      } catch (error) {
-        console.error('Failed to update personal training:', error);
-        if (error.data) {
-          console.error('Error data:', error.data);
-        }
-        if (error.error) {
-          console.error('Error details:', error.error);
-        }
-        if (error.response) {
-          try {
-            const text = await error.response.text();
-            console.error('Raw server response:', text);
-          } catch (e) {
-            console.error('Could not read raw response:', e);
-          }
-        }
-        // Handle the error (e.g., show an error message to the user)
+        result = await updatePayment(updatePayload).unwrap();
+      } else {
+        // Create new payment
+        const newPayment = {
+          user_id: paymentData.user_id,
+          payment_type: paymentData.payment_type,
+          payment_with: paymentData.payment_with,
+          due_date: paymentData.due_date,
+          amount: paymentData.amount,
+          status: paymentData.status,
+          month: paymentData.month,
+          year: paymentData.year,
+          province: paymentData.province,
+          description: paymentData.description,
+        };
+        result = await makeSinglePayment(newPayment).unwrap();
       }
-    } else {
-      // Handle saving for other categories if needed
-      console.log('Saving data for:', selectedCategory);
+      console.log('Payment saved:', JSON.stringify(result, null, 2));
+      refetch();
+      setModalVisible(false);
+    } catch (error) {
+      console.error('Failed to save payment:', error);
+      if (error.data) {
+        console.error('Error data:', JSON.stringify(error.data, null, 2));
+      }
+      Alert.alert('Error', 'Failed to save payment. Please try again.');
     }
-    setModalVisible(false);
-  };
+  }, [paymentData, updatePayment, makeSinglePayment, refetch]);
 
+  const updatePaymentField = useCallback((field, value) => {
+    setPaymentData((prev) => ({ ...prev, [field]: value }));
+  }, []);
 
-
-  if (isLoading) {
+  if (isLoadingPayments) {
     return (
       <SafeAreaView className="items-center justify-center flex-1 bg-gray-50">
         <Text>Loading...</Text>
       </SafeAreaView>
-    )
+    );
   }
 
-  if (isError) {
+  if (paymentError) {
     return (
       <SafeAreaView className="items-center justify-center flex-1 bg-gray-50">
         <Text>Error loading data</Text>
       </SafeAreaView>
-    )
+    );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1 bg-gray-100">
       <StatusBar barStyle="dark-content" />
-      <View className="flex-row items-center px-4 py-2 border-b border-gray-200 dark:border-gray-700">
-        <TouchableOpacity 
-          onPress={() => navigation.goBack()}
-          className="p-2 bg-gray-100 rounded-full dark:bg-gray-800"
-        >
-          <Ionicons name="arrow-back-outline" size={24} color="black" className="dark:text-white" />
-        </TouchableOpacity>
-      </View>
-      <View className="px-6 py-6 bg-white shadow-sm">
-        <Text className="mb-4 text-3xl font-bold text-gray-800">Payment Management</Text>
-        <View className="overflow-hidden bg-gray-100 rounded-xl">
-          <Dropdown
-            data={categoryData}
-            labelField="label"
-            valueField="value"
-            value={selectedCategory}
-            onChange={item => setSelectedCategory(item.value)}
-            placeholder="Select category"
-            className="p-3"
-            containerStyle={{ borderRadius: 12 }}
-            itemTextStyle={{ color: '#1e3a8a' }}
-            selectedTextStyle={{ color: '#1e3a8a', fontWeight: 'bold' }}
-            renderLeftIcon={() => <Ionicons name="menu-outline" size={24} color="#1e3a8a" />}
-          />
+      <View className="px-4 py-6 bg-white shadow-sm">
+        <View className="flex-row items-center justify-between mb-4">
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            className="p-2 bg-gray-200 rounded-full"
+          >
+            <Ionicons name="arrow-back-outline" size={24} color="black" />
+          </TouchableOpacity>
+          <Text className="text-2xl font-bold text-gray-800">
+            Payment Management
+          </Text>
+          <TouchableOpacity
+            onPress={handleCreatePayment}
+            className="p-2 bg-blue-500 rounded-full"
+          >
+            <Ionicons name="add-outline" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+        <View className="flex-row space-x-2">
+          <View className="flex-1">
+            <Dropdown
+              data={paymentTypes}
+              labelField="label"
+              valueField="value"
+              value={selectedPaymentType}
+              onChange={(item) => setSelectedPaymentType(item.value)}
+              placeholder="Select payment type"
+              className="p-3 bg-gray-200 rounded-xl"
+            />
+          </View>
+          <View className="w-1/3">
+            <Dropdown
+              data={[2023, 2024, 2025].map((year) => ({
+                label: year.toString(),
+                value: year,
+              }))}
+              labelField="label"
+              valueField="value"
+              value={selectedYear}
+              onChange={(item) => setSelectedYear(item.value)}
+              placeholder="Year"
+              className="p-3 bg-gray-200 rounded-xl"
+            />
+          </View>
         </View>
       </View>
 
       <FlatList
-        data={selectedCategory === 'Personal Training' ? personalTrainingData : paymentData[selectedCategory]}
-        renderItem={({ item }) => 
-          <PaymentItem 
-            item={item} 
-            onPress={() => handleItemPress(item)}
-          />
-        }
-        keyExtractor={item => item.id || item._id}
-        contentContainerClassName="px-6 py-6"
+        data={filteredPayments}
+        renderItem={({ item }) => (
+          <PaymentItem item={item} onPress={() => handleItemPress(item)} />
+        )}
+        keyExtractor={(item) => item._id}
+        contentContainerClassName="px-4 py-4"
+        ListEmptyComponent={() => (
+          <View className="items-center justify-center p-4">
+            <Text className="text-lg text-gray-500">No payments found</Text>
+          </View>
+        )}
       />
 
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => setModalVisible(false)}
-    >
-      <View className="justify-end flex-1 bg-black bg-opacity-50">
-        <View className="p-6 bg-white rounded-t-3xl">
-          {selectedItem && (
-            <>
-              <View className="flex-row items-center justify-between mb-6">
-                <Text className="text-2xl font-bold text-gray-800">
-                  {selectedCategory === 'Personal Training' ? (selectedItem.description || 'Personal Training') : selectedItem.name}
-                </Text>
-                <TouchableOpacity onPress={() => setModalVisible(false)}>
-                  <Ionicons name="close-circle" size={32} color="#3b82f6" />
-                </TouchableOpacity>
-              </View>
-              <Text className="mb-4 text-3xl font-bold text-green-600">
-                {(selectedCategory === 'Personal Training' ? selectedItem.lesson_fee : selectedItem.amount).toFixed(2)}₺
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View className="justify-end flex-1 bg-black bg-opacity-50">
+          <View className="p-6 bg-white rounded-t-3xl">
+            <View className="flex-row items-center justify-between mb-6">
+              <Text className="text-2xl font-bold text-gray-800">
+                {paymentData._id ? 'Edit Payment' : 'Create Payment'}
               </Text>
-              {selectedCategory === 'Personal Training' ? (
-                <>
-                  <Text className="mb-2 text-lg">Coach ID: {selectedItem.coach_id}</Text>
-                  <Text className="mb-2 text-lg">Start: {new Date(selectedItem.start_datetime).toLocaleString()}</Text>
-                  <Text className="mb-2 text-lg">End: {new Date(selectedItem.end_datetime).toLocaleString()}</Text>
-                  <Text className="mb-2 text-lg">Status: {selectedItem.request_status}</Text>
-                  <Text className="mb-2 text-lg font-semibold">Paid Status:</Text>
-                  <Dropdown
-                    data={paidStatusData}
-                    labelField="label"
-                    valueField="value"
-                    value={selectedItem.paid}
-                    onChange={item => handlePaidStatusChange(item.value)}
-                    placeholder="Select paid status"
-                    className="p-3 mb-4 border border-gray-300 rounded-xl"
-                    containerStyle={{ borderRadius: 12 }}
-                    itemTextStyle={{ color: '#1e3a8a' }}
-                    selectedTextStyle={{ color: '#1e3a8a', fontWeight: 'bold' }}
-                  />
-                  <Text className="mb-4 text-lg">Place: {selectedItem.place}</Text>
-                </>
-              ) : (
-                <>
-                  <Text className="mb-2 text-lg font-semibold">Payment Method:</Text>
-                  <Dropdown
-                    data={paymentMethodData}
-                    labelField="label"
-                    valueField="value"
-                    value={selectedItem.paymentMethod}
-                    onChange={item => handlePaymentMethodChange(item.value)}
-                    placeholder="Select payment method"
-                    className="p-3 mb-6 border border-gray-300 rounded-xl"
-                    containerStyle={{ borderRadius: 12 }}
-                    itemTextStyle={{ color: '#1e3a8a' }}
-                    selectedTextStyle={{ color: '#1e3a8a', fontWeight: 'bold' }}
-                  />
-                </>
-              )}
-              <TouchableOpacity 
-                onPress={handleSave}
-                className="py-3 bg-green-500 rounded-xl"
-              >
-                <Text className="text-lg font-bold text-center text-white">Save</Text>
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Ionicons name="close-circle" size={32} color="#3b82f6" />
               </TouchableOpacity>
-            </>
-          )}
+            </View>
+            <TextInput
+              value={paymentData.description}
+              onChangeText={(text) => updatePaymentField('description', text)}
+              placeholder="Description"
+              className="p-3 mb-4 bg-gray-100 rounded-xl"
+            />
+            <TextInput
+              value={paymentData.amount.toString()}
+              onChangeText={(text) =>
+                updatePaymentField('amount', parseFloat(text) || 0)
+              }
+              placeholder="Amount"
+              keyboardType="numeric"
+              className="p-3 mb-4 bg-gray-100 rounded-xl"
+            />
+            <Dropdown
+              data={[
+                { label: 'Pending', value: 'pending' },
+                { label: 'Paid', value: 'paid' },
+                { label: 'Overdue', value: 'overdue' },
+              ]}
+              labelField="label"
+              valueField="value"
+              value={paymentData.status}
+              onChange={(item) => updatePaymentField('status', item.value)}
+              placeholder="Select status"
+              className="p-3 mb-4 bg-gray-100 rounded-xl"
+            />
+            {!paymentData._id && (
+              <Dropdown
+                data={[
+                  { label: 'Cash', value: 'cash' },
+                  { label: 'Credit Card', value: 'credit_card' },
+                  { label: 'Bank Transfer', value: 'bank_transfer' },
+                ]}
+                labelField="label"
+                valueField="value"
+                value={paymentData.payment_with}
+                onChange={(item) =>
+                  updatePaymentField('payment_with', item.value)
+                }
+                placeholder="Payment method"
+                className="p-3 mb-4 bg-gray-100 rounded-xl"
+              />
+            )}
+            <TouchableOpacity
+              onPress={handleSave}
+              disabled={isCreating || isUpdating}
+              className={`py-3 rounded-xl ${
+                isCreating || isUpdating ? 'bg-gray-400' : 'bg-blue-500'
+              }`}
+            >
+              <Text className="text-lg font-bold text-center text-white">
+                {isCreating || isUpdating ? 'Saving...' : 'Save'}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default ManagerOthersPayment
+export default ManagerOthersPayment;
