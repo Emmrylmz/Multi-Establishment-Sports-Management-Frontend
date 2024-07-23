@@ -15,6 +15,8 @@ import ApprovedPtRequestsPage from '../../app/pages/coach/ApprovedPtRequestsPage
 import DeclinedPtRequestsPage from '../../app/pages/coach/DeclinedPtRequestsPage';
 import TodaysPtPage from '../../app/pages/coach/TodaysPtPage';
 import PersonalTrainingPage from '../../app/pages/common/PersonalTrainingPage';
+import EventsPage from '../../app/pages/common/EventsPage';
+import RatePlayerPage from '../../app/pages/coach/RatePlayerPage';
 const HomeStack = createNativeStackNavigator();
 
 const CoachHomeStack = () => (
@@ -78,6 +80,12 @@ const CoachHomeStack = () => (
 		/>
 
 		<HomeStack.Screen
+			name="EventsPage"
+			component={EventsPage}
+			options={{ title: 'Events' }}
+			/>
+
+		<HomeStack.Screen
 			name='CoachPtPage'
 			options={{ title: 'Coach PT Page' }}
 			component={PersonalTrainingPage}
@@ -105,6 +113,12 @@ const CoachHomeStack = () => (
 			name='CoachTodaysPtPage'
 			options={{ title: 'Today\'s PT' }}
 			component={TodaysPtPage}
+		/>
+
+		<HomeStack.Screen
+			name="RatePlayerPage"
+			options={{ title: 'Rate Player' }}
+			component={RatePlayerPage}
 		/>
 	</HomeStack.Navigator>
 );

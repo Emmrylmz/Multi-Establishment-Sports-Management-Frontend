@@ -1,10 +1,12 @@
 import React from 'react'
 import { View, Text, useColorScheme, FlatList, TouchableOpacity } from 'react-native'
+import { useTranslation } from 'react-i18next'
 import { AppLayout } from '../../components'
 import { Ionicons } from '@expo/vector-icons'
 
 const DeclinedPtRequestsPage = ({navigation}) => {
   const isDark = useColorScheme() === 'dark'
+  const { t } = useTranslation()
 
   const declinedRequests = [
     { id: '1', player: 'David Wilson', date: '2024-07-20', time: '15:00-16:00', location: 'Court A', reason: 'Schedule conflict' },
@@ -18,21 +20,21 @@ const DeclinedPtRequestsPage = ({navigation}) => {
       <View className="flex-row items-center justify-between mb-2">
         <Text className="text-lg font-semibold text-black dark:text-white">{item.player}</Text>
         <View className="px-2 py-1 bg-red-100 rounded-full dark:bg-red-900">
-          <Text className="text-xs font-medium text-red-800 dark:text-red-100">Declined</Text>
+          <Text className="text-xs font-medium text-red-800 dark:text-red-100">{t("declinedPtPage.cardComponent.status")}</Text>
         </View>
       </View>
       <View className="flex-row items-center justify-between mb-2">
         <Text className="text-base text-gray-600 dark:text-gray-300">{item.date}</Text>
         <Text className="text-base text-gray-600 dark:text-gray-300">{item.time}</Text>
       </View>
-      <Text className="text-sm text-gray-500 dark:text-gray-400">Location: {item.location}</Text>
-      <Text className="mt-2 text-sm text-gray-500 dark:text-gray-400">Reason: {item.reason}</Text>
+      <Text className="text-sm text-gray-500 dark:text-gray-400">{t("declinedPtPage.cardComponent.location")}: {item.location}</Text>
+      <Text className="mt-2 text-sm text-gray-500 dark:text-gray-400">{t("declinedPtPage.cardComponent.reason")}: {item.reason}</Text>
       <View className="flex-row justify-end mt-3 space-x-2">
         <TouchableOpacity className="px-4 py-2 bg-gray-200 rounded-full dark:bg-gray-700">
-          <Text className="font-semibold text-black dark:text-white">Reschedule</Text>
+          <Text className="font-semibold text-black dark:text-white">{t("declinedPtPage.cardComponent.reschedule")}</Text>
         </TouchableOpacity>
         <TouchableOpacity className="px-4 py-2 bg-black rounded-full dark:bg-white">
-          <Text className="font-semibold text-white dark:text-black">Delete</Text>
+          <Text className="font-semibold text-white dark:text-black">{t("declinedPtPage.cardComponent.delete")}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -44,7 +46,7 @@ const DeclinedPtRequestsPage = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color={isDark ? 'white' : 'black'} />
         </TouchableOpacity>
-        <Text className="text-2xl font-bold text-black dark:text-white">Declined Requests</Text>
+        <Text className="text-2xl font-bold text-black dark:text-white">{t("declinedPtPage.title")}</Text>
         <TouchableOpacity>
           <Ionicons name="funnel-outline" size={24} color={isDark ? 'white' : 'black'} />
         </TouchableOpacity>

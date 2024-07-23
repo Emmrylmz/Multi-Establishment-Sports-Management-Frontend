@@ -1,4 +1,5 @@
-import { View, Text, useColorScheme, ScrollView, TouchableOpacity, Modal, Platform, Alert } from 'react-native'
+import { View, Text, useColorScheme, ScrollView, TouchableOpacity, Modal, Alert } from 'react-native'
+import { useTranslation } from 'react-i18next'
 import React, { useState } from 'react'
 import { AppLayout } from '../../components'
 import { Ionicons } from '@expo/vector-icons'
@@ -10,6 +11,7 @@ import ApproveRequestCard from '../../components/ui/personalTraining/ApproveRequ
 import DateTimeSelection from '../../components/ui/Form/DateTimeSelection'
 
 const ApprovePtRequestsPage = ({navigation}) => {
+  const { t } = useTranslation();
   const user = useSelector((state: RootState) => getAuthUser(state));
   const {data, isLoading, isError, isSuccess, refetch} = useCoach_private_lessonsQuery(user?._id);
   const isDark = useColorScheme() === 'dark'
@@ -75,7 +77,7 @@ const ApprovePtRequestsPage = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.goBack()} className="p-2">
           <Ionicons name="arrow-back" size={24} color={isDark ? 'white' : 'black'} />
         </TouchableOpacity>
-        <Text className="ml-2 text-xl font-bold text-black dark:text-white">Approve Requests</Text>
+        <Text className="ml-2 text-xl font-bold text-black dark:text-white">{t("ptRequestPage.title")}</Text>
       </View>
       <ScrollView className='w-full h-full'>
         {data?.map((request) => (
@@ -100,11 +102,11 @@ const ApprovePtRequestsPage = ({navigation}) => {
       >
         <View className="items-center justify-center flex-1 bg-black bg-opacity-50">
           <View className="w-11/12 p-6 bg-white shadow-lg dark:bg-gray-800 rounded-2xl">
-            <Text className="mb-4 text-2xl font-bold text-gray-800 dark:text-white">Confirm Approval</Text>
-            <Text className="mb-6 text-base text-gray-600 dark:text-gray-300">Are you sure you want to approve this request?</Text>
+            <Text className="mb-4 text-2xl font-bold text-gray-800 dark:text-white">{t("ptRequestPage.modal.title")}</Text>
+            <Text className="mb-6 text-base text-gray-600 dark:text-gray-300">{t("ptRequestPage.modal.description")}</Text>
             
             <DateTimeSelection
-              label="Select Time"
+              label={t("ptRequestPage.modal.selectTime")}
               date={selectedTime}
               time={selectedTime}
               onDateChange={(newDate) => setSelectedTime(newDate)}
@@ -116,13 +118,13 @@ const ApprovePtRequestsPage = ({navigation}) => {
                 className="flex-1 p-4 mr-2 bg-gray-200 dark:bg-gray-600 rounded-xl"
                 onPress={() => setModalVisible(false)}
               >
-                <Text className="font-semibold text-center text-gray-800 dark:text-white">Cancel</Text>
+                <Text className="font-semibold text-center text-gray-800 dark:text-white">{t("ptRequestPage.modal.cancel")}</Text>
               </TouchableOpacity>
               <TouchableOpacity 
                 className="flex-1 p-4 ml-2 bg-blue-500 rounded-xl"
                 onPress={confirmApprove}
               >
-                <Text className="font-semibold text-center text-white">Confirm</Text>
+                <Text className="font-semibold text-center text-white">{t("ptRequestPage.modal.confirm")}</Text>
               </TouchableOpacity>
             </View>
           </View>

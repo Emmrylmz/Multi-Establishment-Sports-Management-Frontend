@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { useGetTeamInfoQuery } from '../../../../features/query/teamQueryService';
 import TeamSelectionModal from '../Team/TeamSelectionModal';
 
 const QuickActions = ({ user }) => {
+	const { t } = useTranslation();
 	const navigation = useNavigation();
 	const [isTeamSelectionModalVisible, setTeamSelectionModalVisible] =
 		useState(false);
@@ -26,7 +28,7 @@ const QuickActions = ({ user }) => {
 	return (
 		<View className="mb-6 ">
 			<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-200">
-				Quick Actions
+				{t("quickActions.title")}
 			</Text>
 
 			<ScrollView horizontal={true} className="flex-row" showsHorizontalScrollIndicator={false}>
@@ -37,7 +39,7 @@ const QuickActions = ({ user }) => {
 							onPress={() => navigation.navigate('AddTeamPage')}
 						>
 							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">
-								Create Team
+								{t("quickActions.createTeam")}
 							</Text>
 							<Ionicons name="add-circle" size={30} color="#0D9488" />
 						</TouchableOpacity>
@@ -46,7 +48,7 @@ const QuickActions = ({ user }) => {
 							onPress={() => navigation.navigate('AddUserPage')}
 						>
 							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">
-								Add New User
+								{t("quickActions.createUser")}
 							</Text>
 							<Ionicons name="add-circle" size={30} color="#0D9488" />
 						</TouchableOpacity>
@@ -55,7 +57,7 @@ const QuickActions = ({ user }) => {
 							onPress={() => navigation.navigate('SeeIncomesPage')}
 						>
 							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">
-								See Incomes
+								{t("quickActions.seeIncomes")}
 							</Text>
 							<Ionicons name="stats-chart" size={30} color="#0D9488" />
 						</TouchableOpacity>
@@ -69,14 +71,21 @@ const QuickActions = ({ user }) => {
 							onPress={handleNewPracticePress}
 						>
 							<Ionicons name="basketball" size={30} color="#0D9488" />
-							<Text className="mt-2 text-sm text-center text-gray-600">Create Event</Text>
+							<Text className="mt-2 text-sm text-center text-gray-600">{t("quickActions.createEvent")}</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+							onPress={() => navigation.navigate('EventsPage')}
+						>
+							<Ionicons name="calendar" size={30} color="#0D9488" />
+							<Text className="mt-2 text-sm text-gray-600">All Events</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
 							className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
 							onPress={routeEventHistory}
 						>
 							<Ionicons name="calendar" size={30} color="#0D9488" />
-							<Text className="mt-2 text-sm text-gray-600">Event History</Text>
+							<Text className="mt-2 text-sm text-gray-600">{t("quickActions.eventHistory")}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity
@@ -84,7 +93,7 @@ const QuickActions = ({ user }) => {
 							onPress={() => navigation.navigate('CoachPtPage')}
 						>
 							<Ionicons name="basketball" size={30} color="#0D9488" />
-							<Text className="mt-2 text-sm text-gray-600">PT Requests</Text>
+							<Text className="mt-2 text-sm text-gray-600">{t("quickActions.ptRequests")}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity
@@ -92,7 +101,7 @@ const QuickActions = ({ user }) => {
 							onPress={handleNewPracticePress}
 						>
 							<Ionicons name="add-circle" size={30} color="#0D9488" />
-							<Text className="mt-2 text-sm text-gray-600">Create Team</Text>
+							<Text className="mt-2 text-sm text-gray-600">{t("quickActions.createTeam")}</Text>
 						</TouchableOpacity>
 					</>
 				)
@@ -105,7 +114,7 @@ const QuickActions = ({ user }) => {
 						onPress={() => navigation.navigate('PlayerPtPage')}
 					>
 						<Ionicons name="basketball" size={30} color="#0D9488" />
-						<Text className="mt-2 text-sm text-gray-600">PT Requests</Text>
+						<Text className="mt-2 text-sm text-gray-600">{t("quickActions.ptRequests")}</Text>
 					</TouchableOpacity>
 
 					<TouchableOpacity
@@ -113,7 +122,7 @@ const QuickActions = ({ user }) => {
 						onPress={() => navigation.navigate('PlayerTeamPage')}
 					>
 						<Ionicons name="basketball" size={30} color="#0D9488" />
-						<Text className="mt-2 text-sm text-gray-600">See your teams</Text>
+						<Text className="mt-2 text-sm text-gray-600">{t('quickActions.seeYourTeams')}</Text>
 					</TouchableOpacity>
 				</>
 			)}

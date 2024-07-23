@@ -1,10 +1,12 @@
 import React from 'react'
 import { View, Text, useColorScheme, FlatList, TouchableOpacity } from 'react-native'
 import { AppLayout } from '../../components'
+import { useTranslation } from 'react-i18next'
 import { Ionicons } from '@expo/vector-icons'
 
 const TodaysPtPage = ({navigation}) => {
   const isDark = useColorScheme() === 'dark'
+  const { t } = useTranslation()
 
   const todaysSessions = [
     { id: '1', time: '09:00-10:00', player: 'Alice Smith', location: 'Court A', status: 'Upcoming' },
@@ -35,10 +37,10 @@ const TodaysPtPage = ({navigation}) => {
         </View>
       </View>
       <Text className="text-base text-gray-700 dark:text-gray-300">{item.player}</Text>
-      <Text className="mt-1 text-sm text-gray-500 dark:text-gray-400">Location: {item.location}</Text>
+      <Text className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t("todaysPtPage.cardComponent.location")}: {item.location}</Text>
       <View className="flex-row justify-end mt-3">
         <TouchableOpacity className="px-4 py-2 bg-black rounded-full dark:bg-white">
-          <Text className="font-semibold text-white dark:text-black">View Details</Text>
+          <Text className="font-semibold text-white dark:text-black">{t("todaysPtPage.cardComponent.details")}</Text>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
@@ -50,7 +52,7 @@ const TodaysPtPage = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color={isDark ? 'white' : 'black'} />
         </TouchableOpacity>
-        <Text className="text-2xl font-bold text-black dark:text-white">Today's PT</Text>
+        <Text className="text-2xl font-bold text-black dark:text-white">{t("todaysPtPage.title")}</Text>
         <TouchableOpacity>
           <Ionicons name="calendar-outline" size={24} color={isDark ? 'white' : 'black'} />
         </TouchableOpacity>

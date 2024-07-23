@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 const Header = ({ user, navigation }) => {
+	const { t } = useTranslation();
 	const handleNavigateCoachNotes = () => {
 		navigation.navigate('CoachNotesPage');
 	};
@@ -19,7 +21,7 @@ const Header = ({ user, navigation }) => {
 					className="w-16 h-16 mr-4 rounded-full"
 				/>
 				<View className="flex-1">
-					<Text className="text-sm text-gray-500 dark:text-gray-100">Welcome back,</Text>
+					<Text className="text-sm text-gray-500 dark:text-gray-100">{t("header.welcome")},</Text>
 					<Text className="text-2xl font-bold text-gray-800 dark:text-gray-300">
 						{user?.name || 'Coach'}
 					</Text>

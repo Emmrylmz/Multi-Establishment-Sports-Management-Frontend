@@ -1,0 +1,207 @@
+{
+	"loginPage": {
+		"login": "Giriş Yap",
+		"loggingIn": "Giriş yapılıyor...",
+		"emailPlaceholder": "E-posta",
+		"passwordPlaceholder": "Şifre",
+		"forgotPassword": "Şifremi Unuttum?",
+		"reset": "Şifrenizi sıfırlayın",
+		"errors": {
+			"genericError": "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.",
+			"incorrectCredentials": "Yanlış e-posta veya şifre. Lütfen tekrar deneyin.",
+			"emptyFields": "Lütfen tüm alanları doldurun.",
+			"invalidEmail": "Lütfen geçerli bir e-posta adresi girin.",
+			"weakPassword": "Şifre çok zayıf. En az 8 karakter uzunluğunda olmalıdır.",
+			"accountLocked": "Hesabınız kilitlendi. Lütfen destek ile iletişime geçin.",
+			"accountNotVerified": "Lütfen giriş yapmadan önce e-posta adresinizi doğrulayın.",
+			"networkError": "Ağ hatası. Lütfen internet bağlantınızı kontrol edin.",
+			"serverError": "Sunucu hatası. Lütfen daha sonra tekrar deneyin.",
+			"tooManyAttempts": "Çok fazla giriş denemesi. Lütfen daha sonra tekrar deneyin.",
+			"sessionExpired": "Oturumunuz sona erdi. Lütfen tekrar giriş yapın.",
+			"unsupportedBrowser": "Tarayıcınız desteklenmiyor. Lütfen modern bir tarayıcı kullanın.",
+			"maintenanceMode": "Sistem şu anda bakımda. Lütfen daha sonra tekrar deneyin.",
+			"accountDisabled": "Bu hesap devre dışı bırakıldı. Lütfen destek ile iletişime geçin.",
+			"invalidToken": "Geçersiz veya süresi dolmuş token. Lütfen tekrar giriş yapın.",
+			"userNotFound": "Kullanıcı bulunamadı. Lütfen bilgilerinizi kontrol edin.",
+			"passwordExpired": "Şifrenizin süresi doldu. Lütfen şifrenizi sıfırlayın.",
+			"invalidRequest": "Geçersiz istek. Lütfen tekrar deneyin."
+		}
+	},
+	"header": {
+		"welcome": "Tekrar hoş geldiniz"
+	},
+	"profileSideBar": {
+		"editProfile": "Profili Düzenle",
+		"settings": "Ayarlar",
+		"Privacy": "Gizlilik",
+		"helpAndSupport": "Yardım ve Destek",
+		"changeLanguage": "İngilizceye Geç",
+		"logout": "Çıkış Yap",
+		"loggingOut": "Çıkış yapılıyor..."
+	},
+	"revenueCard": {
+		"totalRevenue": "Bu ayın toplam geliri",
+		"title": "Bu Ayın Geliri",
+		"thisMonth": "Bu Ay",
+		"lastMonth": "Geçen Ay"
+	},
+	"quickActions": {
+		"title": "Hızlı İşlemler",
+		"createTeam": "Takım Oluştur",
+		"createUser": "Yeni Kullanıcı Ekle",
+		"createEvent": "Etkinlik Oluştur",
+		"eventHistory": "Etkinlik Geçmişi",
+		"seeIncomes": "Gelirleri Görüntüle",
+		"ptRequests": "PT İstekleri",
+		"seeYourTeams": "Takımlarını Gör"
+	},
+	"teamDetailPage": {
+		"coaches": "Antrenörler",
+		"players": "Oyuncular"
+	},
+	"playerPaymentDetail": {
+		"duesPayment": "Aidat Ödemesi",
+		"ptPayment": "Kişisel Antrenman",
+		"markAsPaidButton": "Ödenmiş ayları İşaretlemek için Tıklayın"
+	},
+	"paymentOverview": {
+		"title": "Ödeme Genel Bakış",
+		"leftSubtitle": "Toplam Ödenen",
+		"rightSubtitle": "Kalan"
+	},
+	"months": {
+		"january": "Ocak",
+		"february": "Şubat",
+		"march": "Mart",
+		"april": "Nisan",
+		"may": "Mayıs",
+		"june": "Haziran",
+		"july": "Temmuz",
+		"august": "Ağustos",
+		"september": "Eylül",
+		"october": "Ekim",
+		"november": "Kasım",
+		"december": "Aralık"
+	},
+	"days": {
+		"sun": "Paz",
+		"mon": "Pazt",
+		"tue": "Sal",
+		"wed": "Çarş",
+		"thu": "Perş",
+		"fri": "Cum",
+		"sat": "Cumrt"
+	},
+	"paymentStatus": {
+		"paid": "Ödendi",
+		"unpaid": "Ödenmedi",
+		"pending": "Bekleniyor"
+	},
+	"tabNavigator": {
+		"home": "Ana Sayfa",
+		"teams": "Takımlar",
+		"payments": "Ödemeler",
+		"addUser": "Kullanıcı Ekle",
+		"progress": "Gelişim",
+		"profile": "Profil"
+	},
+	"confirmationModal": {
+		"title": "Ödemeyi Onayla",
+		"falsyCondition": "Seçili aylar yok.",
+		"totalAmount": "Toplam Tutar",
+		"confirm": "Ödemeyi Onayla",
+		"cancel": "İptal"
+	},
+	"fetchMessages": {
+		"loading": "Veriler yükleniyor...",
+		"error": "Veriler alınırken bir hata oluştu.",
+		"noData": "Veri bulunamadı.",
+		"noCoaches": "Eklenmiş Antrenör Yok.",
+		"noPlayers": "Eklenmiş Oyuncu Yok.",
+		"noTeams": "Takım yok"
+	},
+	"confirmOrCancelView": {
+		"markAsPaid": "Ödenmiş olarak işaretle",
+		"cancel": "İptal"
+	},
+	"userStatus": {
+		"player": "Oyuncu",
+		"coach": "Antrenör",
+		"manager": "Yönetici"
+	},
+	"upcomingEvents": {
+		"title": "Yaklaşan Etkinlikler"
+	},
+	"ptPage": {
+		"title": "Bireysel Antrenman",
+		"ptHistory": "Bireysel Antrenman Geçmişi",
+		"ptRequests": "Bireysel Antrenman İstekleri",
+		"todayPt": "BUgünkü Bireysel Antrenmanlar",
+		"approvedPt": "Onaylanmış İstekler",
+		"declinedPt": "Reddedilen İstekler",
+		"requestPt": "Bireysel Antrenman İste"
+	},
+	"ptHistoryPage": {
+		"title": "PT Geçmişi",
+		"coach": "Antrenör",
+		"location": "Lokasyon",
+		"player": "Oyuncu"
+	},
+	"ptRequestPage": {
+		"title": "PT İstekleri",
+		"cardComponent": {
+			"player": "Oyuncu",
+			"location": "Lokasyon",
+			"duration": "Süre",
+			"startTime": "Başlangıç Zamanı",
+			"endTime": "Bitiş Zamanı",
+			"description": "Açıklama",
+			"decline": "Reddet",
+			"approve": "Onayla"
+		},
+		"modal": {
+			"title": "İsteği Onayla",
+			"description": "Bu isteği onaylamak istediğinizden emin misiniz?",
+			"selectTime": "Saat seç",
+			"confirm": "Onayla",
+			"cancel": "Reddet"
+		}
+	},
+	"todaysPtPage": {
+		"title": "Bugünün PT'leri",
+		"cardComponent": {
+			"location": "Lokasyon",
+			"details": "Detayları Görüntüle"
+		}
+	},
+	"approvedPtPage": {
+		"title": "Onaylanan İstekler",
+		"cardComponent": {
+			"status": "Onaylandı",
+			"location": "Lokasyon",
+			"focus": "Odak",
+			"details": "Detayları Görüntüle"
+		}
+	},
+	"declinedPtPage": {
+		"title": "Reddedilen İstekler",
+		"cardComponent": {
+			"status": "Reddedildi",
+			"location": "Lokasyon",
+			"reason": "Sebep",
+			"reschedule": "Tekrar Planla",
+			"delete": "Sil"
+		}
+	},
+	"requestPtPage": {
+		"title": "Bireysel Antrenman İste",
+		"selectCoach": "Antrenör Seç",
+		"selectDate": "Gün Seç",
+		"availableHours": "Uygun Saatler",
+		"submit": "İsteği Gönder"
+	},
+	"calendar": {
+		"previous": "Önceki",
+		"next": "Sonraki"
+	}
+}

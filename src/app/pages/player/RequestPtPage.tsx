@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, useColorScheme, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { AppLayout, InputField } from '../../components';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { Dropdown } from 'react-native-element-dropdown';
 import CalendarPicker from 'react-native-calendar-picker';
 import { useCreate_private_lessonMutation } from '../../../features/query/personalTrainingService';
@@ -10,8 +11,9 @@ import { useAuthStatus } from '../../../hooks/useAuthStatus';
 
 const RequestPtPage = ({ navigation }) => {
   const { user } = useAuthStatus();
+  const { t, i18n } = useTranslation();
   const isDark = useColorScheme() === 'dark';
-  const { data: coachesData, } = useGetAllCoachesQuery(user?.province);
+  const { data: coachesData, } = useGetAllCoachesQuery(user?.province || 'Izmir');
   const formattedCoaches = React.useMemo(() => {
     return coachesData?.map(coach => ({
       label: coach.name,
@@ -59,12 +61,25 @@ const RequestPtPage = ({ navigation }) => {
     response_notes: 'string'
   });
 
+  const turkishLocale = {
+    monthNames: [
+      t("months.january"), t("months.february"), t("months.march"), 
+      t("months.april"), t("months.may"), t("months.june"), 
+      t("months.july"), t("months.august"), t("months.september"), 
+      t("months.october"), t("months.november"), t("months.december")
+    ],
+    dayNames: [
+      t('days.sun'), t('days.mon'), t('days.tue'), 
+      t('days.wed'), t('days.thu'), t('days.fri'), t('days.sat')
+    ]
+  };
+
   const dummyAvailableTimes = {
     '667885399e20386c38d7d03e': {
-      '2024-07-15T00:00:00.000Z': { available: true, times: ['2024-07-15T09:00:00.000Z', '2024-07-15T14:00:00.000Z'] },
-      '2024-07-16T00:00:00.000Z': { available: true, times: ['2024-07-16T10:00:00.000Z'] },
-      '2024-07-17T00:00:00.000Z': { available: true, times: ['2024-07-17T11:00:00.000Z', '2024-07-17T15:00:00.000Z'] },
-      '2024-07-18T00:00:00.000Z': { available: false, times: [] }
+      '2024-07-19T00:00:00.000Z': { available: true, times: ['2024-07-19T09:00:00.000Z', '2024-07-19T16:00:00.000Z'] },
+      '2024-07-23T00:00:00.000Z': { available: true, times: ['2024-07-23T10:00:00.000Z'] },
+      '2024-07-24T00:00:00.000Z': { available: true, times: ['2024-07-24T11:00:00.000Z', '2024-07-24T15:00:00.000Z'] },
+      '2024-07-25T00:00:00.000Z': { available: false, times: [] }
     },
     '2': {
       '2024-07-15T00:00:00.000Z': { available: true, times: ['2024-07-15T11:00:00.000Z'] },
@@ -130,6 +145,7 @@ const RequestPtPage = ({ navigation }) => {
     }
   };
 
+
   return (
     <AppLayout>
       <ScrollView className="flex-1">
@@ -137,18 +153,17 @@ const RequestPtPage = ({ navigation }) => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={24} color={isDark ? 'white' : 'black'} />
           </TouchableOpacity>
-          <Text className="text-2xl font-bold text-black dark:text-white">Request PT Session</Text>
+          <Text className="text-2xl font-bold text-black dark:text-white">{t("requestPtPage.title")}</Text>
           <View style={{ width: 24 }} />
         </View>
 
-        <Text className="mb-2 text-lg font-semibold text-black dark:text-white">Select Coach</Text>
         <Dropdown
           data={formattedCoaches}
           labelField="label"
           valueField="value"
           value={selectedCoach}
           onChange={item => handleCoachSelect(item.value)}
-          placeholder="Select a coach"
+          placeholder={t("requestPtPage.selectCoach")}
           className={`p-2 mb-4 rounded-xl ${isDark ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}
           placeholderStyle={{ color: isDark ? 'white' : 'black' }}
           selectedTextStyle={{ color: isDark ? 'white' : 'black' }}
@@ -156,7 +171,7 @@ const RequestPtPage = ({ navigation }) => {
 
         {selectedCoach && (
           <>
-            <Text className="mt-6 mb-2 text-lg font-semibold text-black dark:text-white">Select Date</Text>
+            <Text className="mt-6 mb-2 text-lg font-semibold text-black dark:text-white">{t("requestPtPage.selectDate")}</Text>
             <CalendarPicker
               onDateChange={handleDateSelect}
               customDatesStyles={getCustomDatesStyles()}
@@ -166,33 +181,54 @@ const RequestPtPage = ({ navigation }) => {
               todayBackgroundColor="#E0E0E0"
               todayTextStyle={{ color: '#000000' }}
               textStyle={{ color: isDark ? 'white' : 'black' }}
+              monthNames={turkishLocale.monthNames}
+              weekdays={turkishLocale.dayNames}
+              previousTitle={t('calendar.previous')}
+              nextTitle={t('calendar.next')}
             />
           </>
         )}
 
-        {formData.preferred_date && formData.coach_id && (
-          <>
-            <Text className="mt-6 mb-2 text-lg font-semibold text-black dark:text-white">Available Times</Text>
-            {availableTimes.map((time, index) => {
-              const timeObj = new Date(time);
-              const formattedTime = timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-              return (
-                <TouchableOpacity
-                  key={index}
-                  className={`flex-row items-center justify-between p-2 mb-2 rounded ${
-                    formData.preferred_time === time ? 'bg-black dark:bg-white' : 'bg-gray-100 dark:bg-gray-800'
-                  }`}
-                  onPress={() => handleTimeSelect(time)}
-                >
-                  <Text className={`${formData.preferred_time === time ? 'text-white dark:text-black' : 'text-black dark:text-white'}`}>
-                    {formattedTime}
-                  </Text>
-                  {formData.preferred_time === time && <Ionicons name="checkmark-circle" size={24} color={isDark ? 'black' : 'white'} />}
-                </TouchableOpacity>
-              );
-            })}
-          </>
-        )}
+{formData.preferred_date && formData.coach_id && (
+  <>
+    <Text className="mt-6 mb-2 text-lg font-semibold text-black dark:text-white">{t("requestPtPage.availableHours")}</Text>
+    <View className="flex flex-row flex-wrap mt-2 mb-4">
+      {availableTimes.map((time, index) => {
+        const timeObj = new Date(time);
+        const formattedTime = timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return (
+          <TouchableOpacity
+            key={index}
+            className={`flex flex-row items-center justify-center p-2 m-1 rounded-full w-20 h-10 ${
+              formData.preferred_time === time 
+                ? 'bg-black dark:bg-white' 
+                : 'bg-gray-100 dark:bg-gray-800'
+            }`}
+            onPress={() => handleTimeSelect(time)}
+          >
+            <Text 
+              className={`text-xs ${
+                formData.preferred_time === time 
+                  ? 'text-white dark:text-black' 
+                  : 'text-black dark:text-white'
+              }`}
+            >
+              {formattedTime}
+            </Text>
+            {formData.preferred_time === time && (
+              <Ionicons 
+                name="checkmark-circle" 
+                size={16} 
+                color={isDark ? 'black' : 'white'} 
+                className="ml-1"
+              />
+            )}
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  </>
+)}
 
         {formData.preferred_time && formData.preferred_date && formData.coach_id && (
           <InputField
@@ -203,7 +239,7 @@ const RequestPtPage = ({ navigation }) => {
             keyboardType="default"
             autoCapitalize="sentences"
             isLongText={true}
-            additionalInputStyles="px-4 py-2 rounded-xl"
+            additionalInputStyles="p-4 rounded-xl"
           />
         )}
 
@@ -213,7 +249,7 @@ const RequestPtPage = ({ navigation }) => {
           disabled={!(formData.coach_id && formData.preferred_date && formData.preferred_time)}
         >
           <Text className={`font-semibold text-center ${formData.coach_id && formData.preferred_date && formData.preferred_time ? 'text-white dark:text-black' : 'text-gray-500 dark:text-gray-400'}`}>
-            Submit Request
+          {t("requestPtPage.submit")}
           </Text>
         </TouchableOpacity>
       </ScrollView>

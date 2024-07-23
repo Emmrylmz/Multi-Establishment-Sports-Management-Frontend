@@ -1,0 +1,207 @@
+{
+	"loginPage": {
+		"login": "Login",
+		"loggingIn": "Logging in...",
+		"emailPlaceholder": "Email",
+		"passwordPlaceholder": "Password",
+		"forgotPassword": "Forgot Password?",
+		"reset": "Reset your password",
+		"errors": {
+			"genericError": "An unexpected error occurred. Please try again.",
+			"incorrectCredentials": "Incorrect email or password. Please try again.",
+			"emptyFields": "Please fill in all fields.",
+			"invalidEmail": "Please enter a valid email address.",
+			"weakPassword": "Password is too weak. It should be at least 8 characters long.",
+			"accountLocked": "Your account has been locked. Please contact support.",
+			"accountNotVerified": "Please verify your email address before logging in.",
+			"networkError": "Network error. Please check your internet connection.",
+			"serverError": "Server error. Please try again later.",
+			"tooManyAttempts": "Too many login attempts. Please try again later.",
+			"sessionExpired": "Your session has expired. Please log in again.",
+			"unsupportedBrowser": "Your browser is not supported. Please use a modern browser.",
+			"maintenanceMode": "The system is currently under maintenance. Please try again later.",
+			"accountDisabled": "This account has been disabled. Please contact support.",
+			"invalidToken": "Invalid or expired token. Please log in again.",
+			"userNotFound": "User not found. Please check your credentials.",
+			"passwordExpired": "Your password has expired. Please reset your password.",
+			"invalidRequest": "Invalid request. Please try again."
+		}
+	},
+	"header": {
+		"welcome": "Welcome back"
+	},
+	"profileSideBar": {
+		"editProfile": "Edit Profile",
+		"settings": "Settings",
+		"Privacy": "Privacy",
+		"helpAndSupport": "Help and Support",
+		"changeLanguage": "Change to Turkish",
+		"logout": "logout",
+		"loggingOut": "Logging out..."
+	},
+	"revenueCard": {
+		"totalRevenue": "Total revenue this month",
+		"title": "This Month's Revenue",
+		"thisMonth": "This Month",
+		"lastMonth": "Last Month"
+	},
+	"quickActions": {
+		"title": "Quick Actions",
+		"createTeam": "Create a Team",
+		"createUser": "Add New User",
+		"createEvent": "Create an Event",
+		"eventHistory": "Event History",
+		"seeIncomes": "See Incomes",
+		"ptRequests": "PT Requests",
+		"seeYourTeams": "See Your Teams"
+	},
+	"teamDetailPage": {
+		"coaches": "Coaches",
+		"players": "Players"
+	},
+	"playerPaymentDetail": {
+		"duesPayment": "Dues Payment",
+		"ptPayment": "Personal Training",
+		"markAsPaidButton": "Click to Select Months to Mark as Paid"
+	},
+	"paymentOverview": {
+		"title": "Payment Overview",
+		"leftSubtitle": "Total Paid",
+		"rightSubtitle": "Remaining"
+	},
+	"months": {
+		"january": "January",
+		"february": "February",
+		"march": "March",
+		"april": "April",
+		"may": "May",
+		"june": "June",
+		"july": "July",
+		"august": "August",
+		"september": "September",
+		"october": "October",
+		"november": "November",
+		"december": "December"
+	},
+	"days": {
+		"sun": "Sun",
+		"mon": "Mon",
+		"tue": "Tue",
+		"wed": "Wed",
+		"thu": "Thu",
+		"fri": "Fri",
+		"sat": "Sat"
+	},
+	"paymentStatus": {
+		"paid": "Paid",
+		"unpaid": "Unpaid",
+		"pending": "Pending"
+	},
+	"tabNavigator": {
+		"home": "Home",
+		"teams": "Teams",
+		"payments": "Payments",
+		"addUser": "Add User",
+		"progress": "Progress",
+		"profile": "Profile"
+	},
+	"confirmationModal": {
+		"title": "Payment Confirmation",
+		"falsyCondition": "No months selected.",
+		"totalAmount": "Total Amount",
+		"confirm": "Confirm Payment",
+		"cancel": "Cancel"
+	},
+	"fetchMessages": {
+		"loading": "Loading data...",
+		"error": "An error occurred while fetching data.",
+		"noData": "No data found.",
+		"noCoaches": "No Coaches added yet.",
+		"noPlayers": "No Players added yet.",
+		"noTeams": "You have no teams yet."
+	},
+	"confirmOrCancelView": {
+		"markAsPaid": "Mark as paid",
+		"cancel": "Cancel"
+	},
+	"userStatus": {
+		"player": "Player",
+		"coach": "Coach",
+		"manager": "Manager"
+	},
+	"upcomingEvents": {
+		"title": "Upcoming Events"
+	},
+	"ptPage": {
+		"title": "Personal Training",
+		"ptHistory": "See PT History",
+		"ptRequests": "See PT Requests",
+		"todayPt": "See Today's PTs",
+		"approvedPt": "Approved Requests",
+		"declinedPt": "Declined Requests",
+		"requestPt": "Request PT"
+	},
+	"ptHistoryPage": {
+		"title": "PT History",
+		"coach": "Coach",
+		"location": "Location",
+		"player": "Player"
+	},
+	"ptRequestPage": {
+		"title": "PT Requests",
+		"cardComponent": {
+			"player": "Player",
+			"location": "Location",
+			"duration": "Duration",
+			"startTime": "Start Time",
+			"endTime": "End Time",
+			"description": "Description",
+			"decline": "Decline",
+			"approve": "Approve"
+		},
+		"modal": {
+			"title": "Confirm Approval",
+			"description": "Are you sure you want to approve this request?",
+			"selectTime": "Select Time",
+			"confirm": "Approve",
+			"cancel": "Cancel"
+		}
+	},
+	"todaysPtPage": {
+		"title": "Today's PTs",
+		"cardComponent": {
+			"location": "Location",
+			"details": "View Details"
+		}
+	},
+	"approvedPtPage": {
+		"title": "Approved Requests",
+		"cardComponent": {
+			"status": "Approved",
+			"location": "Location",
+			"focus": "Focus",
+			"details": "View Details"
+		}
+	},
+	"declinedPtPage": {
+		"title": "Declined Requests",
+		"cardComponent": {
+			"status": "Declined",
+			"location": "Location",
+			"reason": "Reason",
+			"reschedule": "Reschedule",
+			"delete": "Delete"
+		}
+	},
+	"requestPtPage": {
+		"title": "Request PT Session",
+		"selectCoach": "Select Coach",
+		"selectDate": "Select Date",
+		"availableHours": "Available Hours",
+		"submit": "Submit Request"
+	},
+	"calendar": {
+		"previous": "Previous",
+		"next": "Next"
+	}
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { ImageSourcePropType } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { t } from 'i18next';
 
 type PlayerCardProps = {
   name: string,
@@ -20,6 +21,15 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
   onPress,
   position = 'Player'
 }) => {
+  const setStatusText = () => {
+    if(position === 'Player'){
+      return t('userStatus.player')
+    }else if(position === 'Coach'){
+      return t('userStatus.coach')
+    }else if(position === 'Manager'){
+      return t('userStatus.manager')
+    }
+  }
   return (
     <TouchableOpacity 
       onPress={onPress} 
@@ -31,7 +41,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
       />
       <View className="flex-1">
         <Text className="text-lg font-semibold text-gray-800 dark:text-gray-200">{name}</Text>
-        <Text className="text-sm text-gray-700 dark:text-gray-300">{position}</Text>
+        <Text className="text-sm text-gray-700 dark:text-gray-300">{setStatusText()}</Text>
       </View>
       {attended !== undefined ? (
         <View className={`rounded-full p-2 ${attended ? 'bg-green-100' : 'bg-red-100'}`}>
