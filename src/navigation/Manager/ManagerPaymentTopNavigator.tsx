@@ -12,6 +12,8 @@ export default function TopTabs({ route }) {
   const { player_id, team_id, discount, monthlyPaymentAmount } = route.params;
   const insets = useSafeAreaInsets();
 
+  
+
   // Minimal top padding for iOS
   const iosTopPadding = 5;
 
