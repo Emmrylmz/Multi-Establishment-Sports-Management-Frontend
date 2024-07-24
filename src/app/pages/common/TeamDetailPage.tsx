@@ -1,8 +1,9 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { View, Text, ScrollView, Image, ActivityIndicator } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryService';
 import { PlayerCard } from '../../components';
+import FilterInput from '../../components/ui/Input/FilterInput';
 
 const TeamDetailPage = ({ route, navigation }) => {
 	const { t } = useTranslation();
@@ -22,6 +23,8 @@ const TeamDetailPage = ({ route, navigation }) => {
 		isLoading,
 		isError,
 	} = useGetTeamUsersByIdQuery(team_id);
+
+	const [filterText, setFilterText] = useState('');
 
 	const navigateToUserDetail = (user) => {
 		if (from === 'manager') {
@@ -52,6 +55,19 @@ const TeamDetailPage = ({ route, navigation }) => {
 		/>
 	);
 
+	const filterMembers = useCallback(
+		(members) => {
+			if (!filterText) return members;
+			return members.filter(
+				(member) =>
+					member.name.toLowerCase().includes(filterText.toLowerCase()) ||
+					(member.position &&
+						member.position.toLowerCase().includes(filterText.toLowerCase()))
+			);
+		},
+		[filterText]
+	);
+
 	return (
 		<ScrollView className="flex-1 bg-gray-100 dark:bg-dacka-black">
 			<View className="px-4 pt-12 pb-6 bg-teal-300 shadow-md dark:bg-teal-600 rounded-b-3xl">
@@ -75,6 +91,11 @@ const TeamDetailPage = ({ route, navigation }) => {
 				<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-300">
 					{t('teamDetailPage.coaches')}
 				</Text>
+				<FilterInput
+					value={filterText}
+					onChangeText={setFilterText}
+					placeholder={t('Search for players...')}
+				/>
 				{isLoading ? (
 					<View className="flex items-center justify-center">
 						<ActivityIndicator size="large" color="#4CAF50" />
@@ -85,7 +106,9 @@ const TeamDetailPage = ({ route, navigation }) => {
 				) : teamUsers &&
 				  teamUsers.coach_infos &&
 				  teamUsers.coach_infos.length > 0 ? (
-					teamUsers.coach_infos.map((coach) => renderMember(coach, 'Coach'))
+					filterMembers(teamUsers.coach_infos).map((coach) =>
+						renderMember(coach, 'Coach')
+					)
 				) : (
 					<Text className="italic text-gray-700 dark:text-gray-200">
 						{t('fetchMessages.noCoaches')}
@@ -107,7 +130,7 @@ const TeamDetailPage = ({ route, navigation }) => {
 				) : teamUsers &&
 				  teamUsers.player_infos &&
 				  teamUsers.player_infos.length > 0 ? (
-					teamUsers.player_infos.map((player) =>
+					filterMembers(teamUsers.player_infos).map((player) =>
 						renderMember(player, player.position || 'Player')
 					)
 				) : (

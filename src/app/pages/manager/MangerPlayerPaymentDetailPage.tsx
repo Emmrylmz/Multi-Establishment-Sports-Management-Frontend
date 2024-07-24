@@ -63,7 +63,7 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 		refetch,
 	} = useGetPaymentByYearQueryQuery({ userId: player_id, year: selectedYear });
 
-	console.log(player_id)
+	console.log(player_id);
 
 	const [
 		createPayment,
@@ -114,10 +114,6 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 		[t]
 	);
 
-	const totalPayment = useMemo(() => {
-		return monthlyPaymentAmount * 12;
-	}, [monthlyPaymentAmount]);
-
 	const totalPaid = useMemo(() => {
 		return annualPayment.reduce((sum, payment) => {
 			if (payment && payment.status === 'paid') {
@@ -126,6 +122,10 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 			return sum;
 		}, 0);
 	}, [annualPayment]);
+
+	const totalPayment = useMemo(() => {
+		return monthlyPaymentAmount * 12 - totalPaid;
+	}, [monthlyPaymentAmount, totalPaid]);
 
 	const renderPaymentItems = useCallback(() => {
 		if (paymentType === 'dues') {
@@ -191,11 +191,16 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 				className={`w-full h-full bg-white dark:bg-dacka-black pt-${insets.top}`}
 			>
 				<View className="flex-row items-center px-4 py-2 border-b border-gray-200 dark:border-gray-700">
-					<TouchableOpacity 
+					<TouchableOpacity
 						onPress={() => navigation.goBack()}
 						className="p-2 bg-gray-100 rounded-full dark:bg-gray-800"
 					>
-						<Ionicons name="arrow-back-outline" size={24} color="black" className="dark:text-white" />
+						<Ionicons
+							name="arrow-back-outline"
+							size={24}
+							color="black"
+							className="dark:text-white"
+						/>
 					</TouchableOpacity>
 				</View>
 				<PaymentOverview
