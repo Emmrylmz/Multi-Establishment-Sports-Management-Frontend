@@ -33,7 +33,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
   return (
     <TouchableOpacity 
       onPress={onPress} 
-      className="flex-row items-center p-4 mb-2 bg-white rounded-lg shadow-sm dark:bg-dacka-dark-gray"
+      className="flex-row items-center p-4 mb-2 bg-white rounded-lg shadow-sm shadow-dacka-light-green dark:bg-dacka-dark-gray"
     >
       <Image
         source={image}

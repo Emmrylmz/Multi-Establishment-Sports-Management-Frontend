@@ -36,22 +36,17 @@ const YearSelector: React.FC<YearSelectorProps> = ({
   const renderYear = useCallback(({ item: year }) => (
     <TouchableOpacity
       onPress={() => onYearChange(year)}
-      className={`mx-2 px-6 py-3 rounded-2xl ${
+      className={`mx-2 px-6 py-3 rounded-2xl shadow-lg ${
         selectedYear === year
-          ? 'bg-teal-600 shadow-lg'
-          : 'bg-white border border-gray-200'
-      }`}
-      style={{
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-        elevation: 3,
-      }}
+          ? 'bg-dacka-light-green dark:bg-dacka-dark-green'
+          : 'bg-white dark:bg-dacka-dark-gray border border-gray-200 dark:border-gray-700'
+      } ${year === new Date().getFullYear() ? 'bg-dacka-light-green dark:bg-dacka-dark-green' : ''}`}
     >
       <Text
         className={`text-base font-semibold ${
-          selectedYear === year ? 'text-white' : 'text-gray-700'
+          selectedYear === year || year === new Date().getFullYear()
+            ? 'text-white'
+            : 'text-gray-700 dark:text-gray-300'
         }`}
       >
         {year}
@@ -67,7 +62,7 @@ const YearSelector: React.FC<YearSelectorProps> = ({
         colors={['rgba(255,255,255,0.8)', 'transparent', 'transparent', 'rgba(255,255,255,0.8)']}
         start={{x: 0, y: 0.5}}
         end={{x: 1, y: 0.5}}
-        className="absolute inset-0 z-10"
+        className="absolute inset-0 z-10 dark:opacity-50"
       />
       <FlatList
         ref={flatListRef}

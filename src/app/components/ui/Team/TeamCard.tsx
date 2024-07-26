@@ -18,7 +18,7 @@ const TeamCard = ({
 	
 	return (
 		<TouchableOpacity
-			className="flex-row items-center p-2 m-2 bg-white shadow-md dark:bg-dacka-dark-gray rounded-xl"
+			className="flex-row items-center p-2 m-2 bg-white shadow-sm dark:bg-dacka-dark-gray shadow-dacka-green rounded-xl"
 			key={teamId}
       onPress={navigation}
 		>

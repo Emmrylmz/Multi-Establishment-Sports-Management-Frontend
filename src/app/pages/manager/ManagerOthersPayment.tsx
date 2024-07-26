@@ -9,6 +9,7 @@ import {
   StatusBar,
   TextInput,
   Alert,
+  useColorScheme,
 } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,14 +22,14 @@ import {
 const PaymentItem = ({ item, onPress }) => (
   <TouchableOpacity
     onPress={onPress}
-    className="p-4 mb-4 bg-white shadow-md rounded-xl"
+    className="p-4 mb-4 bg-white shadow-md dark:bg-dacka-dark-gray rounded-xl"
   >
     <View className="flex-row items-center justify-between">
       <View>
-        <Text className="text-lg font-bold text-gray-800">
+        <Text className="text-lg font-bold text-gray-800 dark:text-gray-100">
           {item.description || 'Payment'}
         </Text>
-        <Text className="text-sm text-gray-600">
+        <Text className="text-sm text-gray-600 dark:text-gray-50">
           Due: {new Date(item.due_date).toLocaleDateString()}
         </Text>
       </View>
@@ -47,6 +48,7 @@ const PaymentItem = ({ item, onPress }) => (
 );
 
 const ManagerOthersPayment = ({ navigation, route }) => {
+  const isDark = useColorScheme() === 'dark';
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPaymentType, setSelectedPaymentType] = useState('private_lesson');
@@ -178,9 +180,9 @@ const ManagerOthersPayment = ({ navigation, route }) => {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
-      <StatusBar barStyle="dark-content" />
-      <View className="px-4 py-6 bg-white shadow-sm">
+    <SafeAreaView className="flex-1 bg-dacka-black">
+      <StatusBar barStyle={isDark ? 'dark-content' : 'light-content'} />
+      <View className="px-4 py-6 bg-white shadow-sm dark:bg-dacka-black">
         <View className="flex-row items-center justify-between mb-4">
           <TouchableOpacity
             onPress={() => navigation.goBack()}
@@ -188,12 +190,12 @@ const ManagerOthersPayment = ({ navigation, route }) => {
           >
             <Ionicons name="arrow-back-outline" size={24} color="black" />
           </TouchableOpacity>
-          <Text className="text-2xl font-bold text-gray-800">
+          <Text className="text-2xl font-bold text-gray-800 dark:text-gray-100 dark:">
             Payment Management
           </Text>
           <TouchableOpacity
             onPress={handleCreatePayment}
-            className="p-2 bg-blue-500 rounded-full"
+            className="p-2 rounded-full bg-dacka-light-green"
           >
             <Ionicons name="add-outline" size={24} color="white" />
           </TouchableOpacity>

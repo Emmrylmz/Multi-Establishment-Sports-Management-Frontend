@@ -15,7 +15,7 @@ const FormSection = ({ form, fieldIcons, handleInputChange }) => (
   <View className="space-y-6">
     {Object.entries(form).map(([key, value]) => (
       <View key={key} className="mb-4">
-        <Text className="text-base font-semibold text-gray-700 mb-2">
+        <Text className="mb-2 text-base font-semibold text-gray-700 dark:text-gray-50">
           {key.charAt(0).toUpperCase() + key.slice(1)}
         </Text>
         <InputField
@@ -24,8 +24,9 @@ const FormSection = ({ form, fieldIcons, handleInputChange }) => (
           placeholder={`Enter ${key}`}
           handleInputChange={handleInputChange}
           icon={fieldIcons[key]}
-          additionalStyles='border-b-2 border-gray-300 p-3 shadow-md'
-          placeholderTextColor='#999'
+          additionalStyles='border-b-2 border-gray-300 dark:bg-[#ccc] p-3 shadow-md'
+          placeholderTextColor='dark'
+          additionalInputStyles='bg-[#ccc]'
         />
       </View>
     ))}

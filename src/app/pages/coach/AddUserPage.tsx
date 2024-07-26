@@ -42,7 +42,7 @@ const AddUserPage = () => {
 	};
 
 	return (
-		<View className="flex-1 bg-gray-100">
+		<View className="flex-1 bg-gray-100 dark:bg-dacka-black">
 			<AnimatedHeader
 				scrollY={scrollY}
 				headerHeight={headerHeight}
@@ -59,8 +59,8 @@ const AddUserPage = () => {
 				contentContainerStyle={{ paddingTop: headerHeight }}
 			>
 				<View className="px-5 py-5">
-					<View className="bg-white rounded-xl shadow-md p-6 mb-6">
-						<Text className="text-2xl font-bold text-gray-800 mb-6">
+					<View className="p-6 mb-6 bg-white shadow-md dark:bg-dacka-dark-gray rounded-xl">
+						<Text className="mb-6 text-2xl font-bold text-gray-800 dark:text-gray-100">
 							User Information
 						</Text>
 

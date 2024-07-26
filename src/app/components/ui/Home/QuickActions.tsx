@@ -79,41 +79,41 @@ const QuickActions = ({ user }) => {
 				{user.role === 'Coach' && (
 					<>
 						<TouchableOpacity
-							className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+							className="items-center p-4 mx-1 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
 							onPress={handleNewPracticePress}
 						>
 							<Ionicons name="basketball" size={30} color="#0D9488" />
-							<Text className="mt-2 text-sm text-center text-gray-600">{t("quickActions.createEvent")}</Text>
+							<Text className="mt-2 text-sm text-center text-gray-600 dark:text-gray-100">{t("quickActions.createEvent")}</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+							className="items-center p-4 mx-1 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
 							onPress={() => navigation.navigate('EventsPage')}
 						>
 							<Ionicons name="calendar" size={30} color="#0D9488" />
-							<Text className="mt-2 text-sm text-gray-600">All Events</Text>
+							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">All Events</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
-							className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+							className="items-center p-4 mx-1 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
 							onPress={routeEventHistory}
 						>
 							<Ionicons name="calendar" size={30} color="#0D9488" />
-							<Text className="mt-2 text-sm text-gray-600">{t("quickActions.eventHistory")}</Text>
+							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">{t("quickActions.eventHistory")}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity
-							className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+							className="items-center p-4 mx-1 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
 							onPress={() => navigation.navigate('CoachPtPage')}
 						>
 							<Ionicons name="basketball" size={30} color="#0D9488" />
-							<Text className="mt-2 text-sm text-gray-600">{t("quickActions.ptRequests")}</Text>
+							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">{t("quickActions.ptRequests")}</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity
-							className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+							className="items-center p-4 mx-1 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
 							onPress={handleNewPracticePress}
 						>
 							<Ionicons name="add-circle" size={30} color="#0D9488" />
-							<Text className="mt-2 text-sm text-gray-600">{t("quickActions.createTeam")}</Text>
+							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">{t("quickActions.createTeam")}</Text>
 						</TouchableOpacity>
 					</>
 				)
@@ -122,19 +122,19 @@ const QuickActions = ({ user }) => {
 			{user.role === 'Player' && (
 				<>
 					<TouchableOpacity
-						className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+						className="items-center p-4 mx-1 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
 						onPress={() => navigation.navigate('PlayerPtPage')}
 					>
 						<Ionicons name="basketball" size={30} color="#0D9488" />
-						<Text className="mt-2 text-sm text-gray-600">{t("quickActions.ptRequests")}</Text>
+						<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">{t("quickActions.ptRequests")}</Text>
 					</TouchableOpacity>
 
 					<TouchableOpacity
-						className="items-center p-4 mx-1 bg-white shadow-sm rounded-xl"
+						className="items-center p-4 mx-1 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
 						onPress={() => navigation.navigate('PlayerTeamPage')}
 					>
 						<Ionicons name="basketball" size={30} color="#0D9488" />
-						<Text className="mt-2 text-sm text-gray-600">{t('quickActions.seeYourTeams')}</Text>
+						<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">{t('quickActions.seeYourTeams')}</Text>
 					</TouchableOpacity>
 				</>
 			)}

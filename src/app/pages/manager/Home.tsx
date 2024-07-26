@@ -22,7 +22,7 @@ const ManagerHomePage = () => {
 		],
 	};
 	return (
-		<ScrollView className="bg-gray-100 dark:bg-dacka-black">
+		<ScrollView className="bg-dacka-white dark:bg-dacka-black">
 			<Header user={user} navigation={navigation} />
 			<View className="mt-10">
 				<RevenueCard />

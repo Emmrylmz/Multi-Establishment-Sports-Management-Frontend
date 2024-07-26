@@ -28,9 +28,9 @@ const TeamSelectionModal: React.FC<TeamSelectionModalProps> = ({
       transparent={true}
       onRequestClose={onClose}
     >
-      <View className="flex-1 justify-end  bg-opacity-50">
-        <View className="bg-gray-100 rounded-t-3xl p-4 h-5/6">
-          <Text className="text-xl font-bold text-gray-800 mb-4">Select a Team</Text>
+      <View className="justify-end flex-1 bg-opacity-50">
+        <View className="p-4 bg-gray-100 dark:bg-dacka-dark-gray rounded-t-3xl h-5/6">
+          <Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-100">Select a Team</Text>
           <TeamList
             teams={teams}
             onTeamSelect={(teamId) => {
@@ -40,10 +40,10 @@ const TeamSelectionModal: React.FC<TeamSelectionModalProps> = ({
             selectedTeamId={null}
           />
           <TouchableOpacity
-            className="mt-4 bg-gray-200 p-3 rounded-xl"
+            className="p-3 mt-4 bg-gray-200 rounded-xl"
             onPress={onClose}
           >
-            <Text className="text-center text-gray-700 font-semibold">Cancel</Text>
+            <Text className="font-semibold text-center text-gray-700">Cancel</Text>
           </TouchableOpacity>
         </View>
       </View>

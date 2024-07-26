@@ -126,7 +126,7 @@ const CoachAddTrainingPage = ({ route, navigation }) => {
 	const locationOptions = ['Main Field', 'Practice Field', 'Gym', 'Other'];
 
 	return (
-		<View className="flex-1 bg-gray-100">
+		<View className="flex-1 bg-gray-100 dark:bg-dacka-black">
 			<AnimatedHeader
 				scrollY={scrollY}
 				headerHeight={headerHeight}
@@ -144,12 +144,12 @@ const CoachAddTrainingPage = ({ route, navigation }) => {
 				contentContainerStyle={{ paddingTop: headerHeight }}
 			>
 				<View className="px-5 py-5">
-					<View className="bg-white rounded-xl shadow-md p-6 mb-6">
-						<Text className="text-2xl font-bold text-gray-800 mb-6">
+					<View className="p-6 mb-6 bg-white shadow-md dark:bg-dacka-dark-gray rounded-xl">
+						<Text className="mb-6 text-2xl font-bold text-gray-800 dark:text-gray-100">
 							Event Details
 						</Text>
 
-						<Text className="text-lg font-semibold text-gray-700 mb-2">
+						<Text className="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-50">
 							Event Type
 						</Text>
 						<OptionSelector
@@ -159,7 +159,7 @@ const CoachAddTrainingPage = ({ route, navigation }) => {
 							className="mb-4"
 						/>
 
-						<Text className="text-lg font-semibold text-gray-700 mb-2">
+						<Text className="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-50">
 							Location
 						</Text>
 						<OptionSelector
@@ -206,11 +206,11 @@ const CoachAddTrainingPage = ({ route, navigation }) => {
 						/>
 					</View>
 
-					<View className="bg-white rounded-xl shadow-md p-6 mb-6">
-						<Text className="text-xl font-semibold text-gray-700 mb-4">
+					<View className="p-6 mb-6 bg-white shadow-md rounded-xl">
+						<Text className="mb-4 text-xl font-semibold text-gray-700">
 							Additional Details
 						</Text>
-						<Text className="text-gray-600 mb-2">
+						<Text className="mb-2 text-gray-600">
 							Make sure all event information is accurate and up-to-date.
 						</Text>
 					</View>
@@ -218,13 +218,13 @@ const CoachAddTrainingPage = ({ route, navigation }) => {
 					<SubmitButton
 						onPress={postForm}
 						title="Create Event"
-						className="bg-teal-600 py-4 rounded-xl shadow-md"
+						className="py-4 bg-teal-600 shadow-md rounded-xl"
 						textClassName="text-white font-bold text-lg"
 					/>
 				</View>
 			</Animated.ScrollView>
 
-			<GoBackButton className="absolute top-12 left-4 z-20" />
+			<GoBackButton className="absolute z-20 top-12 left-4" />
 
 			<SuccessModal
 				visible={successModalVisible}

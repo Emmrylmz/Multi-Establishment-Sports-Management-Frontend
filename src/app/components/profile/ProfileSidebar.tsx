@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, Text, TouchableOpacity, Animated, Dimensions, Image, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Animated, Dimensions, Image, Alert, useColorScheme } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {MaterialCommunityIcons, Entypo} from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -22,6 +22,7 @@ interface ProfileSidebarProps {
 }
 
 const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ isOpen, onClose, user }) => {
+  const isDark = useColorScheme() === 'dark';
   const { t, i18n } = useTranslation();
   const navigation = useNavigation();
   const slideAnim = useRef(new Animated.Value(-SIDEBAR_WIDTH)).current;
@@ -46,11 +47,11 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ isOpen, onClose, user }
   };
 
   const menuItems = [
-    { icon: <MaterialCommunityIcons name="account-edit" size={24} color="black" />, label: t("profileSideBar.editProfile"), screen: 'EditProfile' },
-    { icon: <MaterialCommunityIcons name="cog-outline" size={24} color="black" />, label: t("profileSideBar.settings"), screen: 'Settings' },
-    { icon: <MaterialCommunityIcons name="shield" size={24} color="black" />, label: t("profileSideBar.Privacy"), screen: 'Privacy' },
-    { icon: <MaterialCommunityIcons name="help-circle" size={24} color="black" />, label: t("profileSideBar.helpAndSupport"), screen: 'HelpSupport' },
-    { icon: <Entypo name="language" size={24} color="black" />, label: t("profileSideBar.changeLanguage"), onPress: changeLanguage },
+    { icon: "account-edit", label: t("profileSideBar.editProfile"), screen: 'EditProfile' },
+    { icon: "cog-outline", label: t("profileSideBar.settings"), screen: 'Settings' },
+    { icon: "shield", label: t("profileSideBar.Privacy"), screen: 'Privacy' },
+    { icon: "help-circle", label: t("profileSideBar.helpAndSupport"), screen: 'HelpSupport' },
+    { icon: "translate", label: t("profileSideBar.changeLanguage"), onPress: changeLanguage },
   ];
   const handleMenuItemPress = (screen?: string, customAction?: () => void) => {
     if (customAction) {
@@ -80,7 +81,7 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ isOpen, onClose, user }
 
   return (
     <Animated.View 
-      className="absolute top-0 bottom-0 left-0 z-50 overflow-hidden bg-white shadow-lg rounded-tr-3xl rounded-br-3xl"
+      className="absolute top-0 bottom-0 left-0 z-50 overflow-hidden bg-white shadow-lg dark:bg-dacka-dark-gray rounded-tr-3xl rounded-br-3xl"
       style={{
         width: SIDEBAR_WIDTH,
         transform: [{ translateX: slideAnim }],
@@ -100,8 +101,8 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ isOpen, onClose, user }
               className="w-24 h-24 mb-4 border-2 border-white rounded-full"
             />
           ) : (
-            <View className="items-center justify-center w-24 h-24 mb-4 bg-white rounded-full">
-              <Text className="text-4xl font-bold text-teal-600">
+            <View className="items-center justify-center w-24 h-24 mb-4 bg-white rounded-full dark:bg-gray-700">
+              <Text className="text-4xl font-bold text-teal-600 dark:text-teal-400">
                 {userName.charAt(0)}
               </Text>
             </View>
@@ -111,29 +112,39 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ isOpen, onClose, user }
         </View>
       </LinearGradient>
       <View className="flex-1 pt-4">
-  {menuItems.map((item, index) => (
-    <TouchableOpacity 
-      key={index} 
-      className="flex-row items-center px-6 py-4 border-b border-gray-100"
-      onPress={() => handleMenuItemPress(item.screen, item.onPress)}
-    >
-      {item.icon}
-      <Text className="ml-4 text-lg text-gray-800">{item.label}</Text>
-    </TouchableOpacity>
-  ))}
-  <TouchableOpacity 
-    className="flex-row items-center px-6 py-4 border-b border-gray-100"
-    onPress={handleLogout}
-    disabled={isLoading}
-  >
-    <Icon name="logout" size={24} color="#FF3B30" />
-    <Text className="ml-4 text-lg text-red-500">
-      {isLoading ? t("profileSideBar.loggingOut") : t("profileSideBar.logout")}
-    </Text>
-  </TouchableOpacity>
-</View>
+        {menuItems.map((item, index) => (
+          <TouchableOpacity 
+            key={index} 
+            className="flex-row items-center px-6 py-4 border-b border-gray-100 dark:border-gray-700"
+            onPress={() => handleMenuItemPress(item.screen, item.onPress)}
+          >
+            <MaterialCommunityIcons 
+              name={item.icon} 
+              size={24} 
+              color={isDark ? '#fff' : '#000'}
+              style={{ color: isDark ? '#fff' : '#000' }}
+            />
+            <Text className="ml-4 text-lg text-gray-800 dark:text-gray-100">{item.label}</Text>
+          </TouchableOpacity>
+        ))}
+        <TouchableOpacity 
+          className="flex-row items-center px-6 py-4 border-b border-gray-100 dark:border-gray-700"
+          onPress={handleLogout}
+          disabled={isLoading}
+        >
+          <MaterialCommunityIcons 
+            name="logout" 
+            size={24} 
+            color="#FF3B30"
+            style={{ color: '#FF3B30' }}
+          />
+          <Text className="ml-4 text-lg text-red-500">
+            {isLoading ? t("profileSideBar.loggingOut") : t("profileSideBar.logout")}
+          </Text>
+        </TouchableOpacity>
+      </View>
       <View className="px-6 pb-8">
-        <Text className="text-sm text-center text-gray-500">
+        <Text className="text-sm text-center text-gray-500 dark:text-gray-400">
           App Version 1.0.0
         </Text>
       </View>

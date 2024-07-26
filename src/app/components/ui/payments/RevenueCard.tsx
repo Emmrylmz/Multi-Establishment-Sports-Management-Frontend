@@ -34,19 +34,18 @@ const RevenueCard = () => {
     {
       name: 't("revenueCard.thisWeek")',
       revenue: lastWeekRevenue,
-      color: '#4F46E5',
+      color: '#1E8449', // A darker green
       legendFontColor: '#64748B',
       legendFontSize: 12,
     },
     {
       name: 't("revenueCard.lastMonth")',
       revenue: totalRevenue - lastWeekRevenue,
-      color: '#A5B4FC',
+      color: '#82E0AA', // A much lighter green
       legendFontColor: '#64748B',
       legendFontSize: 12,
     },
   ];
-
   const barData = {
     labels: weeklyData.map(item => item.week),
     datasets: [{ data: weeklyData.map(item => item.revenue) }],
@@ -60,8 +59,8 @@ const RevenueCard = () => {
   const chartConfig = {
     backgroundGradientFrom: '#ffffff',
     backgroundGradientTo: '#ffffff',
-    color: (opacity = 1) => `rgba(79, 70, 229, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(100, 116, 139, ${opacity})`,
+    color: (opacity = 1) => `rgba(30, 132, 73, 0.8)`, // Fixed higher opacity
+    labelColor: (opacity = 1) => `rgba(39, 174, 96, ${opacity})`,
     strokeWidth: 2,
     barPercentage: 0.6,
     useShadowColorFromDataset: false,
@@ -69,7 +68,6 @@ const RevenueCard = () => {
       fontSize: 10,
     },
   };
-
   const chartTypes = [
     { label: 'Pie Chart', value: 'pie' },
     { label: 'Bar Chart', value: 'bar' },
@@ -157,7 +155,7 @@ const RevenueCard = () => {
       </View>
       <View className="items-center mb-6">{renderChart()}</View>
       <View className="mt-4">
-        <Text className="text-3xl font-bold text-center text-indigo-600 dark:text-indigo-400">
+        <Text className="text-3xl font-bold text-center text-dacka-green dark:text-dacka-light-green">
           ${totalRevenue.toLocaleString()}
         </Text>
         <Text className="mt-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400">

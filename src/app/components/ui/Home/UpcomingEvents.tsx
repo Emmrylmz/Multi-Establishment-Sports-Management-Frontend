@@ -15,7 +15,7 @@ const UpcomingEvents = ({ navigation, user }) => {
 
 	return (
 		<View className="mb-6">
-			<Text className="mb-4 text-xl font-bold text-gray-800">
+			<Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-100">
 				{t("upcomingEvents.title")}
 			</Text>
 			{events &&

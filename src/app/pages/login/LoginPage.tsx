@@ -112,6 +112,7 @@ const LoginPage: React.FC = () => {
             <InputField
               placeholder={t('loginPage.emailPlaceholder')}
               placeholderTextColor="light"
+              additionalInputStyles='py-4'
               keyboardType="email-address"
               autoCapitalize="none"
               handleInputChange={handleInputChange}
@@ -123,6 +124,7 @@ const LoginPage: React.FC = () => {
             <InputField
               placeholder={t('loginPage.passwordPlaceholder')}
               placeholderTextColor="light"
+              additionalInputStyles='py-4'
               autoCapitalize="none"
               handleInputChange={handleInputChange}
               name="password"

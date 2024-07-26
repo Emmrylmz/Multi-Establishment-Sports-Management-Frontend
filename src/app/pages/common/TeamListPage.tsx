@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView, Text, StatusBar, useColorScheme } from 'react-native';
 import AppLayout from '../../components/layout/AppLayout';
 import TeamCard from '../../components/ui/Team/TeamCard';
 import { useGetTeamInfoQuery } from '../../../features/query/teamQueryService';
@@ -25,6 +25,7 @@ interface TeamListPageProps {
 }
 
 const TeamListPage: React.FC<TeamListPageProps> = ({ navigation }) => {
+	const isDark = useColorScheme() === 'dark';
 	const user = useSelector((state: RootState) => getAuthUser(state));
 	const { data, isLoading, isError } = useGetTeamInfoQuery(user?.teams);
 
@@ -46,6 +47,7 @@ const TeamListPage: React.FC<TeamListPageProps> = ({ navigation }) => {
 
 	return (
 		<AppLayout>
+			<StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
 			<SafeAreaView className="w-full h-full ">
 				<ScrollView className="w-full">
 					{data &&

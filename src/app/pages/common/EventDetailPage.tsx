@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   Modal,
   ScrollView,
+  SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
@@ -226,7 +228,10 @@ const EventDetailPage = ({ route, navigation }) => {
   }, [navigation, event_id, event_type, mergedData]);
 
   if (isTeamUsersLoading || isAttendanceLoading) {
-    return <Text>Loading...</Text>;
+    return <SafeAreaView className='items-center justify-center flex-1'>
+      <Text>Loading...</Text>
+      <ActivityIndicator size="large" color="#00ff00" />
+    </SafeAreaView>;
   }
 
   if (isTeamUsersError || isAttendanceError) {
@@ -247,33 +252,26 @@ const EventDetailPage = ({ route, navigation }) => {
           { useNativeDriver: false }
         )}
         scrollEventThrottle={16}
-        className="flex-1"
+        className="flex-1 bg-gray-100 dark:bg-black"
         contentContainerStyle={{ paddingTop: headerHeight }}
       >
-        <View
-          style={{
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30,
-            backgroundColor: '#F8F8F8',
-            padding: 20,
-          }}
-        >
+        <View className="p-5 bg-gray-100 rounded-t-3xl dark:bg-dacka-black">
           <EventDetailsSection
             team_name={team_name}
             event_type={event_type}
             place={place}
             eventDate={eventDate}
           />
-
-          {user?.role === 'Coach' && hasEventPassed ? (
+  
+          {user?.role === 'Coach' && hasEventPassed && (
             <View className="mb-5">
               <SubmitButton
                 onPress={navigateToAttendance}
                 title="Take Attendance"
               />
             </View>
-          ) : null}
-
+          )}
+  
           <MapSection
             showMap={showMap}
             toggleShowMap={toggleShowMap}
@@ -283,13 +281,9 @@ const EventDetailPage = ({ route, navigation }) => {
             team_name={team_name}
             handleMarkerPress={handleMarkerPress}
           />
-
-          <View style={{ marginTop: 20 }}>
-            <Text
-              style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}
-            >
-              Coaches
-            </Text>
+  
+          <View className="mt-5">
+            <Text className="text-xl font-bold mb-2.5 text-gray-900 dark:text-gray-100">Coaches</Text>
             {(teamUsers.coach_infos || []).map((coach) => (
               <PlayerCard
                 id={coach._id}
@@ -304,14 +298,10 @@ const EventDetailPage = ({ route, navigation }) => {
               />
             ))}
           </View>
-
+  
           {!hasEventPassed && (
-            <View style={{ marginTop: 20 }}>
-              <Text
-                style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}
-              >
-                Players
-              </Text>
+            <View className="mt-5">
+              <Text className="text-xl font-bold mb-2.5 text-gray-900 dark:text-gray-100">Players</Text>
               {(teamUsers.player_infos || []).map((player) => (
                 <PlayerCard
                   id={player._id}
@@ -328,14 +318,10 @@ const EventDetailPage = ({ route, navigation }) => {
               ))}
             </View>
           )}
-
+  
           {hasEventPassed && (
-            <View style={{ marginTop: 20 }}>
-              <Text
-                style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}
-              >
-                Attendance
-              </Text>
+            <View className="mt-5">
+              <Text className="text-xl font-bold mb-2.5 text-gray-900 dark:text-gray-100">Attendance</Text>
               {mergedData.map((user) => (
                 <PlayerCard
                   id={user._id}
@@ -354,7 +340,7 @@ const EventDetailPage = ({ route, navigation }) => {
           )}
         </View>
       </Animated.ScrollView>
-
+  
       <PlayerActionModal
         visible={!!selectedPlayer}
         onClose={closeModal}

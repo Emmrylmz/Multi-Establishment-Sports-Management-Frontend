@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { AppLayout } from '../../components';
 import TeamCard from '../../components/ui/Team/TeamCard';
 import FilterInput from '../../components/ui/Input/FilterInput';
@@ -54,15 +54,16 @@ const ManagerPaymentPage = ({ navigation }) => {
 
   if (isLoading || isLoadingConstant) {
     return (
-      <View className="flex-1 justify-center items-center bg-gray-50">
+      <View className="items-center justify-center flex-1 bg-gray-50">
         <Text className="text-lg font-semibold text-gray-600">Loading...</Text>
+        <ActivityIndicator size="large" color="#10B981" />
       </View>
     );
   }
 
   if (isError || !data) {
     return (
-      <View className="flex-1 justify-center items-center bg-gray-50">
+      <View className="items-center justify-center flex-1 bg-gray-50">
         <Text className="text-lg font-semibold text-red-500">
           Error loading teams.
         </Text>
@@ -72,7 +73,7 @@ const ManagerPaymentPage = ({ navigation }) => {
 
   if (data.length === 0) {
     return (
-      <View className="flex-1 justify-center items-center bg-gray-50">
+      <View className="items-center justify-center flex-1 bg-gray-50">
         <Text className="text-lg font-semibold text-gray-600">
           No team found
         </Text>
@@ -81,9 +82,9 @@ const ManagerPaymentPage = ({ navigation }) => {
   }
 
   return (
-    <View className="flex-1 bg-gray-100">
-      <View className="bg-teal-600 shadow-md rounded-b-3xl pb-4  py-4 ">
-        <Text className="text-2xl font-bold text-gray-800 px-6 pt-6 pb-4">
+    <View className="flex-1 bg-gray-100 dark:bg-dacka-dark-gray">
+      <View className="py-4 pb-4 bg-teal-600 shadow-md rounded-b-3xl ">
+        <Text className="px-6 pt-6 pb-4 text-2xl font-bold text-gray-800">
           Team Payments
         </Text>
         <View className="px-4 mb-2">
