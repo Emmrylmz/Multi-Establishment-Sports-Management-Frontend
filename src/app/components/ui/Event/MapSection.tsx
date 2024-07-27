@@ -3,8 +3,9 @@ import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTranslation } from 'react-i18next';
 
-interface MapSectionProps {
+type MapSectionProps = {
   showMap: boolean;
   toggleShowMap: () => void;
   coordinates: { latitude: number; longitude: number };
@@ -22,8 +23,10 @@ const MapSection: React.FC<MapSectionProps> = React.memo(({
   event_name,
   team_name,
   handleMarkerPress,
-}) => (
-  <View style={{ marginBottom: 20 }}>
+}) => {
+  const { t } = useTranslation();
+  return (
+    <View style={{ marginBottom: 20 }}>
     <TouchableOpacity
       style={{
         padding: 15,
@@ -42,7 +45,7 @@ const MapSection: React.FC<MapSectionProps> = React.memo(({
         style={{ marginRight: 10 }}
       />
       <Text style={{ color: 'white', fontWeight: 'bold' }}>
-        {showMap ? 'Hide map' : 'See location on map'}
+        {showMap ? t("eventDetailPage.mapSection.hideMap") : t("eventDetailPage.mapSection.seeLocationOnMap")}
       </Text>
     </TouchableOpacity>
 
@@ -65,6 +68,7 @@ const MapSection: React.FC<MapSectionProps> = React.memo(({
       </MapView>
     )}
   </View>
-));
+  )
+});
 
 export default MapSection;

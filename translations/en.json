@@ -257,5 +257,30 @@
 				"bankTransfer": "Bank Transfer"
 			}
 		}
+	},
+	"attendanceCard": {
+		"present": "Present",
+		"absent": "Absent"
+	},
+	"eventDetailPage": {
+		"coaches": "Coaches",
+		"players": "Players",
+		"attendance": "Attendance",
+		"takeAttendance": "Take Attendance",
+		"playerActionModal": {
+			"seePlayerDetails": "See Player Details",
+			"ratePlayer": "Rate Player"
+		},
+		"eventDetailsSection": {
+			"title": "Event Details",
+			"team": "Team",
+			"eventType": "Event Type",
+			"place": "Place",
+			"date": "Date"
+		},
+		"mapSection": {
+			"seeLocationOnMap": "See Location on Map",
+			"hideMap": "Hide Map"
+		}
 	}
 }

@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native'
+import { useTranslation } from 'react-i18next'
 import React from 'react'
 
 type AttendanceCardProps = {
@@ -8,18 +9,19 @@ type AttendanceCardProps = {
 }
 
 const AttendanceCard:React.FC<AttendanceCardProps> = ({cardTitle,attended, absent}) => {
+  const { t } = useTranslation()
   return (
     <View className="w-[48%] px-6 py-4 bg-dacka-gray rounded-3xl">
       <Text className="text-xl font-bold text-dacka-black">{cardTitle}</Text>
       <View className="flex-row items-center justify-between">
         <View>
-          <Text className="text-base font-bold text-dacka-black">present</Text>
+          <Text className="text-base font-bold text-dacka-black">{t("attendanceCard.present")}</Text>
           <View className="p-4 bg-green-400 rounded-xl">
             <Text className="text-xl">{attended}</Text>
           </View>
         </View>
         <View>
-          <Text className="text-base font-bold text-dacka-black">absent</Text>
+          <Text className="text-base font-bold text-dacka-black">{t("attendanceCard.absent")}</Text>
           <View className="p-4 bg-red-400 rounded-xl">
             <Text className="text-xl">{absent}</Text>
           </View>

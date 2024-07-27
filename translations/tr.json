@@ -256,5 +256,30 @@
 				"bankTransfer": "Banka Transferi"
 			}
 		}
+	},
+	"attendanceCard": {
+		"present": "Katıldı",
+		"absent": "Katılmadı"
+	},
+	"eventDetailPage": {
+		"coaches": "Antrenörler",
+		"players": "Oyuncular",
+		"attendance": "Yoklama",
+		"takeAttendance": "Yoklama Al",
+		"playerActionModal": {
+			"seePlayerDetails": "Oyuncu Detaylarını Gör",
+			"ratePlayer": "Oyuncuyu Değerlendir"
+		},
+		"eventDetailsSection": {
+			"title": "Etkinlik Detayları",
+			"team": "Takım",
+			"eventType": "Etikinlik Türü",
+			"place": "Yer",
+			"date": "Tarih"
+		},
+		"mapSection": {
+			"seeLocationOnMap": "Konumu Haritada Gör",
+			"hideMap": "Haritayı Gizle"
+		}
 	}
 }

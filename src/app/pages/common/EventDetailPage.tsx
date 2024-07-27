@@ -8,15 +8,12 @@ import {
   Dimensions,
   TouchableOpacity,
   Modal,
-  ScrollView,
-  SafeAreaView,
-  ActivityIndicator,
+
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryService';
 import { useFetchAttendancesByEventIdQuery } from '../../../features/query/eventQueryService';
-import { LinearGradient } from 'expo-linear-gradient';
 import AnimatedHeader from '../../components/ui/Form/AnimatedHeader';
 import EventDetailsSection from '../../components/ui/Event/EventDetailsSection';
 import MapSection from '../../components/ui/Event/MapSection';
@@ -24,11 +21,14 @@ import GoBackButton from '../../components/ui/GoBackButton';
 import { PlayerCard } from '../../components';
 import SubmitButton from '../../components/ui/Form/SubmitButton';
 import LoadingIndicator from '../../components/ui/LoadingIndicator';
+import { useTranslation } from 'react-i18next';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-const PlayerActionModal = ({ visible, onClose, playerName, onSeeDetails, onRatePlayer }) => (
-  <Modal
+const PlayerActionModal = ({ visible, onClose, playerName, onSeeDetails, onRatePlayer }) => {
+  const { t } = useTranslation();
+  return (
+    <Modal
     animationType="slide"
     transparent={true}
     visible={visible}
@@ -62,7 +62,7 @@ const PlayerActionModal = ({ visible, onClose, playerName, onSeeDetails, onRateP
           }}
           onPress={onSeeDetails}
         >
-          <Text style={{ color: 'white', textAlign: 'center', fontSize: 16 }}>See Player Details</Text>
+          <Text style={{ color: 'white', textAlign: 'center', fontSize: 16 }}>{t("eventDetailPage.playerActionModal.seePlayerDetails")}</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={{ 
@@ -72,14 +72,16 @@ const PlayerActionModal = ({ visible, onClose, playerName, onSeeDetails, onRateP
           }}
           onPress={onRatePlayer}
         >
-          <Text style={{ color: 'white', textAlign: 'center', fontSize: 16 }}>Rate Player</Text>
+          <Text style={{ color: 'white', textAlign: 'center', fontSize: 16 }}>{t("eventDetailPage.playerActionModal.ratePlayer")}</Text>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
   </Modal>
-);
+  )
+}
 
 const EventDetailPage = ({ route, navigation }) => {
+  const { t } = useTranslation();
   const {
     event_id,
     team_name,
@@ -265,7 +267,7 @@ const EventDetailPage = ({ route, navigation }) => {
             <View className="mb-5">
               <SubmitButton
                 onPress={navigateToAttendance}
-                title="Take Attendance"
+                title={t("eventDetailPage.takeAttendance")}
               />
             </View>
           )}
@@ -281,7 +283,7 @@ const EventDetailPage = ({ route, navigation }) => {
           />
   
           <View className="mt-5">
-            <Text className="text-xl font-bold mb-2.5 text-gray-900 dark:text-gray-100">Coaches</Text>
+            <Text className="text-xl font-bold mb-2.5 text-gray-900 dark:text-gray-100">{t("eventDetailPage.coaches")}</Text>
             {(teamUsers.coach_infos || []).map((coach) => (
               <PlayerCard
                 id={coach._id}
@@ -299,7 +301,7 @@ const EventDetailPage = ({ route, navigation }) => {
   
           {!hasEventPassed && (
             <View className="mt-5">
-              <Text className="text-xl font-bold mb-2.5 text-gray-900 dark:text-gray-100">Players</Text>
+              <Text className="text-xl font-bold mb-2.5 text-gray-900 dark:text-gray-100">{t("eventDetailPage.players")}</Text>
               {(teamUsers.player_infos || []).map((player) => (
                 <PlayerCard
                   id={player._id}
@@ -319,7 +321,7 @@ const EventDetailPage = ({ route, navigation }) => {
   
           {hasEventPassed && (
             <View className="mt-5">
-              <Text className="text-xl font-bold mb-2.5 text-gray-900 dark:text-gray-100">Attendance</Text>
+              <Text className="text-xl font-bold mb-2.5 text-gray-900 dark:text-gray-100">{t("eventDetailPage.attendance")}</Text>
               {mergedData.map((user) => (
                 <PlayerCard
                   id={user._id}
