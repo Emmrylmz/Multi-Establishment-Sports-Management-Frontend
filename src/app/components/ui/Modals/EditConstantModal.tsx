@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput, Modal } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 type EditConstantModalProps = {
   isVisible: boolean;
@@ -18,6 +19,7 @@ const EditConstantModal: React.FC<EditConstantModalProps> = ({
   handleEditInputChange,
   handleUpdateConstant,
 }) => {
+  const { t } = useTranslation();
   return (
     <Modal
       animationType="slide"
@@ -28,11 +30,11 @@ const EditConstantModal: React.FC<EditConstantModalProps> = ({
       <View className="items-center justify-center flex-1 bg-black bg-opacity-50">
         <View className="bg-white p-6 rounded-xl w-5/6 max-h-[80%]">
           <ScrollView>
-            <Text className="mb-4 text-2xl font-bold">Edit Constant</Text>
+            <Text className="mb-4 text-2xl font-bold">{t("constantModals.editConstant.title")}</Text>
             {editingConstant && (
               <>
                 <View className="mb-4">
-                  <Text className="mb-2 text-gray-700">Constant Value</Text>
+                  <Text className="mb-2 text-gray-700">{t("constantModals.editConstant.constantValue")}</Text>
                   <TextInput
                     className="p-2 border border-gray-300 rounded-lg"
                     value={editingConstant.value.toString()}
@@ -41,7 +43,7 @@ const EditConstantModal: React.FC<EditConstantModalProps> = ({
                   />
                 </View>
                 <View className="mb-4">
-                  <Text className="mb-2 text-gray-700">Description</Text>
+                  <Text className="mb-2 text-gray-700">{t("constantModals.editConstant.description")}</Text>
                   <TextInput
                     className="p-2 border border-gray-300 rounded-lg"
                     value={editingConstant.description}
@@ -57,14 +59,14 @@ const EditConstantModal: React.FC<EditConstantModalProps> = ({
               className="px-4 py-2 mr-2 bg-gray-200 rounded-lg"
               onPress={handleCloseModal}
             >
-              <Text className="text-gray-800">Cancel</Text>
+              <Text className="text-gray-800">{t("constantModals.editConstant.cancel")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               className="px-4 py-2 bg-blue-500 rounded-lg"
               onPress={handleUpdateConstant}
               disabled={isUpdating}
             >
-              <Text className="text-white">{isUpdating ? 'Updating...' : 'Update'}</Text>
+              <Text className="text-white">{isUpdating ? t("constantModals.editConstant.updating") : t("constantModals.editConstant.button")}</Text>
             </TouchableOpacity>
           </View>
         </View>

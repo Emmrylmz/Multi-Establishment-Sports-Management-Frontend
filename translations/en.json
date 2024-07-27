@@ -281,6 +281,49 @@
 		"mapSection": {
 			"seeLocationOnMap": "See Location on Map",
 			"hideMap": "Hide Map"
+		},
+		"takeAttendancePage": {
+			"title": "Take Attendance",
+			"update": "Update Attendance",
+			"submit": "Submit Attendance"
 		}
+	},
+	"createTeamPage": {
+		"title": "Create Team",
+		"teamCategory": "Team Category",
+		"teamCategoryDropdownPlaceholder": "Select a team category",
+		"coach": "Coach",
+		"selectPlayers": "Select Players",
+		"noPlayers": "No players available for this age group.",
+		"age": "Age",
+		"province": "Province",
+		"save": "Create Team"
+	},
+	"constantModals": {
+		"deleteConstantModal": {
+			"title": "Confirm Deletion",
+			"key": "key",
+			"value": "value",
+			"description": "Description",
+			"cancel": "Cancel",
+			"warningMessage": "Are you sure you want to delete this constant? This action cannot be undone.",
+			"button": "Delete",
+			"deleting": "Deleting..."
+		},
+		"editConstant": {
+			"title": "Edit Constant",
+			"constantValue": "Constant Value",
+			"description": "Description",
+			"cancel": "Cancel",
+			"button": "Update",
+			"updating": "Updating..."
+		}
+	},
+	"coachNotes": {
+		"title": "Coach Notes"
+	},
+	"teamSelectionModal": {
+		"title": "Select a Team",
+		"cancel": "Cancel"
 	}
 }

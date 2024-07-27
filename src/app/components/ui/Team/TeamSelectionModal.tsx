@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, View, Text, TouchableOpacity } from 'react-native';
 import TeamList from './TeamList'; // Adjust the import path as needed
-
+import { useTranslation } from 'react-i18next';
 type Team = {
   teamName: string;
   teamId: string;
@@ -21,6 +21,7 @@ const TeamSelectionModal: React.FC<TeamSelectionModalProps> = ({
   teams,
   onTeamSelect,
 }) => {
+  const { t } = useTranslation();
   return (
     <Modal
       visible={visible}
@@ -30,7 +31,7 @@ const TeamSelectionModal: React.FC<TeamSelectionModalProps> = ({
     >
       <View className="justify-end flex-1 bg-opacity-50">
         <View className="p-4 bg-gray-100 dark:bg-dacka-dark-gray rounded-t-3xl h-5/6">
-          <Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-100">Select a Team</Text>
+          <Text className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-100">{t("teamSelectionModal.title")}</Text>
           <TeamList
             teams={teams}
             onTeamSelect={(teamId) => {
@@ -43,7 +44,7 @@ const TeamSelectionModal: React.FC<TeamSelectionModalProps> = ({
             className="p-3 mt-4 bg-gray-200 rounded-xl"
             onPress={onClose}
           >
-            <Text className="font-semibold text-center text-gray-700">Cancel</Text>
+            <Text className="font-semibold text-center text-gray-700">{t("teamSelectionModal.cancel")}</Text>
           </TouchableOpacity>
         </View>
       </View>

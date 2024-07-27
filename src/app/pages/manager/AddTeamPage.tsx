@@ -4,10 +4,12 @@ import { View, Text, Animated, Dimensions, TouchableOpacity, TextInput, ScrollVi
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
+import { useTranslation } from 'react-i18next';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-const CreateTeamPage = () => {
+const CreateTeamPage = ({navigation}) => {
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     team_category: null,
     team_players: [],
@@ -124,7 +126,7 @@ const CreateTeamPage = () => {
           <Ionicons name="person-outline" size={24} color="#60A5FA" className="mr-3" />
           <Text className="text-lg font-semibold text-gray-800 dark:text-white">{player.name}</Text>
         </View>
-        <Text className="text-sm text-gray-600 dark:text-gray-400">Age: {player.age}</Text>
+        <Text className="text-sm text-gray-600 dark:text-gray-400">{t("createTeamPage.age")}: {player.age}</Text>
         {isSelected && (
           <Ionicons name="checkmark-circle" size={24} color="#60A5FA" className="ml-2" />
         )}
@@ -171,19 +173,19 @@ const CreateTeamPage = () => {
               }),
             }}
           >
-            Create Your Team
+            {t("createTeamPage.title")}
           </Animated.Text>
         </LinearGradient>
 
         <View className="px-6 py-8">
           <View className="p-6 mb-6 bg-gray-100 shadow-lg dark:bg-gray-800 rounded-2xl">
-            <Text className="mb-2 text-sm text-gray-400 dark:text-gray-300">Team Category</Text>
+            <Text className="mb-2 text-sm text-gray-400 dark:text-gray-300">{t("createTeamPage.teamCategory")}</Text>
             <Dropdown
               data={teamCategories}
               labelField="label"
               valueField="value"
               onChange={(item) => handleInputChange('team_category', item.value)}
-              placeholder="Select team category"
+              placeholder={t("createTeamPage.teamCategoryDropdownPlaceholder")}
               placeholderStyle={{ color: '#6B7280' }}
               selectedTextStyle={{ color: '#1F2937' }}
               style={{
@@ -200,17 +202,17 @@ const CreateTeamPage = () => {
             
             {form.team_category && (
               <>
-                <Text className="mb-2 text-sm text-gray-400 dark:text-gray-300">Select Players</Text>
+                <Text className="mb-2 text-sm text-gray-400 dark:text-gray-300">{t("createTeamPage.selectPlayers")}</Text>
                 {filteredPlayers.length > 0 ? (
                   filteredPlayers.map(renderPlayerItem)
                 ) : (
-                  <Text className="text-gray-600 dark:text-gray-400">No players available for this age group.</Text>
+                  <Text className="text-gray-600 dark:text-gray-400">{t("createTeamPage.noPlayers")}</Text>
                 )}
               </>
             )}
 
-            {renderArrayInputField('team_coaches', 'Coach', 'baseball-outline')}
-            {renderInputField('province', 'Province', 'location-outline')}
+            {renderArrayInputField('team_coaches', t("createTeamPage.coach"), 'baseball-outline')}
+            {renderInputField('province', t("createTeamPage.province"), 'location-outline')}
           </View>
 
           <TouchableOpacity
@@ -218,7 +220,7 @@ const CreateTeamPage = () => {
             className="py-4 bg-blue-500 shadow-md rounded-xl"
           >
             <Text className="text-lg font-bold text-center text-white">
-              Create Team
+              {t("createTeamPage.save")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -228,7 +230,7 @@ const CreateTeamPage = () => {
         className="absolute z-20 p-2 bg-gray-200 rounded-full dark:bg-gray-800 top-12 left-4"
         onPress={() => {/* Handle go back */}}
       >
-        <Ionicons name="arrow-back" size={24} color="#60A5FA" />
+        <Ionicons name="arrow-back" size={24} color="#60A5FA" onPress={() => navigation.goBack()} />
       </TouchableOpacity>
     </View>
   );

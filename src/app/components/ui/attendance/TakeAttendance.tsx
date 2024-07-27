@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { View, Text, FlatList, Alert, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import eventQueryService, {
 	useAddAttendancesToEventMutation,
 	useUpdateAttendancesMutation,
@@ -10,6 +11,7 @@ import PlayerCard from '../Player/PlayerCard';
 import userInfoQueryService from '../../../../features/query/userInfoQueryService';
 
 const TakeAttendance = ({ route, navigation }) => {
+	const { t } = useTranslation();
 	const { event_id, event_type, mergedData } = route.params;
 	const user = useSelector((state: RootState) => state.auth.user);
 	const dispatch = useDispatch();
@@ -91,7 +93,7 @@ const TakeAttendance = ({ route, navigation }) => {
 
 	return (
 		<View className="flex-1 p-5 bg-gray-100">
-			<Text className="text-2xl font-bold my-5">Attendance</Text>
+			<Text className="my-5 text-2xl font-bold">{t("eventDetailPage.takeAttendancePage.title")}</Text>
 			<FlatList
 				data={attendanceList}
 				renderItem={renderAttendanceItem}
@@ -99,12 +101,13 @@ const TakeAttendance = ({ route, navigation }) => {
 			/>
 			<TouchableOpacity
 				onPress={submitAttendance}
-				className="bg-teal-600 p-4 rounded-lg mt-4"
+				className="p-4 mt-4 bg-teal-600 rounded-lg"
 			>
-				<Text className="text-white text-center font-bold">
+				<Text className="font-bold text-center text-white">
 					{attendanceList.length === 0
-						? 'Submit Attendance'
-						: 'Update Attendance'}
+						? t("eventDetailPage.takeAttendancePage.submmit")
+						: t("eventDetailPage.takeAttendancePage.update")
+					}
 				</Text>
 			</TouchableOpacity>
 		</View>

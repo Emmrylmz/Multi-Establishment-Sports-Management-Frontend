@@ -21,7 +21,7 @@ const QueryInput = ({ onQueryChange, placeholder = "Search...", debounceTime = 3
   return (
     <View className="mb-4">
       <TextInput
-        className="border border-gray-300 rounded-md p-2 text-base"
+        className="p-2 text-base border border-gray-300 rounded-md"
         value={inputValue}
         onChangeText={handleInputChange}
         placeholder={placeholder}

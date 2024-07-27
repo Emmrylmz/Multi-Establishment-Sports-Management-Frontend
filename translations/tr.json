@@ -280,6 +280,44 @@
 		"mapSection": {
 			"seeLocationOnMap": "Konumu Haritada Gör",
 			"hideMap": "Haritayı Gizle"
+		},
+		"takeAttendancePage": {
+			"title": "Yoklama Al",
+			"update": "Yoklamayı Güncelle",
+			"submit": "Yoklamayı Kaydet"
 		}
+	},
+	"createTeamPage": {
+		"title": "Takım Oluştur",
+		"teamCategory": "Takım Kategorisi",
+		"teamCategoryDropdownPlaceholder": "Takım kategorisi seç",
+		"coach": "Antrenör",
+		"selectPlayers": "Oyuncuları Seç",
+		"noPlayers": "Bu yaş grubu için uygun oyuncu yok.",
+		"age": "Yaş",
+		"province": "Şehir",
+		"save": "Takımı Oluştur"
+	},
+	"constantModals": {
+		"deleteConstantModal": {
+			"title": "Silme İşlemini Onayla",
+			"key": "Anahtar",
+			"value": "Değer",
+			"description": "Açıklama",
+			"warningMessage": "Bu sabiti silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+			"button": "Sil",
+			"deleting": "Siliniyor..."
+		},
+		"editConstant": {
+			"title": "Sabiti Düzenle",
+			"constantValue": "Sabit Değeri",
+			"description": "Açıklama",
+			"cancel": "İptal",
+			"button": "Güncelle",
+			"updating": "Güncleniyor..."
+		}
+	},
+	"coachNotes": {
+		"title": "Antrenör Notları"
 	}
 }
