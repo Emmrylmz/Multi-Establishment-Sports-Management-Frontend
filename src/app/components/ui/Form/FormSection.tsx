@@ -26,7 +26,7 @@ const FormSection = ({ form, fieldIcons, handleInputChange }) => (
           icon={fieldIcons[key]}
           additionalStyles='border-b-2 border-gray-300 dark:bg-[#ccc] p-3 shadow-md'
           placeholderTextColor='dark'
-          additionalInputStyles='bg-[#ccc]'
+          additionalInputStyles='bg-gray-100 dark:bg-[#ccc]'
         />
       </View>
     ))}
