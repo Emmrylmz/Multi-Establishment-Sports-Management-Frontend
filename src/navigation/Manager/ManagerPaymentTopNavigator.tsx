@@ -5,10 +5,12 @@ import ManagerPlayerPaymentDetailPage from '../../app/pages/manager/MangerPlayer
 import ManagerOthersPayment from '../../app/pages/manager/ManagerOthersPayment';
 import { SafeAreaView, View, Platform, StatusBar, useColorScheme } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function TopTabs({ route }) {
+  const { t } = useTranslation();
   const { player_id, team_id, discount, monthlyPaymentAmount } = route.params;
   const insets = useSafeAreaInsets();
 
@@ -53,13 +55,13 @@ export default function TopTabs({ route }) {
             name="MonthlyPayments"
             component={ManagerPlayerPaymentDetailPage}
             initialParams={{ player_id, team_id, discount, monthlyPaymentAmount }}
-            options={{ title: 'Monthly Payments' }}
+            options={{ title: t("managerPaymentPage.topBar.monthlyPayments") }}
           />
           <Tab.Screen
             name="OtherPayments"
             component={ManagerOthersPayment}
             initialParams={{ player_id, team_id, discount, monthlyPaymentAmount }}
-            options={{ title: 'Other Payments' }}
+            options={{ title: t("managerPaymentPage.topBar.otherPayments") }}
           />
         </Tab.Navigator>
       </View>

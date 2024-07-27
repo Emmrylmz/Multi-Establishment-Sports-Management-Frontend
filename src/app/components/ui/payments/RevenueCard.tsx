@@ -32,14 +32,14 @@ const RevenueCard = () => {
 
   const pieData = [
     {
-      name: 't("revenueCard.thisWeek")',
+      name: t("revenueCard.lastMonth"),
       revenue: lastWeekRevenue,
       color: '#1E8449', // A darker green
       legendFontColor: '#64748B',
       legendFontSize: 12,
     },
     {
-      name: 't("revenueCard.lastMonth")',
+      name: t("revenueCard.thisMonth"),
       revenue: totalRevenue - lastWeekRevenue,
       color: '#82E0AA', // A much lighter green
       legendFontColor: '#64748B',
@@ -69,9 +69,9 @@ const RevenueCard = () => {
     },
   };
   const chartTypes = [
-    { label: 'Pie Chart', value: 'pie' },
-    { label: 'Bar Chart', value: 'bar' },
-    { label: 'Line Chart', value: 'line' },
+    { label: t("revenueCard.chartSelection.pieChart"), value: 'pie' },
+    { label: t("revenueCard.chartSelection.barChart"), value: 'bar' },
+    { label: t("revenueCard.chartSelection.lineChart"), value: 'line' },
   ];
 
   const renderChart = () => {

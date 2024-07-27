@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   View,
   Text,
@@ -18,36 +19,41 @@ import {
   useMakeSinglePaymentMutation,
   useUpdatePaymentMutation,
 } from '../../../features/query/paymentQueryService';
+import LoadingIndicator from '../../components/ui/LoadingIndicator';
 
-const PaymentItem = ({ item, onPress }) => (
-  <TouchableOpacity
-    onPress={onPress}
-    className="p-4 mb-4 bg-white shadow-md dark:bg-dacka-dark-gray rounded-xl"
-  >
-    <View className="flex-row items-center justify-between">
-      <View>
-        <Text className="text-lg font-bold text-gray-800 dark:text-gray-100">
-          {item.description || 'Payment'}
-        </Text>
-        <Text className="text-sm text-gray-600 dark:text-gray-50">
-          Due: {new Date(item.due_date).toLocaleDateString()}
-        </Text>
+const PaymentItem = ({ item, onPress }) => {
+  const { t } = useTranslation();
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      className="p-4 mb-4 bg-white shadow-md dark:bg-dacka-dark-gray rounded-xl"
+    >
+      <View className="flex-row items-center justify-between">
+        <View>
+          <Text className="text-lg font-bold text-gray-800 dark:text-gray-100">
+            {item.description || t("managerPaymentPage.otherPayments.description")}
+          </Text>
+          <Text className="text-sm text-gray-600 dark:text-gray-50">
+            {t("managerPaymentPage.otherPayments.dueDate")}: {new Date(item.due_date).toLocaleDateString()}
+          </Text>
+        </View>
+        <View className="items-end">
+          <Text className="text-xl font-semibold text-green-600">
+            {item.amount.toFixed(2)}₺
+          </Text>
+          <Text
+            className={`text-sm ${item.status === 'paid' ? 'text-green-500' : 'text-red-500'}`}
+          >
+            {t(`managerPaymentPage.otherPayments.status.${item.status}`)}
+          </Text>
+        </View>
       </View>
-      <View className="items-end">
-        <Text className="text-xl font-semibold text-green-600">
-          {item.amount.toFixed(2)}₺
-        </Text>
-        <Text
-          className={`text-sm ${item.status === 'paid' ? 'text-green-500' : 'text-red-500'}`}
-        >
-          {item.status}
-        </Text>
-      </View>
-    </View>
-  </TouchableOpacity>
-);
+    </TouchableOpacity>
+  );
+};
 
 const ManagerOthersPayment = ({ navigation, route }) => {
+  const { t } = useTranslation();
   const isDark = useColorScheme() === 'dark';
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [modalVisible, setModalVisible] = useState(false);
@@ -89,9 +95,9 @@ const ManagerOthersPayment = ({ navigation, route }) => {
   );
 
   const paymentTypes = [
-    { label: 'Private Lessons', value: 'private_lesson' },
-    { label: 'Store Purchases', value: 'store_purchase' },
-    { label: 'Other', value: 'other' },
+    { label: t("managerPaymentPage.otherPayments.paymentTypes.privateLesson"), value: 'private_lesson' },
+    { label: t("managerPaymentPage.otherPayments.paymentTypes.storePurchase"), value: 'store_purchase' },
+    { label: t("managerPaymentPage.otherPayments.paymentTypes.other"), value: 'other' },
   ];
 
   const handleItemPress = useCallback((item) => {
@@ -122,7 +128,6 @@ const ManagerOthersPayment = ({ navigation, route }) => {
     try {
       let result;
       if (paymentData._id) {
-        // Update existing payment
         const updatePayload = {
           _id: paymentData._id,
           amount: paymentData.amount,
@@ -132,7 +137,6 @@ const ManagerOthersPayment = ({ navigation, route }) => {
         };
         result = await updatePayment(updatePayload).unwrap();
       } else {
-        // Create new payment
         const newPayment = {
           user_id: paymentData.user_id,
           payment_type: paymentData.payment_type,
@@ -155,26 +159,22 @@ const ManagerOthersPayment = ({ navigation, route }) => {
       if (error.data) {
         console.error('Error data:', JSON.stringify(error.data, null, 2));
       }
-      Alert.alert('Error', 'Failed to save payment. Please try again.');
+      Alert.alert(t("managerPaymentPage.otherPayments.errorTitle"), t("managerPaymentPage.otherPayments.errorMessage"));
     }
-  }, [paymentData, updatePayment, makeSinglePayment, refetch]);
+  }, [paymentData, updatePayment, makeSinglePayment, refetch, t]);
 
   const updatePaymentField = useCallback((field, value) => {
     setPaymentData((prev) => ({ ...prev, [field]: value }));
   }, []);
 
   if (isLoadingPayments) {
-    return (
-      <SafeAreaView className="items-center justify-center flex-1 bg-gray-50">
-        <Text>Loading...</Text>
-      </SafeAreaView>
-    );
+    return <LoadingIndicator isLoading={isLoadingPayments} />;
   }
 
   if (paymentError) {
     return (
       <SafeAreaView className="items-center justify-center flex-1 bg-gray-50">
-        <Text>Error loading data</Text>
+        <Text>{t("managerPaymentPage.otherPayments.errorLoading")}</Text>
       </SafeAreaView>
     );
   }
@@ -191,7 +191,7 @@ const ManagerOthersPayment = ({ navigation, route }) => {
             <Ionicons name="arrow-back-outline" size={24} color="black" />
           </TouchableOpacity>
           <Text className="text-2xl font-bold text-gray-800 dark:text-gray-100 dark:">
-            Payment Management
+            {t("managerPaymentPage.otherPayments.title")}
           </Text>
           <TouchableOpacity
             onPress={handleCreatePayment}
@@ -208,7 +208,7 @@ const ManagerOthersPayment = ({ navigation, route }) => {
               valueField="value"
               value={selectedPaymentType}
               onChange={(item) => setSelectedPaymentType(item.value)}
-              placeholder="Select payment type"
+              placeholder={t("managerPaymentPage.otherPayments.selectPaymentType")}
               className="p-3 bg-gray-200 rounded-xl"
             />
           </View>
@@ -222,7 +222,7 @@ const ManagerOthersPayment = ({ navigation, route }) => {
               valueField="value"
               value={selectedYear}
               onChange={(item) => setSelectedYear(item.value)}
-              placeholder="Year"
+              placeholder={t("managerPaymentPage.otherPayments.year")}
               className="p-3 bg-gray-200 rounded-xl"
             />
           </View>
@@ -238,7 +238,7 @@ const ManagerOthersPayment = ({ navigation, route }) => {
         contentContainerClassName="px-4 py-4"
         ListEmptyComponent={() => (
           <View className="items-center justify-center p-4">
-            <Text className="text-lg text-gray-500">No payments found</Text>
+            <Text className="text-lg text-gray-500">{t("managerPaymentPage.otherPayments.noPayments")}</Text>
           </View>
         )}
       />
@@ -253,7 +253,7 @@ const ManagerOthersPayment = ({ navigation, route }) => {
           <View className="p-6 bg-white rounded-t-3xl">
             <View className="flex-row items-center justify-between mb-6">
               <Text className="text-2xl font-bold text-gray-800">
-                {paymentData._id ? 'Edit Payment' : 'Create Payment'}
+                {paymentData._id ? t("managerPaymentPage.otherPayments.editPayment") : t("managerPaymentPage.otherPayments.createPayment")}
               </Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
                 <Ionicons name="close-circle" size={32} color="#3b82f6" />
@@ -262,7 +262,7 @@ const ManagerOthersPayment = ({ navigation, route }) => {
             <TextInput
               value={paymentData.description}
               onChangeText={(text) => updatePaymentField('description', text)}
-              placeholder="Description"
+              placeholder={t("managerPaymentPage.otherPayments.description")}
               className="p-3 mb-4 bg-gray-100 rounded-xl"
             />
             <TextInput
@@ -270,29 +270,29 @@ const ManagerOthersPayment = ({ navigation, route }) => {
               onChangeText={(text) =>
                 updatePaymentField('amount', parseFloat(text) || 0)
               }
-              placeholder="Amount"
+              placeholder={t("managerPaymentPage.otherPayments.amount")}
               keyboardType="numeric"
               className="p-3 mb-4 bg-gray-100 rounded-xl"
             />
             <Dropdown
               data={[
-                { label: 'Pending', value: 'pending' },
-                { label: 'Paid', value: 'paid' },
-                { label: 'Overdue', value: 'overdue' },
+                { label: t("managerPaymentPage.otherPayments.status.pending"), value: 'pending' },
+                { label: t("managerPaymentPage.otherPayments.status.paid"), value: 'paid' },
+                { label: t("managerPaymentPage.otherPayments.status.overdue"), value: 'overdue' },
               ]}
               labelField="label"
               valueField="value"
               value={paymentData.status}
               onChange={(item) => updatePaymentField('status', item.value)}
-              placeholder="Select status"
+              placeholder={t("managerPaymentPage.otherPayments.selectStatus")}
               className="p-3 mb-4 bg-gray-100 rounded-xl"
             />
             {!paymentData._id && (
               <Dropdown
                 data={[
-                  { label: 'Cash', value: 'cash' },
-                  { label: 'Credit Card', value: 'credit_card' },
-                  { label: 'Bank Transfer', value: 'bank_transfer' },
+                  { label: t("managerPaymentPage.otherPayments.paymentMethods.cash"), value: 'cash' },
+                  { label: t("managerPaymentPage.otherPayments.paymentMethods.creditCard"), value: 'credit_card' },
+                  { label: t("managerPaymentPage.otherPayments.paymentMethods.bankTransfer"), value: 'bank_transfer' },
                 ]}
                 labelField="label"
                 valueField="value"
@@ -300,7 +300,7 @@ const ManagerOthersPayment = ({ navigation, route }) => {
                 onChange={(item) =>
                   updatePaymentField('payment_with', item.value)
                 }
-                placeholder="Payment method"
+                placeholder={t("managerPaymentPage.otherPayments.paymentMethod")}
                 className="p-3 mb-4 bg-gray-100 rounded-xl"
               />
             )}
@@ -312,7 +312,7 @@ const ManagerOthersPayment = ({ navigation, route }) => {
               }`}
             >
               <Text className="text-lg font-bold text-center text-white">
-                {isCreating || isUpdating ? 'Saving...' : 'Save'}
+                {isCreating || isUpdating ? t("managerPaymentPage.otherPayments.saving") : t("managerPaymentPage.otherPayments.save")}
               </Text>
             </TouchableOpacity>
           </View>

@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
-import { AppLayout } from '../../components';
+import { View, Text, FlatList } from 'react-native';
 import TeamCard from '../../components/ui/Team/TeamCard';
 import FilterInput from '../../components/ui/Input/FilterInput';
 import { RootState } from '../../../../store';
@@ -9,8 +8,10 @@ import { useGetTeamInfoQuery } from '../../../features/query/teamQueryService';
 import { getAuthUser } from '../../../features/auth/auth.slice';
 import { useGetConstantFromKeyQuery } from '../../../features/query/constantsQueryService';
 import LoadingIndicator from '../../components/ui/LoadingIndicator';
+import { useTranslation } from 'react-i18next';
 
 const ManagerPaymentPage = ({ navigation }) => {
+  const { t } = useTranslation();
   const user = useSelector((state: RootState) => getAuthUser(state));
   const { data, isLoading, isError } = useGetTeamInfoQuery(user?.teams);
   const [filterText, setFilterText] = useState('');
@@ -81,7 +82,7 @@ const ManagerPaymentPage = ({ navigation }) => {
     <View className="flex-1 bg-gray-100 dark:bg-dacka-dark-gray">
       <View className="py-4 pb-4 bg-teal-600 shadow-md rounded-b-3xl ">
         <Text className="px-6 pt-6 pb-4 text-2xl font-bold text-gray-800">
-          Team Payments
+          {t("managerPaymentPage.title")}
         </Text>
         <View className="px-4 mb-2">
           <FilterInput

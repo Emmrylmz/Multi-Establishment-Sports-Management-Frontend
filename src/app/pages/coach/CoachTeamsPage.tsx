@@ -6,13 +6,14 @@ import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import { useGetTeamInfoQuery } from '../../../features/query/teamQueryService'
 import { getAuthUser } from '../../../features/auth/auth.slice'
+import LoadingIndicator from '../../components/ui/LoadingIndicator';
 
 const CoachTeamsPage = ({navigation}) => {
   const isDark = useColorScheme() === 'dark';
   const user = useSelector((state: RootState) => getAuthUser(state));
   const { data, isLoading, isError } = useGetTeamInfoQuery(user?.teams);
   if (isLoading) {
-    return <View><Text>Loading...</Text></View>;
+    return <LoadingIndicator isLoading={isLoading} />;
   }
   if (isError || !data) {
     return <View><Text>Error loading teams.</Text></View>;

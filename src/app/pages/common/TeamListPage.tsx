@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import LoadingIndicator from '../../components/ui/LoadingIndicator';
 
 // Define types for the props and state
 type Team = {
@@ -30,11 +31,7 @@ const TeamListPage: React.FC<TeamListPageProps> = ({ navigation }) => {
 	const { data, isLoading, isError } = useGetTeamInfoQuery(user?.teams);
 
 	if (isLoading) {
-		return (
-			<View>
-				<Text>Loading...</Text>
-			</View>
-		);
+		return <LoadingIndicator isLoading={isLoading} />;
 	}
 
 	if (isError || !data) {

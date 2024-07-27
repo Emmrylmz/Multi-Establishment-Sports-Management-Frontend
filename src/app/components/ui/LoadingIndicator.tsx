@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, ActivityIndicator, Text, Animated, Easing } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useEffect, useRef } from 'react';
 
 const LoadingIndicator = ({ isLoading, inline = false }) => {
+  const { t } = useTranslation();
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const LoadingIndicator = ({ isLoading, inline = false }) => {
     return (
       <View className="flex-row items-center justify-center py-4">
         <ActivityIndicator size="small" color="#4CAF50" />
-        <Text className="ml-2 text-sm font-medium text-gray-600">Loading...</Text>
+        <Text className="ml-2 text-sm font-medium text-gray-600">{t('fetchMessages.loading')}</Text>
       </View>
     );
   }
@@ -49,7 +51,7 @@ const LoadingIndicator = ({ isLoading, inline = false }) => {
       >
         <ActivityIndicator size="large" color="#4CAF50" />
       </Animated.View>
-      <Text className="mt-4 font-medium text-gray-600">Loading...</Text>
+      <Text className="mt-4 font-medium text-gray-600">{t('fetchMessages.loading')}</Text>
     </View>
   );
 };

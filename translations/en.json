@@ -30,6 +30,18 @@
 	"header": {
 		"welcome": "Welcome back"
 	},
+	"profilePage": {
+		"events": "Events",
+		"games": "Games",
+		"team": "Team",
+		"personalInfo": "Personal Info",
+		"age": "Age",
+		"height": "Height",
+		"weight": "Weight",
+		"performance": "Performance",
+		"trainingAttendance": "Training Attendance",
+		"gameAttendance": "Game Attendance"
+	},
 	"profileSideBar": {
 		"editProfile": "Edit Profile",
 		"settings": "Settings",
@@ -43,7 +55,12 @@
 		"totalRevenue": "Total revenue this month",
 		"title": "This Month's Revenue",
 		"thisMonth": "This Month",
-		"lastMonth": "Last Month"
+		"lastMonth": "Last Month",
+		"chartSelection": {
+			"pieChart": "Pasta Grafiği",
+			"lineChart": "Çizgi Grafiği",
+			"barChart": "Çubuk Grafiği"
+		}
 	},
 	"quickActions": {
 		"title": "Quick Actions",
@@ -113,7 +130,7 @@
 		"cancel": "Cancel"
 	},
 	"fetchMessages": {
-		"loading": "Loading data...",
+		"loading": "Loading...",
 		"error": "An error occurred while fetching data.",
 		"noData": "No data found.",
 		"noCoaches": "No Coaches added yet.",
@@ -203,5 +220,42 @@
 	"calendar": {
 		"previous": "Previous",
 		"next": "Next"
+	},
+	"managerPaymentPage": {
+		"title": "Team Payments",
+		"topBar": {
+			"monthlyPayments": "Monthly Payments",
+			"otherPayments": "Other Payments"
+		},
+		"otherPayments": {
+			"title": "Payment Management",
+			"loading": "Loading...",
+			"errorLoading": "Error loading data",
+			"noPayments": "No payments found",
+			"createPayment": "Create Payment",
+			"editPayment": "Edit Payment",
+			"description": "Description",
+			"amount": "Amount",
+			"selectStatus": "Select status",
+			"paymentMethod": "Payment method",
+			"save": "Save",
+			"saving": "Saving...",
+			"dueDate": "Due Date",
+			"paymentTypes": {
+				"privateLesson": "Private Lessons",
+				"storePurchase": "Store Purchases",
+				"other": "Other"
+			},
+			"status": {
+				"pending": "Pending",
+				"paid": "Paid",
+				"overdue": "Overdue"
+			},
+			"paymentMethods": {
+				"cash": "Cash",
+				"creditCard": "Credit Card",
+				"bankTransfer": "Bank Transfer"
+			}
+		}
 	}
 }

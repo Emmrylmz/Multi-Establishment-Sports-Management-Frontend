@@ -13,14 +13,6 @@ import RevenueCard from '../../components/ui/payments/RevenueCard';
 const ManagerHomePage = () => {
 	const navigation = useNavigation();
 	const user = useSelector((state: RootState) => getAuthUser(state));
-	const chartData = {
-		labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-		datasets: [
-			{
-				data: [20, 45, 28, 80, 99, 43],
-			},
-		],
-	};
 	return (
 		<ScrollView className="bg-dacka-white dark:bg-dacka-black">
 			<Header user={user} navigation={navigation} />

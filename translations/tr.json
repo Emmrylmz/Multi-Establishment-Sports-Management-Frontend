@@ -30,6 +30,18 @@
 	"header": {
 		"welcome": "Tekrar hoş geldiniz"
 	},
+	"profilePage": {
+		"events": "Etkinlikler",
+		"games": "Maçlar",
+		"team": "Takım",
+		"personalInfo": "Kişisel Bilgiler",
+		"age": "Yaş",
+		"height": "Boy",
+		"weight": "Kilo",
+		"performance": "Performans",
+		"trainingAttendance": "Antrenman Katılımı",
+		"gameAttendance": "Maç Katılımı"
+	},
 	"profileSideBar": {
 		"editProfile": "Profili Düzenle",
 		"settings": "Ayarlar",
@@ -43,7 +55,12 @@
 		"totalRevenue": "Bu ayın toplam geliri",
 		"title": "Bu Ayın Geliri",
 		"thisMonth": "Bu Ay",
-		"lastMonth": "Geçen Ay"
+		"lastMonth": "Geçen Ay",
+		"chartSelection": {
+			"pieChart": "Pasta Grafiği",
+			"lineChart": "Çizgi Grafiği",
+			"barChart": "Çubuk Grafiği"
+		}
 	},
 	"quickActions": {
 		"title": "Hızlı İşlemler",
@@ -113,7 +130,7 @@
 		"cancel": "İptal"
 	},
 	"fetchMessages": {
-		"loading": "Veriler yükleniyor...",
+		"loading": "Yükleniyor...",
 		"error": "Veriler alınırken bir hata oluştu.",
 		"noData": "Veri bulunamadı.",
 		"noCoaches": "Eklenmiş Antrenör Yok.",
@@ -203,5 +220,41 @@
 	"calendar": {
 		"previous": "Önceki",
 		"next": "Sonraki"
+	},
+	"managerPaymentPage": {
+		"title": "Takım Ödemeleri",
+		"topBar": {
+			"monthlyPayments": "Aylık Ödemeler",
+			"otherPayments": "Diğer Ödemeler"
+		},
+		"otherPayments": {
+			"title": "Ödeme Yönetimi",
+			"errorLoading": "Ödemeler yüklenirken bir hata oluştu.",
+			"noPayments": "Ödeme bulunamadı",
+			"createPayment": "Ödeme Oluştur",
+			"editPayment": "Ödemeyi Düzenle",
+			"description": "Açıklama",
+			"amount": "Miktar",
+			"selectStatus": "Durum seç",
+			"paymentMethod": "Ödeme Yöntemi",
+			"save": "Kaydet",
+			"saving": "Kaydediliyor...",
+			"dueDate": "Vade Tarihi",
+			"paymentTypes": {
+				"privateLesson": "Bireysel Dersler",
+				"storePurchase": "Mağaza Alışverişi",
+				"other": "Diğer"
+			},
+			"status": {
+				"pending": "Bekleniyor",
+				"paid": "Ödendi",
+				"overdue": "Süresi Geçmiş"
+			},
+			"paymentMethods": {
+				"cash": "Nakit",
+				"creditCard": "Kredi Kartı",
+				"bankTransfer": "Banka Transferi"
+			}
+		}
 	}
 }
