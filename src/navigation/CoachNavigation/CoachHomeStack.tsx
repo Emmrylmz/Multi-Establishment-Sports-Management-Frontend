@@ -1,11 +1,11 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CoachHomePage from '../../app/pages/coach/CoachHomePage';
+import CreateTeamPage from '../../app/pages/manager/AddTeamPage';
 import CoachAddTrainingPage from '../../app/pages/coach/CoachAddTrainingPage';
 import EventDetailPage from '../../app/pages/common/EventDetailPage';
 import NotificationPage from '../../app/pages/common/NotificationPage';
 import UserProfile from '../../app/components/profile/UserProfile';
-import TeamCreationPage from '../../app/pages/common/TeamCreationPage';
 import EventHistoryPage from '../../app/pages/common/EventHistoryPage';
 import TakeAttendance from '../../app/components/ui/attendance/TakeAttendance';
 import CoachNotesPage from '../../app/pages/common/CoachNotesPage';
@@ -17,6 +17,7 @@ import TodaysPtPage from '../../app/pages/coach/TodaysPtPage';
 import PersonalTrainingPage from '../../app/pages/common/PersonalTrainingPage';
 import EventsPage from '../../app/pages/common/EventsPage';
 import RatePlayerPage from '../../app/pages/coach/RatePlayerPage';
+
 const HomeStack = createNativeStackNavigator();
 
 const CoachHomeStack = () => (
@@ -47,9 +48,9 @@ const CoachHomeStack = () => (
 			component={NotificationPage}
 		/>
 		<HomeStack.Screen
-			name="TeamCreationPage"
+			name="CreateTeamPage"
 			options={{ title: 'Create Team' }}
-			component={TeamCreationPage}
+			component={CreateTeamPage}
 		/>
 		<HomeStack.Screen
 			name="UserProfile"

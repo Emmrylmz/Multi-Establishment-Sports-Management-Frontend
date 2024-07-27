@@ -2,21 +2,24 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity, Animated, Dimensions, Image, Alert, useColorScheme } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {MaterialCommunityIcons, Entypo} from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLogoutMutation } from '../../../features/query/authQueryService'; 
 
-
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const SIDEBAR_WIDTH = SCREEN_WIDTH * 0.75;
 
-interface ProfileSidebarProps {
+type ProfileSidebarProps = {
   isOpen: boolean;
   onClose: () => void;
   user?: {
-    name?: string;
+    _id?: string;
     email?: string;
+    name?: string;
+    province?: string;
+    role?: string;
+    teams?: string[];
     photo?: string;
   };
 }
@@ -41,7 +44,6 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ isOpen, onClose, user }
   const changeLanguage = () => {
     const newLang = i18n.language === 'en' ? 'tr' : 'en';
     i18n.changeLanguage(newLang).then(() => {
-      console.log('Language changed to:', newLang);
       forceUpdate();
     });
   };
@@ -53,6 +55,7 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ isOpen, onClose, user }
     { icon: "help-circle", label: t("profileSideBar.helpAndSupport"), screen: 'HelpSupport' },
     { icon: "translate", label: t("profileSideBar.changeLanguage"), onPress: changeLanguage },
   ];
+
   const handleMenuItemPress = (screen?: string, customAction?: () => void) => {
     if (customAction) {
       return customAction();
@@ -61,6 +64,7 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ isOpen, onClose, user }
     }
     onClose();
   };
+
   const handleLogout = async () => {
     try {
       await logout().unwrap();
@@ -73,8 +77,6 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ isOpen, onClose, user }
       Alert.alert('Logout Failed', 'An error occurred while logging out. Please try again.');
     }
   };
-
-
   const userName = user?.name || 'User';
   const userEmail = user?.email || 'user@example.com';
   const userPhoto = user?.photo;
@@ -109,6 +111,12 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ isOpen, onClose, user }
           )}
           <Text className="mb-1 text-xl font-bold text-white">{userName}</Text>
           <Text className="text-sm text-gray-200">{userEmail}</Text>
+          {user?.role && (
+            <Text className="mt-1 text-sm text-gray-200">{user.role}</Text>
+          )}
+          {user?.province && (
+            <Text className="text-sm text-gray-200">{user.province}</Text>
+          )}
         </View>
       </LinearGradient>
       <View className="flex-1 pt-4">

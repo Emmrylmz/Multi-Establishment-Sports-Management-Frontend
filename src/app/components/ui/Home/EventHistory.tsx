@@ -6,7 +6,7 @@ import { useListEventsQuery } from '../../../../features/query/eventQueryService
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase } from '@react-navigation/native';
 
-interface EventHistoryProps {
+type EventHistoryProps = {
   navigation: NativeStackNavigationProp<ParamListBase>;
   user: any; // Define the appropriate type for user if possible
 }
@@ -21,7 +21,7 @@ const EventHistory: React.FC<EventHistoryProps> = ({ navigation, user }) => {
 
 	return (
 		<View className="mb-6">
-			<Text className="text-xl font-bold text-gray-800 my-4 mx-4">
+			<Text className="mx-4 my-4 text-xl font-bold text-gray-800">
 				Event History
 			</Text>
 			{events.length > 0 ? (

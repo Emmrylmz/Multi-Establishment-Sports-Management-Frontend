@@ -26,6 +26,7 @@ import type { RootState } from '../../../../store';
 import { getAuthUser } from '../../../features/auth/auth.slice';
 import { usePaymentLogic } from '../../../hooks/usePaymentLogic';
 import YearSelector from '../../components/ui/payments/YearSelector';
+import LoadingIndicator from '../../components/ui/LoadingIndicator';
 
 const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 	const { t } = useTranslation();
@@ -175,14 +176,7 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 	]);
 
 	if (isLoadingPayments) {
-		return (
-			<SafeAreaView>
-				<ActivityIndicator size="large" color="#ccc" />
-				<Text className="text-xl text-center">
-					{t('fetchMessages.loading')}
-				</Text>
-			</SafeAreaView>
-		);
+		<LoadingIndicator isLoading={isLoadingPayments} />;
 	}
 
 	return (

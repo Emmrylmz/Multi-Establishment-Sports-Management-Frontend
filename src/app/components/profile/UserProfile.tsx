@@ -3,6 +3,7 @@ import React from 'react';
 import ProfileContainer from './ProfileContainer';
 import { useGetUserInfoQuery } from '../../../features/query/userInfoQueryService';
 import GoBackButton from '../ui/GoBackButton';
+import LoadingIndicator from '../../components/ui/LoadingIndicator';
 
 const UserProfile = ({ route }) => {
 	const { user_id } = route.params;
@@ -10,7 +11,7 @@ const UserProfile = ({ route }) => {
 
 
 	if (isLoading) {
-		return <Text>Loading...</Text>;
+		return <LoadingIndicator isLoading={isLoading} />;
 	}
 
 	if (isError) {

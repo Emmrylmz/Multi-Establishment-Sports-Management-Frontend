@@ -22,7 +22,7 @@ const QuickActions = ({ user }) => {
 	};
 
 	const routeEventHistory = () => {
-		navigation.navigate('EventHistoryPage');
+		navigation.navigate('EventHistory');
 	};
 
 	return (
@@ -110,7 +110,7 @@ const QuickActions = ({ user }) => {
 
 						<TouchableOpacity
 							className="items-center p-4 mx-1 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
-							onPress={handleNewPracticePress}
+							onPress={() => navigation.navigate('CreateTeamPage')}
 						>
 							<Ionicons name="add-circle" size={30} color="#0D9488" />
 							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">{t("quickActions.createTeam")}</Text>

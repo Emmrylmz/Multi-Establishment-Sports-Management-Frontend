@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryService';
 import { PlayerCard } from '../../components';
 import FilterInput from '../../components/ui/Input/FilterInput';
+import LoadingIndicator from '../../components/ui/LoadingIndicator';
 
 const TeamDetailPage = ({ route, navigation }) => {
 	const { t } = useTranslation();
@@ -97,12 +98,7 @@ const TeamDetailPage = ({ route, navigation }) => {
 					placeholder={t('Search for players...')}
 				/>
 				{isLoading ? (
-					<View className="flex items-center justify-center">
-						<ActivityIndicator size="large" color="#4CAF50" />
-						<Text className="mt-2 text-gray-700 dark:text-gray-200">
-							{t('fetchMessages.loading')}
-						</Text>
-					</View>
+					<LoadingIndicator isLoading={isLoading} inline={true} />
 				) : teamUsers &&
 				  teamUsers.coach_infos &&
 				  teamUsers.coach_infos.length > 0 ? (
@@ -121,12 +117,7 @@ const TeamDetailPage = ({ route, navigation }) => {
 					{t('teamDetailPage.players')}
 				</Text>
 				{isLoading ? (
-					<View className="flex items-center justify-center">
-						<ActivityIndicator size="large" color="#4CAF50" />
-						<Text className="mt-2 text-gray-700 dark:text-gray-200">
-							{t('fetchMessages.loading')}
-						</Text>
-					</View>
+						<LoadingIndicator isLoading={isLoading} inline={true} />
 				) : teamUsers &&
 				  teamUsers.player_infos &&
 				  teamUsers.player_infos.length > 0 ? (

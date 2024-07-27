@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../../../../store';
 import { getAuthUser } from '../../../features/auth/auth.slice';
 import { Ionicons } from '@expo/vector-icons';
+import LoadingIndicator from '../../components/ui/LoadingIndicator';
 
 const EventsPage = () => {
   const user = useSelector((state: RootState) => getAuthUser(state));
@@ -40,11 +41,7 @@ const EventsPage = () => {
   );
 
   if (isLoading) {
-    return (
-      <SafeAreaView className="items-center justify-center flex-1 bg-gray-100 dark:bg-gray-900">
-        <Text className="text-gray-800 dark:text-gray-200">Loading events...</Text>
-      </SafeAreaView>
-    );
+    return <LoadingIndicator isLoading={isLoading} />;
   }
 
   if (isError) {

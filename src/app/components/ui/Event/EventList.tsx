@@ -5,6 +5,7 @@ import { ParamListBase } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { parseISO, isValid } from 'date-fns';
 import EventCard from './EventCard';
+import LoadingIndicator from '../LoadingIndicator';
 
 type Event = {
 	description: string;
@@ -64,7 +65,7 @@ const EventList: React.FC<EventListProps> = ({
 	}, [validEvents]);
 
 	if (isLoading) {
-		return <ActivityIndicator size="large" color="#4FD1C5" />;
+		return <LoadingIndicator isLoading={isLoading} />;
 	}
 
 	if (error) {
@@ -100,9 +101,7 @@ const EventList: React.FC<EventListProps> = ({
 			horizontal={orientation === 'horizontal'}
 			showsHorizontalScrollIndicator={false}
 			showsVerticalScrollIndicator={orientation === 'horizontal'}
-			contentContainerStyle={
-				orientation === 'vertical' ? { paddingHorizontal: 16 } : undefined
-			}
+
 		/>
 	);
 };

@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { useGetTeamInfoQuery } from '../../../features/query/teamQueryService';
 import { getAuthUser } from '../../../features/auth/auth.slice';
 import { useGetConstantFromKeyQuery } from '../../../features/query/constantsQueryService';
+import LoadingIndicator from '../../components/ui/LoadingIndicator';
 
 const ManagerPaymentPage = ({ navigation }) => {
   const user = useSelector((state: RootState) => getAuthUser(state));
@@ -53,12 +54,7 @@ const ManagerPaymentPage = ({ navigation }) => {
   );
 
   if (isLoading || isLoadingConstant) {
-    return (
-      <View className="items-center justify-center flex-1 bg-gray-50">
-        <Text className="text-lg font-semibold text-gray-600">Loading...</Text>
-        <ActivityIndicator size="large" color="#10B981" />
-      </View>
-    );
+    return <LoadingIndicator isLoading={isLoadingConstant} />;
   }
 
   if (isError || !data) {

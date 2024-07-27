@@ -23,6 +23,7 @@ import MapSection from '../../components/ui/Event/MapSection';
 import GoBackButton from '../../components/ui/GoBackButton';
 import { PlayerCard } from '../../components';
 import SubmitButton from '../../components/ui/Form/SubmitButton';
+import LoadingIndicator from '../../components/ui/LoadingIndicator';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -228,10 +229,7 @@ const EventDetailPage = ({ route, navigation }) => {
   }, [navigation, event_id, event_type, mergedData]);
 
   if (isTeamUsersLoading || isAttendanceLoading) {
-    return <SafeAreaView className='items-center justify-center flex-1'>
-      <Text>Loading...</Text>
-      <ActivityIndicator size="large" color="#00ff00" />
-    </SafeAreaView>;
+    return <LoadingIndicator isLoading={isTeamUsersLoading} />;
   }
 
   if (isTeamUsersError || isAttendanceError) {
