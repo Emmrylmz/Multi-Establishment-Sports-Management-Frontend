@@ -5,10 +5,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useTranslation } from 'react-i18next';
+import {useCreateTeamMutation} from '../../../features/query/teamQueryService';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const CreateTeamPage = ({navigation}) => {
+  const [createTeam] = useCreateTeamMutation();
   const { t } = useTranslation();
   const [form, setForm] = useState({
     team_category: null,
@@ -34,8 +36,13 @@ const CreateTeamPage = ({navigation}) => {
     });
   };
 
-  const handleSubmit = () => {
-    console.log('Team created:', form);
+  const handleSubmit = async () => {
+    try{
+      const response = await createTeam(form).unwrap();
+      console.log('Team created:', response);
+    }catch(error){
+      console.error('Failed to create team:', error.data);
+    }
   };
 
   const renderInputField = (name: string, placeholder: string, icon: string) => (

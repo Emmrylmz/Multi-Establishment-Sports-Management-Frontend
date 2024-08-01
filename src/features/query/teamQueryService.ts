@@ -16,10 +16,10 @@ const teamQueryService = createApi({
     }),
     // gets array of team_ids and array of user_ids to add, give only player_ids or only coach_ids array, no check on backend for roles
     insertUsersToTeams: builder.mutation({
-      query: ({ user_ids, team_ids }) => ({
-        url: '/teams/insert_users_and_teams',
-        method: 'GET',
-        body: { user_ids: user_ids, team_ids: team_ids },
+      query: (data) => ({
+        url: '/teams/insert_users_to_teams',
+        method: 'POST',
+        body: data
       }),
     }),
     getTeamInfo: builder.query({

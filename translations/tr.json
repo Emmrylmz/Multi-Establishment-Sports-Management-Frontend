@@ -284,7 +284,11 @@
 		"takeAttendancePage": {
 			"title": "Yoklama Al",
 			"update": "Yoklamayı Güncelle",
-			"submit": "Yoklamayı Kaydet"
+			"submit": "Yoklamayı Kaydet",
+			"submitting": "Kaydediliyor...",
+			"updateSuccess": "Yoklama kaydı başarıyla güncellendi",
+			"submitSuccess": "Yoklama kaydı başarıyla kaydedildi",
+			"submitError": "Yoklama kaydı kaydedilemedi. Lütfen tekrar deneyin."
 		}
 	},
 	"createTeamPage": {

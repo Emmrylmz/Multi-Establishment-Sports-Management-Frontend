@@ -285,7 +285,11 @@
 		"takeAttendancePage": {
 			"title": "Take Attendance",
 			"update": "Update Attendance",
-			"submit": "Submit Attendance"
+			"submit": "Submit Attendance",
+			"submitting": "Submitting...",
+			"updateSuccess": "Attendance records updated successfully",
+			"submitSuccess": "Attendance records submitted successfully",
+			"submitError": "Failed to submit attendance. Please try again."
 		}
 	},
 	"createTeamPage": {
