@@ -9,7 +9,8 @@ import { useSelector } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import LoadingIndicator from '../../components/ui/LoadingIndicator';
+import LoadingIndicator from '../../components/ui/fetch/LoadingIndicator';
+import NoTeamsComponent from '../../components/ui/fetch/NoTeamsComponent';
 
 // Define types for the props and state
 type Team = {
@@ -21,7 +22,7 @@ type Team = {
   province: string;
 };
 
-interface TeamListPageProps {
+type TeamListPageProps = {
 	navigation: NativeStackNavigationProp<ParamListBase>;
 }
 
@@ -35,11 +36,7 @@ const TeamListPage: React.FC<TeamListPageProps> = ({ navigation }) => {
 	}
 
 	if (isError || !data) {
-		return (
-			<View>
-				<Text>Error loading teams.</Text>
-			</View>
-		);
+		return  <NoTeamsComponent />;
 	}
 
 	return (

@@ -9,6 +9,7 @@ const UpcomingEvents = ({ navigation, user }) => {
 		data: events,
 		isError,
 		isLoading,
+		refetch
 	} = useListUpcomingEventsQuery(user.teams);
 
 	const { t } = useTranslation();
@@ -25,6 +26,7 @@ const UpcomingEvents = ({ navigation, user }) => {
 					teamEvents={events || []}
 					isLoading={isLoading}
 					error={isError}
+					refetch={refetch}
 				/>
 			}
 		</View>

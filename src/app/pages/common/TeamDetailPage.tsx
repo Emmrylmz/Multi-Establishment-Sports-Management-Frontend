@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryService';
 import { PlayerCard } from '../../components';
 import FilterInput from '../../components/ui/Input/FilterInput';
-import LoadingIndicator from '../../components/ui/LoadingIndicator';
+import LoadingIndicator from '../../components/ui/fetch/LoadingIndicator';
 
 const TeamDetailPage = ({ route, navigation }) => {
 	const { t } = useTranslation();
@@ -95,7 +95,7 @@ const TeamDetailPage = ({ route, navigation }) => {
 				<FilterInput
 					value={filterText}
 					onChangeText={setFilterText}
-					placeholder={t('Search for players...')}
+					placeholder={t('teamDetailPage.inputPlaceholder')}
 				/>
 				{isLoading ? (
 					<LoadingIndicator isLoading={isLoading} inline={true} />
@@ -133,7 +133,7 @@ const TeamDetailPage = ({ route, navigation }) => {
 
 			<View className="px-4 mb-6">
 				<Text className="text-sm text-gray-800 dark:text-gray-300">
-					Team created on: {new Date(created_at).toLocaleDateString()}
+					{t("teamDetailPage.teamCreatedOn")}: {new Date(created_at).toLocaleDateString()}
 				</Text>
 			</View>
 		</ScrollView>

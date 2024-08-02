@@ -26,7 +26,8 @@ import type { RootState } from '../../../../store';
 import { getAuthUser } from '../../../features/auth/auth.slice';
 import { usePaymentLogic } from '../../../hooks/usePaymentLogic';
 import YearSelector from '../../components/ui/payments/YearSelector';
-import LoadingIndicator from '../../components/ui/LoadingIndicator';
+import LoadingIndicator from '../../components/ui/fetch/LoadingIndicator';
+import ErrorComponent from '../../components/ui/fetch/ErrorComponent';
 
 const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 	const { t } = useTranslation();
@@ -176,7 +177,11 @@ const ManagerPlayerPaymentDetailPage = ({ route, navigation }) => {
 	]);
 
 	if (isLoadingPayments) {
-		<LoadingIndicator isLoading={isLoadingPayments} />;
+		return <LoadingIndicator isLoading={isLoadingPayments} />;
+	}
+
+	if(errorLoadingPayments){
+		return <ErrorComponent onRetry={refetch} />;
 	}
 
 	return (

@@ -5,7 +5,8 @@ import { ParamListBase } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { parseISO, isValid } from 'date-fns';
 import EventCard from './EventCard';
-import LoadingIndicator from '../LoadingIndicator';
+import LoadingIndicator from '../fetch/LoadingIndicator';
+import ErrorComponent from '../fetch/ErrorComponent';
 
 type Event = {
 	description: string;
@@ -29,6 +30,7 @@ type EventListProps = {
 	teamEvents: TeamEvents[];
 	isLoading: boolean;
 	error: any;
+	refetch: () => void;
 }
 
 const EventList: React.FC<EventListProps> = ({
@@ -37,6 +39,7 @@ const EventList: React.FC<EventListProps> = ({
 	teamEvents,
 	isLoading,
 	error,
+	refetch
 }) => {
 	const { t } = useTranslation();
 	const flattenedEvents = useMemo(() => {
@@ -69,7 +72,7 @@ const EventList: React.FC<EventListProps> = ({
 	}
 
 	if (error) {
-		return <Text className="text-red-500">{t("fetchMessages.error")}</Text>;
+		return <ErrorComponent onRetry={refetch} />;
 	}
 
 	const handleEventPress = (event: Event & { team_name: string }) => {

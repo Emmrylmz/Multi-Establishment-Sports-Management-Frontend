@@ -74,7 +74,9 @@
 	},
 	"teamDetailPage": {
 		"coaches": "Coaches",
-		"players": "Players"
+		"players": "Players",
+		"teamCreatedOn": "Team Created On",
+		"inputPlaceholder": "Search player"
 	},
 	"playerPaymentDetail": {
 		"duesPayment": "Dues Payment",
@@ -130,12 +132,15 @@
 		"cancel": "Cancel"
 	},
 	"fetchMessages": {
+		"errorTitle": "Oops! Something went wrong.",
 		"loading": "Loading...",
+		"noTeamsTitle": "No Teams Found",
 		"error": "An error occurred while fetching data.",
 		"noData": "No data found.",
+		"retry": "Retry",
 		"noCoaches": "No Coaches added yet.",
 		"noPlayers": "No Players added yet.",
-		"noTeams": "You have no teams yet."
+		"noTeams": "No team found."
 	},
 	"confirmOrCancelView": {
 		"markAsPaid": "Mark as paid",
@@ -223,6 +228,7 @@
 	},
 	"managerPaymentPage": {
 		"title": "Team Payments",
+		"inputPlaceholder": "Search Team",
 		"topBar": {
 			"monthlyPayments": "Monthly Payments",
 			"otherPayments": "Other Payments"

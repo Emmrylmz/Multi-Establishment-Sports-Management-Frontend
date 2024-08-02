@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../../../../store';
 import { getAuthUser } from '../../../features/auth/auth.slice';
 import { Ionicons } from '@expo/vector-icons';
-import LoadingIndicator from '../../components/ui/LoadingIndicator';
+import LoadingIndicator from '../../components/ui/fetch/LoadingIndicator';
 
 const EventsPage = () => {
   const user = useSelector((state: RootState) => getAuthUser(state));

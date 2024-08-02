@@ -6,20 +6,23 @@ import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import { useGetTeamInfoQuery } from '../../../features/query/teamQueryService'
 import { getAuthUser } from '../../../features/auth/auth.slice'
-import LoadingIndicator from '../../components/ui/LoadingIndicator';
+import LoadingIndicator from '../../components/ui/fetch/LoadingIndicator';
+import {useTranslation} from 'react-i18next';
+import ErrorComponent from '../../components/ui/fetch/ErrorComponent';
 
 const CoachTeamsPage = ({navigation}) => {
+  const {t} = useTranslation();
   const isDark = useColorScheme() === 'dark';
   const user = useSelector((state: RootState) => getAuthUser(state));
-  const { data, isLoading, isError } = useGetTeamInfoQuery(user?.teams);
+  const { data, isLoading, isError,refetch } = useGetTeamInfoQuery(user?.teams);
   if (isLoading) {
     return <LoadingIndicator isLoading={isLoading} />;
   }
   if (isError || !data) {
-    return <View><Text>Error loading teams.</Text></View>;
+    return <ErrorComponent onRetry={refetch} />;
   }
   if(data.length === 0){
-    return <View><Text>No team found</Text></View>
+    return <View><Text>{t("fetchMessages.noTeams")}</Text></View>
   }
   return (
     <AppLayout>

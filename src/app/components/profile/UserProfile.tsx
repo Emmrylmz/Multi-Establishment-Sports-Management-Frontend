@@ -3,11 +3,13 @@ import React from 'react';
 import ProfileContainer from './ProfileContainer';
 import { useGetUserInfoQuery } from '../../../features/query/userInfoQueryService';
 import GoBackButton from '../ui/GoBackButton';
-import LoadingIndicator from '../../components/ui/LoadingIndicator';
+import LoadingIndicator from '../ui/fetch/LoadingIndicator';
+import { useTranslation } from 'react-i18next';
+import ErrorComponent from '../ui/fetch/ErrorComponent';
 
 const UserProfile = ({ route }) => {
 	const { user_id } = route.params;
-	const { data: User, isLoading, isError } = useGetUserInfoQuery(user_id);
+	const { data: User, isLoading, isError,refetch } = useGetUserInfoQuery(user_id);
 
 
 	if (isLoading) {
@@ -15,7 +17,7 @@ const UserProfile = ({ route }) => {
 	}
 
 	if (isError) {
-		return <Text>Error loading user data.</Text>;
+		return <ErrorComponent onRetry={refetch} />;
 	}
 
 	return (

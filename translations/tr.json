@@ -74,7 +74,9 @@
 	},
 	"teamDetailPage": {
 		"coaches": "Antrenörler",
-		"players": "Oyuncular"
+		"players": "Oyuncular",
+		"teamCreatedOn": "Takım Oluşturulma Tarihi",
+		"inputPlaceholder": "Oyuncu ara"
 	},
 	"playerPaymentDetail": {
 		"duesPayment": "Aidat Ödemesi",
@@ -130,12 +132,15 @@
 		"cancel": "İptal"
 	},
 	"fetchMessages": {
+		"errorTitle": "Oops! Bir şeyler ters gitti.",
 		"loading": "Yükleniyor...",
 		"error": "Veriler alınırken bir hata oluştu.",
+		"noTeamsTitle": "Takım Yok",
+		"retry": "Tekrar Dene",
 		"noData": "Veri bulunamadı.",
 		"noCoaches": "Eklenmiş Antrenör Yok.",
 		"noPlayers": "Eklenmiş Oyuncu Yok.",
-		"noTeams": "Takım yok"
+		"noTeams": "Takım yok."
 	},
 	"confirmOrCancelView": {
 		"markAsPaid": "Ödenmiş olarak işaretle",
@@ -223,6 +228,7 @@
 	},
 	"managerPaymentPage": {
 		"title": "Takım Ödemeleri",
+		"inputPlaceholder": "Takım ara",
 		"topBar": {
 			"monthlyPayments": "Aylık Ödemeler",
 			"otherPayments": "Diğer Ödemeler"

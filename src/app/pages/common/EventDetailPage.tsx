@@ -6,12 +6,11 @@ import {
   Linking,
   Animated,
   Dimensions,
-  TouchableOpacity,
-  Modal,
-
 } from 'react-native';
+import PlayerActionModal from '../../components/ui/Modals/PlayerActionModal';
+import type { RootState } from '../../../../store';
+import { getAuthUser } from '../../../features/auth/auth.slice';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
 import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryService';
 import { useFetchAttendancesByEventIdQuery } from '../../../features/query/eventQueryService';
 import AnimatedHeader from '../../components/ui/Form/AnimatedHeader';
@@ -20,67 +19,16 @@ import MapSection from '../../components/ui/Event/MapSection';
 import GoBackButton from '../../components/ui/GoBackButton';
 import { PlayerCard } from '../../components';
 import SubmitButton from '../../components/ui/Form/SubmitButton';
-import LoadingIndicator from '../../components/ui/LoadingIndicator';
+import LoadingIndicator from '../../components/ui/fetch/LoadingIndicator';
 import { useTranslation } from 'react-i18next';
+import ErrorComponent from '../../components/ui/fetch/ErrorComponent';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-const PlayerActionModal = ({ visible, onClose, playerName, onSeeDetails, onRatePlayer }) => {
-  const { t } = useTranslation();
-  return (
-    <Modal
-    animationType="slide"
-    transparent={true}
-    visible={visible}
-    onRequestClose={onClose}
-  >
-    <TouchableOpacity 
-      style={{ flex: 1, justifyContent: 'flex-end' }}
-      activeOpacity={1} 
-      onPress={onClose}
-    >
-      <View style={{
-        backgroundColor: 'white',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        padding: 20,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: -2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-      }}>
-        <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' }}>
-          {playerName}
-        </Text>
-        <TouchableOpacity 
-          style={{ 
-            backgroundColor: '#3B82F6', 
-            padding: 15, 
-            borderRadius: 10, 
-            marginBottom: 10 
-          }}
-          onPress={onSeeDetails}
-        >
-          <Text style={{ color: 'white', textAlign: 'center', fontSize: 16 }}>{t("eventDetailPage.playerActionModal.seePlayerDetails")}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={{ 
-            backgroundColor: '#10B981', 
-            padding: 15, 
-            borderRadius: 10 
-          }}
-          onPress={onRatePlayer}
-        >
-          <Text style={{ color: 'white', textAlign: 'center', fontSize: 16 }}>{t("eventDetailPage.playerActionModal.ratePlayer")}</Text>
-        </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
-  </Modal>
-  )
-}
+
 
 const EventDetailPage = ({ route, navigation }) => {
+  const user = useSelector((state: RootState) => getAuthUser(state));
   const { t } = useTranslation();
   const {
     event_id,
@@ -93,7 +41,6 @@ const EventDetailPage = ({ route, navigation }) => {
     team_id,
   } = route.params;
   const [showMap, setShowMap] = useState(false);
-  const user = useSelector((state: RootState) => state.auth.user);
   const eventDate = new Date(start_datetime);
   const now = new Date();
   const hasEventPassed = now > eventDate;
@@ -107,6 +54,7 @@ const EventDetailPage = ({ route, navigation }) => {
     data: attendanceData = [],
     isLoading: isAttendanceLoading,
     isError: isAttendanceError,
+    refetch: refetchAttendance,
   } = useFetchAttendancesByEventIdQuery(event_id, { skip: !hasEventPassed });
 
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -235,7 +183,7 @@ const EventDetailPage = ({ route, navigation }) => {
   }
 
   if (isTeamUsersError || isAttendanceError) {
-    return <Text>Error loading data</Text>;
+    return <ErrorComponent onRetry={refetchAttendance}/>;
   }
 
   return (
@@ -308,9 +256,7 @@ const EventDetailPage = ({ route, navigation }) => {
                   key={player._id}
                   name={player.name}
                   image={{
-                    uri:
-                      player.photo ||
-                      'https://avatar.iran.liara.run/public/boy',
+                    uri: player.photo || 'https://avatar.iran.liara.run/public/boy',
                   }}
                   position="Player"
                   onPress={() => handlePlayerCardPress(player._id, player.name)}
@@ -341,13 +287,15 @@ const EventDetailPage = ({ route, navigation }) => {
         </View>
       </Animated.ScrollView>
   
-      <PlayerActionModal
-        visible={!!selectedPlayer}
-        onClose={closeModal}
-        playerName={selectedPlayer?.name}
-        onSeeDetails={handleSeeDetails}
-        onRatePlayer={handleRatePlayer}
-      />
+      {user?.role === 'Coach' && (
+        <PlayerActionModal
+          visible={!!selectedPlayer}
+          onClose={closeModal}
+          playerName={selectedPlayer?.name}
+          onSeeDetails={handleSeeDetails}
+          onRatePlayer={handleRatePlayer}
+        />
+      )}
     </>
   );
 };

@@ -19,7 +19,7 @@ import {
   useMakeSinglePaymentMutation,
   useUpdatePaymentMutation,
 } from '../../../features/query/paymentQueryService';
-import LoadingIndicator from '../../components/ui/LoadingIndicator';
+import LoadingIndicator from '../../components/ui/fetch/LoadingIndicator';
 
 const PaymentItem = ({ item, onPress }) => {
   const { t } = useTranslation();

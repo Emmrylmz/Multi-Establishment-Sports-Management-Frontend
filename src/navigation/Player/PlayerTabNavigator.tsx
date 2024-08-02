@@ -11,6 +11,7 @@ import ManagerPlayerPaymentDetailPage from '../../app/pages/manager/MangerPlayer
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../store';
 import { getAuthUser } from '../../features/auth/auth.slice';
+import PlayerProgressPage from '../../app/pages/player/PlayerProgressPage';
 
 const PlayerTabNavigator = () => {
   const { t } = useTranslation();
@@ -50,7 +51,7 @@ const PlayerTabNavigator = () => {
       />
       <Tab.Screen
         name="Teams"
-        component={CommonTeamStackNavigator}
+        component={PlayerProgressPage}
         options={{ title: t("tabNavigator.progress") }}
       />
       <Tab.Screen

@@ -7,13 +7,15 @@ import { useSelector } from 'react-redux';
 import { useGetTeamInfoQuery } from '../../../features/query/teamQueryService';
 import { getAuthUser } from '../../../features/auth/auth.slice';
 import { useGetConstantFromKeyQuery } from '../../../features/query/constantsQueryService';
-import LoadingIndicator from '../../components/ui/LoadingIndicator';
+import LoadingIndicator from '../../components/ui/fetch/LoadingIndicator';
 import { useTranslation } from 'react-i18next';
+import ErrorComponent from '../../components/ui/fetch/ErrorComponent';
+import NoTeamsComponent from '../../components/ui/fetch/NoTeamsComponent';
 
 const ManagerPaymentPage = ({ navigation }) => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => getAuthUser(state));
-  const { data, isLoading, isError } = useGetTeamInfoQuery(user?.teams);
+  const { data, isLoading, isError,refetch } = useGetTeamInfoQuery(user?.teams);
   const [filterText, setFilterText] = useState('');
   
   const [constantKey, setConstantKey] = useState(null);
@@ -59,23 +61,11 @@ const ManagerPaymentPage = ({ navigation }) => {
   }
 
   if (isError || !data) {
-    return (
-      <View className="items-center justify-center flex-1 bg-gray-50">
-        <Text className="text-lg font-semibold text-red-500">
-          Error loading teams.
-        </Text>
-      </View>
-    );
+    return <ErrorComponent onRetry={refetch} />;
   }
 
   if (data.length === 0) {
-    return (
-      <View className="items-center justify-center flex-1 bg-gray-50">
-        <Text className="text-lg font-semibold text-gray-600">
-          No team found
-        </Text>
-      </View>
-    );
+    return <NoTeamsComponent />;
   }
 
   return (
@@ -88,7 +78,7 @@ const ManagerPaymentPage = ({ navigation }) => {
           <FilterInput
             value={filterText}
             onChangeText={setFilterText}
-            placeholder="Search teams..."
+            placeholder={t("managerPaymentPage.inputPlaceholder")}
           />
         </View>
       </View>
