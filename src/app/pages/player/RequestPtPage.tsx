@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, useColorScheme, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, useColorScheme, ScrollView, TouchableOpacity } from 'react-native';
 import { AppLayout, InputField } from '../../components';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -8,40 +8,91 @@ import CalendarPicker from 'react-native-calendar-picker';
 import { useCreate_private_lessonMutation } from '../../../features/query/personalTrainingService';
 import { useGetAllCoachesQuery } from '../../../features/query/teamQueryService';
 import { useAuthStatus } from '../../../hooks/useAuthStatus';
+import Toast from '../../components/ui/toasts/Toast';
 
-const RequestPtPage = ({ navigation }) => {
+type RequestPtPageProps = {
+  navigation: any; // Replace 'any' with the appropriate navigation type from your navigation library
+}
+
+type ToastConfig = {
+  show: boolean;
+  message: string;
+  type: 'error' | 'success' | 'info' | 'warning';
+};
+
+type FormData = {
+  coach_id: string;
+  start_datetime: string | null;
+  description: string;
+  player_id: string | undefined;
+  place: string;
+  end_datetime: string;
+  lesson_fee: number;
+  paid: boolean;
+  request_status: string;
+  request_date: string;
+  preferred_date: string;
+  preferred_time: string;
+  request_notes: string;
+  response_date: string;
+  response_notes: string;
+};
+
+type FormattedCoach = {
+  label: string;
+  value: string;
+}
+
+type TurkishLocale = {
+  monthNames: string[];
+  dayNames: string[];
+}
+
+type AvailabilityData = {
+  available: boolean;
+  times: string[];
+}
+
+type CoachAvailability = {
+  [date: string]: AvailabilityData;
+}
+
+type DummyAvailableTimes = {
+  [coachId: string]: CoachAvailability;
+}
+
+type CustomDateStyle = {
+  date: Date;
+  style: {
+    backgroundColor: string;
+  };
+  textStyle: {
+    color: string;
+  };
+}
+
+const RequestPtPage: React.FC<RequestPtPageProps> = ({ navigation }) => {
   const { user } = useAuthStatus();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const isDark = useColorScheme() === 'dark';
-  const { data: coachesData, } = useGetAllCoachesQuery(user?.province || 'Izmir');
-  const formattedCoaches = React.useMemo(() => {
+  const { data: coachesData } = useGetAllCoachesQuery(user?.province || 'Izmir');
+  const formattedCoaches: FormattedCoach[] = React.useMemo(() => {
     return coachesData?.map(coach => ({
       label: coach.name,
       value: coach._id
     })) || [];
   }, [coachesData]);
-  console.log('formated coaches', formattedCoaches);
-  const [selectedCoach, setSelectedCoach] = useState<string | null>(null);
-  const [availableTimes, setAvailableTimes] = useState([]);
-  const [createPrivateLesson] = useCreate_private_lessonMutation();
 
-  type FormData = {
-    coach_id: string;
-    start_datetime: string | null;
-    description: string;
-    player_id: string | undefined;
-    place: string;
-    end_datetime: string;
-    lesson_fee: number;
-    paid: boolean;
-    request_status: string;
-    request_date: string;
-    preferred_date: string;
-    preferred_time: string;
-    request_notes: string;
-    response_date: string;
-    response_notes: string;
-  };
+  const [selectedCoach, setSelectedCoach] = useState<string | null>(null);
+  const [availableTimes, setAvailableTimes] = useState<string[]>([]);
+  const [createPrivateLesson] = useCreate_private_lessonMutation();
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  const [toastConfig, setToastConfig] = useState<ToastConfig>({
+    show: false,
+    message: '',
+    type: 'info'
+  });
 
   const [formData, setFormData] = useState<FormData>({
     coach_id: '',
@@ -61,7 +112,7 @@ const RequestPtPage = ({ navigation }) => {
     response_notes: 'string'
   });
 
-  const turkishLocale = {
+  const turkishLocale: TurkishLocale = {
     monthNames: [
       t("months.january"), t("months.february"), t("months.march"), 
       t("months.april"), t("months.may"), t("months.june"), 
@@ -74,12 +125,12 @@ const RequestPtPage = ({ navigation }) => {
     ]
   };
 
-  const dummyAvailableTimes = {
+  const dummyAvailableTimes: DummyAvailableTimes = {
     '667885399e20386c38d7d03e': {
-      '2024-07-19T00:00:00.000Z': { available: true, times: ['2024-07-19T09:00:00.000Z', '2024-07-19T16:00:00.000Z'] },
-      '2024-07-23T00:00:00.000Z': { available: true, times: ['2024-07-23T10:00:00.000Z'] },
-      '2024-07-24T00:00:00.000Z': { available: true, times: ['2024-07-24T11:00:00.000Z', '2024-07-24T15:00:00.000Z'] },
-      '2024-07-25T00:00:00.000Z': { available: false, times: [] }
+      '2024-08-03T00:00:00.000Z': { available: true, times: ['2024-08-03T09:00:00.000Z', '2024-08-03T16:00:00.000Z'] },
+      '2024-08-04T00:00:00.000Z': { available: true, times: ['2024-08-04T10:00:00.000Z'] },
+      '2024-08-05T00:00:00.000Z': { available: true, times: ['2024-08-05T11:00:00.000Z', '2024-07-24T15:00:00.000Z'] },
+      '2024-08-06T00:00:00.000Z': { available: false, times: [] }
     },
     '2': {
       '2024-07-15T00:00:00.000Z': { available: true, times: ['2024-07-15T11:00:00.000Z'] },
@@ -102,31 +153,55 @@ const RequestPtPage = ({ navigation }) => {
     const dayData = dummyAvailableTimes[selectedCoach][formattedDate];
   
     if (dayData?.available) {
+      setSelectedDate(date);
       setFormData(prev => ({ ...prev, preferred_date: formattedDate }));
       setAvailableTimes(dayData.times);
     } else {
-      Alert.alert('No Availability', 'The selected coach is not available on this day. Please choose another date.');
+      // Don't update selectedDate for unavailable days
+      showToast(t("requestPtPage.noAvailableDayError"), "warning");
     }
+  };
+
+  const showToast = (message: string, type: ToastConfig['type'] = 'info') => {
+    setToastConfig({
+      show: true,
+      message,
+      type
+    });
+
+    setTimeout(() => {
+      setToastConfig(prev => ({ ...prev, show: false }));
+    }, 3000);
   };
 
   const handleTimeSelect = (time: string) => {
     setFormData(prev => ({ ...prev, preferred_time: time, start_datetime: time }));
   };
   
-  const handleCoachSelect = coachId => {
+  const handleCoachSelect = (coachId: string) => {
     setSelectedCoach(coachId);
     setFormData(prev => ({ ...prev, coach_id: coachId, preferred_date: '', preferred_time: '', start_datetime: null }));
   };
 
-  const getCustomDatesStyles = () => {
+  const getCustomDatesStyles = (): CustomDateStyle[] => {
     if (!selectedCoach) return [];
   
-    return Object.entries(dummyAvailableTimes[selectedCoach]).map(([date, dayData]) => ({
-      date: new Date(date),
-      style: { backgroundColor: dayData.available ? '#4CAF50' : '#FF5252' },
-      textStyle: { color: 'white' }
-    }));
+    return Object.entries(dummyAvailableTimes[selectedCoach]).map(([date, dayData]) => {
+      const currentDate = new Date(date);
+      const isSelected = selectedDate && selectedDate.toDateString() === currentDate.toDateString();
+      return {
+        date: currentDate,
+        style: { 
+          backgroundColor: dayData.available 
+            ? (isSelected ? '#007AFF' : '#4CAF50')
+            : '#FF5252'
+        },
+        textStyle: { color: 'white' },
+        containerStyle: []
+      };
+    });
   };
+  
 
   const handleSubmitRequest = async () => {
     if (formData.coach_id && formData.start_datetime) {
@@ -135,20 +210,19 @@ const RequestPtPage = ({ navigation }) => {
       try {
         await createPrivateLesson(updatedFormData).unwrap();
         console.log('Submitting request:', updatedFormData);
-        Alert.alert('Success', 'Your request has been submitted successfully!');
+        showToast(t("requestPtPage.submitSuccess"), "success");
       } catch (error) {
         console.error('Failed to submit request:', error);
-        Alert.alert('Error', 'There was an error submitting your request. Please try again.');
+        showToast("There was an error submitting your request. Please try again.", "error");
       }
     } else {
-      Alert.alert('Incomplete Form', 'Please select a coach, date, and time before submitting.');
+      showToast("Please select a coach, date, and time before submitting.", "warning");
     }
   };
-
-
+  
   return (
     <AppLayout>
-      <ScrollView className="flex-1">
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center justify-between w-full mb-6">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={24} color={isDark ? 'white' : 'black'} />
@@ -185,50 +259,51 @@ const RequestPtPage = ({ navigation }) => {
               weekdays={turkishLocale.dayNames}
               previousTitle={t('calendar.previous')}
               nextTitle={t('calendar.next')}
+              selectedDayStyle={{}} // This will allow our custom styles to take precedence
             />
           </>
         )}
 
-{formData.preferred_date && formData.coach_id && (
-  <>
-    <Text className="mt-6 mb-2 text-lg font-semibold text-black dark:text-white">{t("requestPtPage.availableHours")}</Text>
-    <View className="flex flex-row flex-wrap mt-2 mb-4">
-      {availableTimes.map((time, index) => {
-        const timeObj = new Date(time);
-        const formattedTime = timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        return (
-          <TouchableOpacity
-            key={index}
-            className={`flex flex-row items-center justify-center p-2 m-1 rounded-full w-20 h-10 ${
-              formData.preferred_time === time 
-                ? 'bg-black dark:bg-white' 
-                : 'bg-gray-100 dark:bg-gray-800'
-            }`}
-            onPress={() => handleTimeSelect(time)}
-          >
-            <Text 
-              className={`text-xs ${
-                formData.preferred_time === time 
-                  ? 'text-white dark:text-black' 
-                  : 'text-black dark:text-white'
-              }`}
-            >
-              {formattedTime}
-            </Text>
-            {formData.preferred_time === time && (
-              <Ionicons 
-                name="checkmark-circle" 
-                size={16} 
-                color={isDark ? 'black' : 'white'} 
-                className="ml-1"
-              />
-            )}
-          </TouchableOpacity>
-        );
-      })}
-    </View>
-  </>
-)}
+        {formData.preferred_date && formData.coach_id && (
+          <>
+            <Text className="mt-6 mb-2 text-lg font-semibold text-black dark:text-white">{t("requestPtPage.availableHours")}</Text>
+            <View className="flex flex-row flex-wrap mt-2 mb-4">
+              {availableTimes.map((time, index) => {
+                const timeObj = new Date(time);
+                const formattedTime = timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    className={`flex flex-row items-center justify-center border border-black p-2 m-1 rounded-full w-20 h-10 ${
+                      formData.preferred_time === time 
+                        ? 'bg-black dark:bg-white' 
+                        : 'bg-gray-100 dark:bg-gray-800'
+                    }`}
+                    onPress={() => handleTimeSelect(time)}
+                  >
+                    <Text 
+                      className={`text-xs ${
+                        formData.preferred_time === time 
+                          ? 'text-white dark:text-black' 
+                          : 'text-black dark:text-white'
+                      }`}
+                    >
+                      {formattedTime}
+                    </Text>
+                    {formData.preferred_time === time && (
+                      <Ionicons 
+                        name="checkmark-circle" 
+                        size={16} 
+                        color={isDark ? 'black' : 'white'} 
+                        className="ml-1"
+                      />
+                    )}
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </>
+        )}
 
         {formData.preferred_time && formData.preferred_date && formData.coach_id && (
           <InputField
@@ -249,10 +324,21 @@ const RequestPtPage = ({ navigation }) => {
           disabled={!(formData.coach_id && formData.preferred_date && formData.preferred_time)}
         >
           <Text className={`font-semibold text-center ${formData.coach_id && formData.preferred_date && formData.preferred_time ? 'text-white dark:text-black' : 'text-gray-500 dark:text-gray-400'}`}>
-          {t("requestPtPage.submit")}
+            {t("requestPtPage.submit")}
           </Text>
         </TouchableOpacity>
       </ScrollView>
+
+      {toastConfig.show && (
+        <Toast
+          message={toastConfig.message}
+          type={toastConfig.type}
+          position="top-right"
+          animationType="slide"
+          duration={4000}
+          onClose={() => setToastConfig(prev => ({ ...prev, show: false }))}
+        />
+      )}
     </AppLayout>
   );
 };

@@ -1,6 +1,6 @@
 import { View, Text, useColorScheme, ScrollView, TouchableOpacity, Modal, Alert } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { AppLayout } from '../../components'
 import { Ionicons } from '@expo/vector-icons'
 import { useCoach_private_lessonsQuery, useApprove_private_lessonMutation } from '../../../features/query/personalTrainingService'
@@ -21,7 +21,11 @@ const ApprovePtRequestsPage = ({navigation}) => {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [selectedTime, setSelectedTime] = useState(new Date());
 
-  console.log('selectedRequest: ', selectedRequest);
+  useEffect(() => {
+    if (selectedRequest) {
+      setSelectedTime(new Date(selectedRequest.start_datetime));
+    }
+  }, [selectedRequest]);
 
   const handleApprove = (request) => {
     setSelectedRequest(request);
@@ -104,7 +108,7 @@ const ApprovePtRequestsPage = ({navigation}) => {
           <View className="w-11/12 p-6 bg-white shadow-lg dark:bg-gray-800 rounded-2xl">
             <Text className="mb-4 text-2xl font-bold text-gray-800 dark:text-white">{t("ptRequestPage.modal.title")}</Text>
             <Text className="mb-6 text-base text-gray-600 dark:text-gray-300">{t("ptRequestPage.modal.description")}</Text>
-            
+            <Text className="mb-6 text-base text-gray-600 dark:text-gray-300">{t("ptRequestPage.modal.infoMessage")}</Text>
             <DateTimeSelection
               label={t("ptRequestPage.modal.selectTime")}
               date={selectedTime}

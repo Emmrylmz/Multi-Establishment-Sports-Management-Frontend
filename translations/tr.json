@@ -184,9 +184,10 @@
 		"modal": {
 			"title": "İsteği Onayla",
 			"description": "Bu isteği onaylamak istediğinizden emin misiniz?",
+			"infoMessage": "Saat uymuyorsa, Uygun saati seçip onaylayabilirsiniz.",
 			"selectTime": "Saat seç",
 			"confirm": "Onayla",
-			"cancel": "Reddet"
+			"cancel": "Kapat"
 		}
 	},
 	"todaysPtPage": {
@@ -220,7 +221,9 @@
 		"selectCoach": "Antrenör Seç",
 		"selectDate": "Gün Seç",
 		"availableHours": "Uygun Saatler",
-		"submit": "İsteği Gönder"
+		"submit": "İsteği Gönder",
+		"noAvailableDayError": "Seçilen günde bu antrenör için uygun saat yok.",
+		"submitSuccess": "İsteğiniz başarılı bir şekilde gönderildi."
 	},
 	"calendar": {
 		"previous": "Önceki",

@@ -1,5 +1,8 @@
 import React, { memo, useCallback, useState } from 'react';
 import { View, Text, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../../store';
+import { getAuthUser } from '../../../features/auth/auth.slice';
 import { useTranslation } from 'react-i18next';
 import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryService';
 import { PlayerCard } from '../../components';
@@ -7,6 +10,7 @@ import FilterInput from '../../components/ui/Input/FilterInput';
 import LoadingIndicator from '../../components/ui/fetch/LoadingIndicator';
 
 const TeamDetailPage = ({ route, navigation }) => {
+	const user = useSelector((state: RootState) => getAuthUser(state));
 	const { t } = useTranslation();
 	const {
 		from,
@@ -27,19 +31,23 @@ const TeamDetailPage = ({ route, navigation }) => {
 
 	const [filterText, setFilterText] = useState('');
 
-	const navigateToUserDetail = (user) => {
-		if (from === 'manager') {
-			return navigation.navigate('ManagerPaymentStackNavigator', {
-				screen: 'PlayerPayments',
-				params: {
-					player_id: user._id,
-					team_id: team_id,
-					discount: user.discount,
-					monthlyPaymentAmount: monthlyPaymentAmount,
-				},
-			});
+	const navigateToUserDetail = (member) => {
+		if(user.role === 'Player'){
+			return
+		}else{
+			if (from === 'manager') {
+				return navigation.navigate('ManagerPaymentStackNavigator', {
+					screen: 'PlayerPayments',
+					params: {
+						player_id: member._id,
+						team_id: team_id,
+						discount: member.discount,
+						monthlyPaymentAmount: monthlyPaymentAmount,
+					},
+				});
+			}
+			navigation.navigate('UserProfile', { user_id: user._id });
 		}
-		navigation.navigate('UserProfile', { user_id: user._id });
 	};
 
 	const renderMember = (member, role) => (

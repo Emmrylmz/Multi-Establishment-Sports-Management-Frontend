@@ -184,6 +184,7 @@
 		"modal": {
 			"title": "Confirm Approval",
 			"description": "Are you sure you want to approve this request?",
+			"infoMessaage": "If time is not suitable, you can select a new time.",
 			"selectTime": "Select Time",
 			"confirm": "Approve",
 			"cancel": "Cancel"
@@ -220,7 +221,9 @@
 		"selectCoach": "Select Coach",
 		"selectDate": "Select Date",
 		"availableHours": "Available Hours",
-		"submit": "Submit Request"
+		"submit": "Submit Request",
+		"noAvailableDayError": "This coach has no available time for this day.",
+		"submitSuccess": "Your request has been submitted successfully."
 	},
 	"calendar": {
 		"previous": "Previous",
