@@ -45,17 +45,6 @@ const QuickActions = ({ user }) => {
 						</TouchableOpacity>
 
 						<TouchableOpacity
-							className="items-center p-4 mr-2 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
-							onPress={() => navigation.navigate('CreateComponentPage')}
-						>
-							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">
-								Create Component
-							</Text>
-							<Ionicons name="add-circle" size={30} color="#0D9488" />
-						</TouchableOpacity>
-
-
-						<TouchableOpacity
 							className="items-center p-4 ml-2 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
 							onPress={() => navigation.navigate('AddUserPage')}
 						>
@@ -84,13 +73,6 @@ const QuickActions = ({ user }) => {
 						>
 							<Ionicons name="basketball" size={30} color="#0D9488" />
 							<Text className="mt-2 text-sm text-center text-gray-600 dark:text-gray-100">{t("quickActions.createEvent")}</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							className="items-center p-4 mx-1 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"
-							onPress={() => navigation.navigate('EventsPage')}
-						>
-							<Ionicons name="calendar" size={30} color="#0D9488" />
-							<Text className="mt-2 text-sm text-gray-600 dark:text-gray-100">All Events</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
 							className="items-center p-4 mx-1 bg-white shadow-sm dark:bg-dacka-dark-gray rounded-xl"

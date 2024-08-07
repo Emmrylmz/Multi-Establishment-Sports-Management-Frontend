@@ -6,6 +6,7 @@ import { useListEventsQuery } from '../../../../features/query/eventQueryService
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase } from '@react-navigation/native';
 import LoadingIndicator from '../fetch/LoadingIndicator';
+import ErrorComponent from '../fetch/ErrorComponent';
 
 type EventHistoryProps = {
   navigation: NativeStackNavigationProp<ParamListBase>;
@@ -23,6 +24,10 @@ const EventHistory: React.FC<EventHistoryProps> = ({ navigation, user }) => {
 
 	if(isLoading){
 		return <LoadingIndicator isLoading={isLoading}	/>
+	}
+
+	if(isError){
+		return <ErrorComponent onRetry={refetch} />
 	}
 
 	return (

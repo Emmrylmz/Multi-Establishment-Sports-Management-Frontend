@@ -44,7 +44,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
 
   return (
     <Animated.View
-      className="absolute top-0 left-0 right-0 overflow-hidden bg-transparent rounded-b-3xl z-10"
+      className="absolute top-0 left-0 right-0 z-10 overflow-hidden bg-transparent rounded-b-3xl"
       style={{ height: headerHeightInterpolate }}
     >
         <LinearGradient
@@ -55,7 +55,7 @@ const AnimatedHeader: React.FC<AnimatedHeaderProps> = ({
       <Animated.View style={{ transform: [{ translateY: gradientTranslateY }] }}>
       </Animated.View>
       <Animated.View 
-        className="absolute inset-x-0 bottom-0 top-5 items-center justify-center"
+        className="absolute inset-x-0 bottom-0 items-center justify-center top-5"
         style={{ 
           transform: [{ translateY: imageTranslateY }],
           opacity: imageOpacity

@@ -30,7 +30,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, title }) => {
     <TouchableOpacity onPress={handlePress}>
       <Animated.View 
         style={{ transform: [{ scale: buttonScale }] }}
-        className="w-full px-6 py-4 rounded-xl bg-teal-600 items-center mt-6"
+        className="items-center w-full px-6 py-4 mt-6 rounded-xl bg-dacka-light-green"
       >
         <Text className="text-lg font-semibold text-white">
           {title}

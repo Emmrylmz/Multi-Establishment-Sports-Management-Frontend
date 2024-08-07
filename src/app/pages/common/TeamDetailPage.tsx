@@ -8,6 +8,7 @@ import { useGetTeamUsersByIdQuery } from '../../../features/query/teamQueryServi
 import { PlayerCard } from '../../components';
 import FilterInput from '../../components/ui/Input/FilterInput';
 import LoadingIndicator from '../../components/ui/fetch/LoadingIndicator';
+import GoBackButton from '../../components/ui/GoBackButton';
 
 const TeamDetailPage = ({ route, navigation }) => {
 	const user = useSelector((state: RootState) => getAuthUser(state));
@@ -79,6 +80,7 @@ const TeamDetailPage = ({ route, navigation }) => {
 
 	return (
 		<ScrollView className="flex-1 bg-gray-100 dark:bg-dacka-black">
+			<GoBackButton />
 			<View className="px-4 pt-12 pb-6 bg-teal-300 shadow-md dark:bg-teal-600 rounded-b-3xl">
 				<View className="items-center mt-8">
 					<Image
